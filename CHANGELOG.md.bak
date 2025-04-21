@@ -1,0 +1,46 @@
+
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [0.2.0] - 2025-04-18
+
+### Added
+- Iconography page now displays a sample grid of Lucide icons with preview, search, and click-to-copy import statement functionality.
+- Improved Iconography page title and subtitle styling to match Foundation page.
+
+### Fixed
+- Bug: Lucide icons now imported via explicit named imports to ensure compatibility with Vite/ESM; wildcard import is no longer used.
+
+## [0.1.0] - 2023-11-28
+
+### Added
+- Initial project setup with Vite, React, TypeScript and shadcn/ui
+- Responsive Application Shell with dark theme and baby blue accents
+- Sidebar navigation with collapsible categories
+- Component showcase cards on the home page
+- Basic routing structure
+- Component categories:
+  - Application Shells
+  - Layout
+  - Elements
+  - Feedback
+  - Headings
+  - Overlays
+  - Grid Data Display
+  - Data Visualization
+  - Forms
+  - Buttons
+  - Typography
+  - Cards
+  - Calendar
+  - Dialogs
+  - Navigation
+  - Badges
+
+### Changed
+- N/A
+
+### Fixed
+- N/A
+
