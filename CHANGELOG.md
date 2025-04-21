@@ -8,10 +8,14 @@ All notable changes to this project will be documented in this file.
 ### Added
 - FunctionalChatbot component with DesignBot header
 - Additional UI components and layouts
+- GitHub Actions workflows for CI/CD pipeline
+- Automated build and deployment to GitHub Pages
+- Pull request validation and auto-merge functionality
 
 ### Changed
 - Complete repository synchronization between local and remote environments
 - Improved project structure and organization
+- Configured project for GitHub Pages deployment with proper base path
 
 ## [0.1.0] - 2023-11-28
 
