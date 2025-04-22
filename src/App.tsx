@@ -26,7 +26,7 @@ const App = () => (
         <div className="min-h-screen">
           <Toaster />
           <Sonner />
-          <BrowserRouter basename="/myuilibrary">
+          <BrowserRouter basename="/">
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/components/:componentType" element={<ComponentDetail />} />
