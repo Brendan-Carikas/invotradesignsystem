@@ -1,11 +1,11 @@
 
-import { Button } from "@/components/ui/button";
-import { useTheme } from "@/contexts/ThemeContext";
+import { Button } from "../ui/button";
+import { useTheme } from "../../contexts/ThemeContext";
 import { Moon, Sun } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
 
 export function ThemeToggle({ className }: { className?: string }) {
-  const { theme, toggleTheme } = useTheme();
+  const { mode, toggleTheme } = useTheme();
 
   return (
     <Button
@@ -15,7 +15,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       className={cn("rounded-full", className)}
       aria-label="Toggle theme"
     >
-      {theme === "dark" ? (
+      {mode === "dark" ? (
         <Sun className="h-5 w-5 text-primary transition-all" />
       ) : (
         <Moon className="h-5 w-5 text-primary transition-all" />

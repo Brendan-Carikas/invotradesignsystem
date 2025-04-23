@@ -1,19 +1,22 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { theme as designTokens, cssVariables } from "../styles/theme";
 
-type Theme = "light" | "dark";
+type ThemeMode = "light" | "dark";
 
 interface ThemeContextType {
-  theme: Theme;
+  mode: ThemeMode;
   toggleTheme: () => void;
+  theme: typeof designTokens;
+  isDarkMode: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
+  const [mode, setMode] = useState<ThemeMode>(() => {
     // Check if theme preference is stored in localStorage
-    const savedTheme = localStorage.getItem("theme") as Theme;
+    const savedTheme = localStorage.getItem("theme") as ThemeMode;
     // If not in localStorage, use system preference or fallback to dark
     return savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   });
@@ -21,22 +24,35 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Add or remove the "dark" class on the document element
     const root = window.document.documentElement;
-    if (theme === "dark") {
+    
+    if (mode === "dark") {
       root.classList.add("dark");
     } else {
       root.classList.remove("dark");
     }
     
+    // Apply theme CSS variables to the document root
+    // We don't need to manually set CSS variables here since they're defined in index.css
+    // and will be applied automatically based on the dark class
+    
     // Store the current theme preference in localStorage
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+    localStorage.setItem("theme", mode);
+  }, [mode]);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
+    setMode((prevMode) => (prevMode === "dark" ? "light" : "dark"));
+  };
+
+  // Provide the theme context with both the mode and the design tokens
+  const themeContext = {
+    mode,
+    toggleTheme,
+    theme: designTokens,
+    isDarkMode: mode === "dark"
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={themeContext}>
       {children}
     </ThemeContext.Provider>
   );

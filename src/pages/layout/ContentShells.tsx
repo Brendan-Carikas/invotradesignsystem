@@ -2,6 +2,7 @@
 import React from "react";
 import AppShell from "@/components/layout/AppShell";
 import { ComponentCard } from "@/components/ui/component-card";
+import TitleDescription from "@/components/TitleDescription";
 import {
   Calendar,
   FileText,
@@ -105,12 +106,11 @@ const ContentShells = () => {
 
   return (
     <AppShell>
-      <section className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Content Shells</h1>
-        <p className="mt-2 text-lg text-muted-foreground">
-          A collection of pre-built layout templates for common application interfaces.
-        </p>
-      </section>
+      <TitleDescription
+        title="Content Shells"
+        description="A collection of pre-built layout templates for common application interfaces."
+        titleSize="h1"
+      />
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {shells.map((shell) => (
