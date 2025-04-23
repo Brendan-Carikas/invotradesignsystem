@@ -29,13 +29,15 @@ interface NavGroupProps {
   title: string;
   children: React.ReactNode;
   isCollapsed: boolean;
+  addTopMargin?: boolean;
 }
 const NavGroup = ({
   title,
   children,
-  isCollapsed
+  isCollapsed,
+  addTopMargin = false
 }: NavGroupProps) => {
-  return <div className="mb-4">
+  return <div className={cn("mb-4", addTopMargin ? "mt-10 pt-4 border-t border-border/30" : "")}>
       {!isCollapsed && <div className="mb-2 px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
           {title}
         </div>}
@@ -125,10 +127,6 @@ const AppShell = ({
       to: "/components/chatbot",
       icon: Bot,
       label: "Chatbot"
-    }, {
-      to: "/pages/chatbot/functional",
-      icon: Bot,
-      label: "Suggestions"
     }]
   }];
 
@@ -143,7 +141,12 @@ const AppShell = ({
           </Button>
         </div>
         <nav className="flex-1 space-y-1 p-2 overflow-y-auto">
-          {navGroups.map(group => <NavGroup key={group.title} title={group.title} isCollapsed={sidebarCollapsed}>
+          {navGroups.map(group => <NavGroup 
+              key={group.title} 
+              title={group.title} 
+              isCollapsed={sidebarCollapsed}
+              addTopMargin={["Structure", "Basics", "Interface", "Conversation Design"].includes(group.title)}
+            >
               {group.items.map(item => <NavItem key={item.to} to={item.to} icon={item.icon} label={item.label} isCollapsed={sidebarCollapsed} isActive={location.pathname === item.to || location.pathname.startsWith(`${item.to}/`)} />)}
             </NavGroup>)}
         </nav>
@@ -161,7 +164,12 @@ const AppShell = ({
           </Button>
         </div>
         <nav className="flex-1 space-y-1 p-2 overflow-y-auto">
-          {navGroups.map(group => <NavGroup key={group.title} title={group.title} isCollapsed={false}>
+          {navGroups.map(group => <NavGroup 
+              key={group.title} 
+              title={group.title} 
+              isCollapsed={false}
+              addTopMargin={["Structure", "Basics", "Interface", "Conversation Design"].includes(group.title)}
+            >
               {group.items.map(item => <NavItem key={item.to} to={item.to} icon={item.icon} label={item.label} isCollapsed={false} isActive={location.pathname === item.to || location.pathname.startsWith(`${item.to}/`)} />)}
             </NavGroup>)}
         </nav>
