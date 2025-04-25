@@ -2,7 +2,7 @@
 import React from "react";
 import AppShell from "@/components/layout/AppShell";
 import { ComponentCard } from "@/components/ui/component-card";
-import { Sidebar } from "lucide-react";
+import { Sidebar, Sparkles, Braces } from "lucide-react";
 import TitleDescription from "@/components/TitleDescription";
 
 const ApplicationShells = () => {
@@ -12,6 +12,13 @@ const ApplicationShells = () => {
       description: "A vertical application shell with sidebar navigation",
       icon: <Sidebar className="h-5 w-5" />,
       to: "/components/application-shells/vertical",
+    },
+    {
+      title: "AI Playground",
+      description: "An interactive environment for experimenting with AI models and prompts",
+      icon: <Sparkles className="h-5 w-5" />,
+      to: "/components/application-shells/ai-playground",
+      status: "beta" as const,
     }
   ];
 
