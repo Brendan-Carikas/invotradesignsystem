@@ -2,7 +2,7 @@ import React from "react";
 import AppShell from "@/components/layout/AppShell";
 import TitleDescription from "@/components/TitleDescription";
 import { ComponentCard } from "@/components/ui/component-card";
-import { Bot, Layers, MessageSquare } from "lucide-react";
+import { Bot, Layers, MessageSquare, Lightbulb, ThumbsUp } from "lucide-react";
 
 const ChatbotIndex = () => {
   const chatbotComponents = [
@@ -18,6 +18,20 @@ const ChatbotIndex = () => {
       description: "Different styles and configurations of the chatbot component for various use cases.",
       icon: <Layers className="h-5 w-5" />,
       to: "/pages/chatbot/variants",
+      status: "stable" as const,
+    },
+    {
+      title: "Chatbot Suggestions",
+      description: "Explore different types of chatbot suggestions to enhance user experience.",
+      icon: <Lightbulb className="h-5 w-5" />,
+      to: "/pages/chatbot/suggestions",
+      status: "stable" as const,
+    },
+    {
+      title: "Chatbot Feedback",
+      description: "Different feedback mechanisms to improve chatbot interactions.",
+      icon: <ThumbsUp className="h-5 w-5" />,
+      to: "/pages/chatbot/feedback",
       status: "stable" as const,
     }
   ];

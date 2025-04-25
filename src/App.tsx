@@ -18,6 +18,9 @@ import Iconography from "./pages/Iconography";
 import ChatbotIndex from "./pages/chatbot/ChatbotIndex";
 import BasicChatbotInterface from "./pages/chatbot/BasicChatbotInterface";
 import ChatbotVariants from "./pages/chatbot/ChatbotVariants";
+import ChatbotSuggestions from "./pages/chatbot/ChatbotSuggestions";
+import ChatbotFeedback from "./pages/chatbot/ChatbotFeedback";
+import AIPlaygroundDemo from "./pages/layout/shells/AIPlaygroundDemo";
 
 const queryClient = new QueryClient();
 
@@ -39,9 +42,12 @@ const App = () => (
               <Route path="/components/layout/shells/user-profile" element={<UserProfile />} />
               <Route path="/components/layout/shells/dashboard" element={<Dashboard />} />
               <Route path="/components/application-shells/vertical" element={<VerticalShellDemo />} />
+              <Route path="/components/application-shells/ai-playground" element={<AIPlaygroundDemo />} />
               <Route path="/components/chatbot" element={<ChatbotIndex />} />
               <Route path="/pages/chatbot/basic" element={<BasicChatbotInterface />} />
               <Route path="/pages/chatbot/variants" element={<ChatbotVariants />} />
+              <Route path="/pages/chatbot/suggestions" element={<ChatbotSuggestions />} />
+              <Route path="/pages/chatbot/feedback" element={<ChatbotFeedback />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
