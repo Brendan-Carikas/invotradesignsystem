@@ -150,12 +150,6 @@
     @apply transition-transform duration-200 hover:scale-105;
   }
   
-  .card-shine {
-    --shine-deg: 45deg;
-    position: relative;
-    overflow: hidden;
-  }
-  
   .card-shine::after {
     content: "";
     position: absolute;
