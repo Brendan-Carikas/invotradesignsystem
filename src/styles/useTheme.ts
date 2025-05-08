@@ -1,4 +1,4 @@
-import { theme, cssVariables } from './theme';
+import { theme, cssVariables, toSentenceCase } from './theme';
 
 /**
  * useTheme Hook
@@ -85,6 +85,19 @@ export const useTheme = () => {
     });
   };
 
+  /**
+   * Apply Sentence case to text based on the element type
+   * @param text - The text to format
+   * @param elementType - The type of element ('button', 'heading', or 'title')
+   * @returns The formatted text in Sentence case if the element type requires it
+   */
+  const applyCasing = (text: string, elementType: 'button' | 'heading' | 'title'): string => {
+    if (theme.textCase[elementType] === 'sentence') {
+      return toSentenceCase(text);
+    }
+    return text;
+  };
+
   return {
     theme,
     cssVariables,
@@ -93,7 +106,9 @@ export const useTheme = () => {
     getSpacing,
     getBorderRadius,
     getTransition,
-    applyThemeToDOM
+    applyThemeToDOM,
+    applyCasing,
+    toSentenceCase
   };
 };
 

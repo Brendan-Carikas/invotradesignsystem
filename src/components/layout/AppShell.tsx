@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot } from "lucide-react";
+import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot, LogOut } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface NavItemProps {
   to: string;
@@ -11,18 +12,39 @@ interface NavItemProps {
   label: string;
   isCollapsed: boolean;
   isActive: boolean;
+  action?: string;
 }
 const NavItem = ({
   to,
   icon: Icon,
   label,
   isCollapsed,
-  isActive
+  isActive,
+  action
 }: NavItemProps) => {
-  return <Link to={to} className={cn("flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200", "hover:bg-primary/10", isActive ? "bg-primary/10 text-primary" : "text-foreground/80 hover:text-foreground")}>
-      <Icon size={18} />
-      {!isCollapsed && <span className="animate-fade-in text-sm">{label}</span>}
-    </Link>;
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleClick = async (e: React.MouseEvent) => {
+    if (action === 'logout') {
+      e.preventDefault();
+      try {
+        await logout();
+        navigate('/');
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+    }
+  };
+
+  return <Link 
+    to={to} 
+    className={cn("flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200", "hover:bg-primary/10", isActive ? "bg-primary/10 text-primary" : "text-foreground/80 hover:text-foreground")}
+    onClick={handleClick}
+  >
+    <Icon size={18} />
+    {!isCollapsed && <span className="animate-fade-in text-sm">{label}</span>}
+  </Link>;
 };
 
 interface NavGroupProps {
@@ -68,7 +90,7 @@ const AppShell = ({
   const navGroups = [{
     title: "Overview",
     items: [{
-      to: "/",
+      to: "/home",
       icon: LayoutGrid,
       label: "Overview"
     }]
@@ -147,9 +169,28 @@ const AppShell = ({
               isCollapsed={sidebarCollapsed}
               addTopMargin={["Structure", "Basics", "Interface", "Conversation Design"].includes(group.title)}
             >
-              {group.items.map(item => <NavItem key={item.to} to={item.to} icon={item.icon} label={item.label} isCollapsed={sidebarCollapsed} isActive={location.pathname === item.to || location.pathname.startsWith(`${item.to}/`)} />)}
+              {group.items.map(item => <NavItem 
+                key={item.to} 
+                to={item.to} 
+                icon={item.icon} 
+                label={item.label} 
+                isCollapsed={sidebarCollapsed} 
+                isActive={location.pathname === item.to || location.pathname.startsWith(`${item.to}/`)} 
+              />)}
             </NavGroup>)}
         </nav>
+        
+        {/* Footer with logout button */}
+        <div className="mt-auto border-t border-border/40 p-2">
+          <NavItem 
+            to="/" 
+            icon={LogOut} 
+            label="Logout" 
+            isCollapsed={sidebarCollapsed} 
+            isActive={false} 
+            action="logout"
+          />
+        </div>
       </aside>
 
       {mobileNavOpen && <div className="fixed inset-0 z-30 bg-black/50 md:hidden backdrop-blur-sm animate-fade-in" onClick={() => setMobileNavOpen(false)} />}
@@ -170,9 +211,28 @@ const AppShell = ({
               isCollapsed={false}
               addTopMargin={["Structure", "Basics", "Interface", "Conversation Design"].includes(group.title)}
             >
-              {group.items.map(item => <NavItem key={item.to} to={item.to} icon={item.icon} label={item.label} isCollapsed={false} isActive={location.pathname === item.to || location.pathname.startsWith(`${item.to}/`)} />)}
+              {group.items.map(item => <NavItem 
+                key={item.to} 
+                to={item.to} 
+                icon={item.icon} 
+                label={item.label} 
+                isCollapsed={false} 
+                isActive={location.pathname === item.to || location.pathname.startsWith(`${item.to}/`)} 
+              />)}
             </NavGroup>)}
         </nav>
+        
+        {/* Footer with logout button */}
+        <div className="mt-auto border-t border-border/40 p-2">
+          <NavItem 
+            to="/" 
+            icon={LogOut} 
+            label="Logout" 
+            isCollapsed={false} 
+            isActive={false} 
+            action="logout"
+          />
+        </div>
       </aside>
 
       <div className={cn("flex-1 transition-all duration-300 ease-in-out", sidebarCollapsed ? "md:ml-16" : "md:ml-64")}>

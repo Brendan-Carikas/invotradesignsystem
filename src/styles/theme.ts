@@ -7,6 +7,16 @@ import { generateCSSVariables } from '../utils/colorUtils';
  * It provides a centralized place for managing colors, typography, and other design variables.
  */
 
+/**
+ * Helper function to ensure text follows Sentence case convention
+ * Capitalizes only the first letter of the string and keeps the rest lowercase
+ * Example: "create new project" becomes "Create new project"
+ */
+export const toSentenceCase = (text: string): string => {
+  if (!text) return '';
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+};
+
 export const theme = {
   /**
    * Color System
@@ -47,6 +57,9 @@ export const theme = {
   /**
    * Typography System
    * Defines text styles for headings, subtitles, and body text
+   * 
+   * Text Casing Rule: Use Sentence case (not Title Case) for buttons, titles, and headings
+   * Example: "Create new project" instead of "Create New Project"
    */
   typography: {
     // Headings
@@ -164,6 +177,16 @@ export const theme = {
    * Transition
    * Standard animation durations and easing functions
    */
+  /**
+   * Text Casing
+   * Defines the casing rules for text elements
+   */
+  textCase: {
+    button: 'sentence',  // Use Sentence case for buttons
+    heading: 'sentence', // Use Sentence case for headings
+    title: 'sentence',   // Use Sentence case for titles
+  },
+  
   transition: {
     duration: {
       fast: "150ms",
