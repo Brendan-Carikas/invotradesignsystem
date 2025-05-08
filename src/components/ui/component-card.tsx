@@ -32,10 +32,9 @@ export function ComponentCard({
     <Link to={to} className="block group">
       <Card 
         className={cn(
-          "h-full overflow-hidden transition-all duration-300",
+          "h-full overflow-hidden",
           "border border-border/40 bg-card/50 hover:bg-card",
           "hover:shadow-lg hover:shadow-primary/5",
-          "card-shine hover:-translate-y-1",
           className
         )}
       >
