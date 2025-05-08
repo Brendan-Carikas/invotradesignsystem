@@ -116,7 +116,7 @@ const AIPlaygroundShell = ({ children }: AIPlaygroundShellProps) => {
       {/* Left sidebar - Models & History */}
       <aside 
         className={cn(
-          "w-64 border-r border-border bg-muted/30 transition-all duration-300",
+          "w-64 border-r border-border bg-muted/30",
           !sidebarOpen && "w-0 -ml-64"
         )}
       >
@@ -140,7 +140,7 @@ const AIPlaygroundShell = ({ children }: AIPlaygroundShellProps) => {
                   <div 
                     key={model.id}
                     className={cn(
-                      "rounded-lg border border-border p-3 cursor-pointer transition-colors",
+                      "rounded-lg border border-border p-3 cursor-pointer",
                       activeModel === model.id ? "bg-primary/10 border-primary/50" : "hover:bg-muted"
                     )}
                     onClick={() => setActiveModel(model.id)}
@@ -166,7 +166,7 @@ const AIPlaygroundShell = ({ children }: AIPlaygroundShellProps) => {
                 {history.map((item) => (
                   <div 
                     key={item.id}
-                    className="rounded-lg border border-border p-3 cursor-pointer hover:bg-muted transition-colors"
+                    className="rounded-lg border border-border p-3 cursor-pointer hover:bg-muted"
                   >
                     <div className="flex items-center justify-between">
                       <h3 className="font-medium">{item.name}</h3>
@@ -436,7 +436,7 @@ const AIPlaygroundShell = ({ children }: AIPlaygroundShellProps) => {
                 >
                   {isGenerating ? (
                     <>
-                      <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
+                      <Sparkles className="h-4 w-4 mr-2" />
                       Generating...
                     </>
                   ) : (
@@ -479,7 +479,7 @@ const AIPlaygroundShell = ({ children }: AIPlaygroundShellProps) => {
                 {isGenerating ? (
                   <div className="h-full flex items-center justify-center">
                     <div className="flex flex-col items-center">
-                      <Sparkles className="h-8 w-8 text-primary animate-pulse mb-4" />
+                      <Sparkles className="h-8 w-8 text-primary mb-4" />
                       <p className="text-muted-foreground">Generating response...</p>
                     </div>
                   </div>

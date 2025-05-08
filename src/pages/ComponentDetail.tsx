@@ -89,7 +89,7 @@ const ButtonsDemo = () => {
             <Button>Default</Button>
             <Button disabled>Disabled</Button>
             <Button className="relative">
-              <span className="animate-pulse absolute -top-1 -right-1 h-3 w-3 rounded-full bg-red-500"></span>
+              <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-red-500"></span>
               With Notification
             </Button>
             <Button>

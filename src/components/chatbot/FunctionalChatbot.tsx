@@ -184,7 +184,7 @@ const FunctionalChatbot: React.FC<FunctionalChatbotProps> = ({
                 <div
                   key={message.id}
                   className={cn(
-                    "flex items-start gap-3 max-w-[85%] animate-fade-in",
+                    "flex items-start gap-3 max-w-[85%]",
                     message.role === "user" ? "ml-auto flex-row-reverse" : ""
                   )}
                 >
@@ -224,7 +224,7 @@ const FunctionalChatbot: React.FC<FunctionalChatbotProps> = ({
               
               {/* Typing indicator */}
               {isTyping && (
-                <div className="flex items-start gap-3 max-w-[85%] animate-fade-in">
+                <div className="flex items-start gap-3 max-w-[85%]">
                   <Avatar className="h-8 w-8 mt-1">
                     <AvatarFallback className="bg-primary text-primary-foreground">
                       <Bot size={16} />
@@ -233,9 +233,9 @@ const FunctionalChatbot: React.FC<FunctionalChatbotProps> = ({
                   </Avatar>
                   <div className="bg-muted rounded-lg px-4 py-3 text-sm">
                     <div className="flex space-x-2">
-                      <div className="h-2 w-2 rounded-full bg-primary animate-pulse"></div>
-                      <div className="h-2 w-2 rounded-full bg-primary animate-pulse delay-150"></div>
-                      <div className="h-2 w-2 rounded-full bg-primary animate-pulse delay-300"></div>
+                      <div className="h-2 w-2 rounded-full bg-primary"></div>
+                      <div className="h-2 w-2 rounded-full bg-primary"></div>
+                      <div className="h-2 w-2 rounded-full bg-primary"></div>
                     </div>
                   </div>
                 </div>
