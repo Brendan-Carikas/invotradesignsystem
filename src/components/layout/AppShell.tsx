@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import invotraIcon from "@/assets/images/invotra-icon.png";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot, LogOut } from "lucide-react";
+import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot, LogOut, FileText, Book, Library } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
+// Import permission types
+type NavSection = 'overview' | 'structure' | 'basics' | 'interface' | 'conversation' | 'knowledge';
+type UserRole = 'admin' | 'conversational' | 'standard' | 'demo';
 
 interface NavItemProps {
   to: string;
@@ -78,6 +82,7 @@ const AppShell = ({
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const location = useLocation();
+  const { userRole, hasPermission } = useAuth();
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
@@ -87,8 +92,27 @@ const AppShell = ({
     setMobileNavOpen(!mobileNavOpen);
   };
 
+  // Function to determine if a navigation section should be visible based on user role
+  const shouldShowNavSection = (section: NavSection): boolean => {
+    // For chat@invotra.com users (conversational role), only show conversation design and knowledge base
+    if (userRole === 'conversational') {
+      return section === 'conversation' || section === 'knowledge';
+    }
+    // For demo@invotra.com users (demo role), hide conversation design and knowledge base
+    if (userRole === 'demo') {
+      return section !== 'conversation' && section !== 'knowledge';
+    }
+    // Admin users can see everything
+    if (userRole === 'admin') {
+      return true;
+    }
+    // Standard users see everything except restricted sections
+    return true;
+  };
+
   const navGroups = [{
     title: "Overview",
+    section: 'overview' as NavSection,
     items: [{
       to: "/home",
       icon: LayoutGrid,
@@ -96,6 +120,7 @@ const AppShell = ({
     }]
   }, {
     title: "Structure",
+    section: 'structure' as NavSection,
     items: [{
       to: "/components/application-shells",
       icon: LayoutPanelTop,
@@ -107,6 +132,7 @@ const AppShell = ({
     }]
   }, {
     title: "Basics",
+    section: 'basics' as NavSection,
     items: [{
       to: "/components/foundation",
       icon: Package,
@@ -126,6 +152,7 @@ const AppShell = ({
     }]
   }, {
     title: "Interface",
+    section: 'interface' as NavSection,
     items: [{
       to: "/components/overlays",
       icon: PanelTop,
@@ -145,10 +172,27 @@ const AppShell = ({
     }]
   }, {
     title: "Conversation Design",
+    section: 'conversation' as NavSection,
     items: [{
       to: "/components/chatbot",
       icon: Bot,
       label: "Chatbot"
+    }]
+  }, {
+    title: "Knowledge Base",
+    section: 'knowledge' as NavSection,
+    items: [{
+      to: "/knowledge/conversational-design",
+      icon: FileText,
+      label: "Conversational Design"
+    }, {
+      to: "/knowledge/playbooks",
+      icon: Book,
+      label: "Playbooks"
+    }, {
+      to: "/knowledge/resources",
+      icon: Library,
+      label: "Resources"
     }]
   }];
 
@@ -156,14 +200,19 @@ const AppShell = ({
       <aside className={cn("fixed inset-y-0 left-0 z-20 flex flex-col border-r border-border/40 bg-sidebar transition-all duration-300 ease-in-out dark:bg-sidebar", sidebarCollapsed ? "w-16" : "w-64", "hidden md:flex")}>
         <div className="flex h-16 items-center justify-between gap-2 border-b border-border/40 px-4">
           {!sidebarCollapsed && <Link to="/" className="flex items-center gap-2 animate-fade-in">
-              <span className="text-lg font-semibold text-primary">DesignSystem</span>
+              <img src={invotraIcon} alt="Invotra Icon" className="h-5 w-5" />
+              <span className="text-lg font-semibold text-primary">
+                {userRole === 'conversational' ? 'CDI' : 'DesignSystem'}
+              </span>
             </Link>}
           <Button variant="ghost" size="icon" onClick={toggleSidebar} className="ml-auto text-muted-foreground">
             <Menu size={18} />
           </Button>
         </div>
         <nav className="flex-1 space-y-1 p-2 overflow-y-auto">
-          {navGroups.map(group => <NavGroup 
+          {navGroups
+            .filter(group => shouldShowNavSection(group.section)) // Filter groups based on user role
+            .map(group => <NavGroup 
               key={group.title} 
               title={group.title} 
               isCollapsed={sidebarCollapsed}

@@ -14,11 +14,13 @@ import { auth } from '../firebase';
 
 interface AuthContextType {
   currentUser: User | null;
+  userRole: 'admin' | 'conversational' | 'standard' | 'demo';
   loginWithIDS: (email: string, password: string) => Promise<{ success: boolean; user?: User; error?: string }>;
   signup: (email: string, password: string, displayName?: string) => Promise<{ success: boolean; user?: User; error?: string }>;
   logout: () => Promise<{ success: boolean; error?: string }>;
   resetPassword: (email: string) => Promise<{ success: boolean; error?: string }>;
   updateUserProfile: (profileData: { displayName?: string; photoURL?: string }) => Promise<{ success: boolean; error?: string }>;
+  hasPermission: (requiredRole: 'admin' | 'conversational' | 'standard' | 'demo') => boolean;
 }
 
 interface AuthProviderProps {
@@ -40,12 +42,35 @@ export const useAuth = (): AuthContextType => {
 // Provider component
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  // Initialize userRole from localStorage if available, otherwise default to 'standard'
+  const [userRole, setUserRole] = useState<'admin' | 'conversational' | 'standard' | 'demo'>(() => {
+    const savedRole = localStorage.getItem('userRole');
+    return (savedRole as 'admin' | 'conversational' | 'standard' | 'demo') || 'standard';
+  });
   const [loading, setLoading] = useState(true);
+
+  // Custom function to set user role and persist it to localStorage
+  const updateUserRole = (role: 'admin' | 'conversational' | 'standard' | 'demo') => {
+    setUserRole(role);
+    localStorage.setItem('userRole', role);
+  };
 
   // Sign in with email and password (IDS login)
   const loginWithIDS = async (email: string, password: string) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      
+      // Set user role based on email
+      if (email === 'chat@invotra.com') {
+        updateUserRole('conversational');
+      } else if (email === 'demo@invotra.com') {
+        updateUserRole('demo');
+      } else if (email.includes('admin')) {
+        updateUserRole('admin');
+      } else {
+        updateUserRole('standard');
+      }
+      
       return { success: true, user: userCredential.user };
     } catch (error) {
       console.error('Login error:', error);
@@ -73,6 +98,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = async () => {
     try {
       await signOut(auth);
+      // Reset user role to standard and clear from localStorage
+      updateUserRole('standard');
       return { success: true };
     } catch (error) {
       return { success: false, error: (error as Error).message };
@@ -103,10 +130,37 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  // Function to check if user has required permission
+  const hasPermission = (requiredRole: 'admin' | 'conversational' | 'standard' | 'demo'): boolean => {
+    if (requiredRole === 'standard') return true; // Everyone has standard permissions
+    if (requiredRole === 'conversational') return userRole === 'conversational' || userRole === 'admin';
+    if (requiredRole === 'demo') return userRole === 'demo' || userRole === 'admin';
+    if (requiredRole === 'admin') return userRole === 'admin';
+    return false;
+  };
+
   // Effect to handle auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      // Reset role to standard when user logs out
+      if (!user) {
+        // Only reset if there's no saved role (user actually logged out)
+        // This prevents resetting on page refresh
+        if (!localStorage.getItem('userRole')) {
+          updateUserRole('standard');
+        }
+      } else if (user.email) {
+        // If user is logged in and we're refreshing the page, set the role based on email
+        // This ensures role is correctly set even after page refresh
+        if (user.email === 'chat@invotra.com') {
+          updateUserRole('conversational');
+        } else if (user.email === 'demo@invotra.com') {
+          updateUserRole('demo');
+        } else if (user.email.includes('admin')) {
+          updateUserRole('admin');
+        }
+      }
       setLoading(false);
     });
 
@@ -117,11 +171,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Context value
   const value: AuthContextType = {
     currentUser,
+    userRole,
     loginWithIDS,
     signup,
     logout,
     resetPassword,
-    updateUserProfile
+    updateUserProfile,
+    hasPermission
   };
 
   return (

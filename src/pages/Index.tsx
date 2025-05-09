@@ -1,6 +1,7 @@
 import React from "react";
 import AppShell from "@/components/layout/AppShell";
 import { ComponentCard } from "@/components/ui/component-card";
+import { useAuth } from "../contexts/AuthContext";
 import { 
   LayoutPanelTop,
   Layout,
@@ -15,6 +16,7 @@ import {
 } from "lucide-react";
 
 const Index = () => {
+  const { userRole } = useAuth();
   const components = [
     {
       title: "Application Shells",
@@ -100,29 +102,34 @@ const Index = () => {
       <section className="mb-12">
         <div className="mx-auto max-w-4xl text-center">
           <div className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4">
-            Design System
+            Invotra Design System
           </div>
           <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
             Beautiful UI Components
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            A professionally designed component library with a dark theme and baby blue accents.
-            Build beautiful interfaces with ease.
+            A comprehensive design system with customizable themes, structured tokens, and optimized components.
+            Create consistent, accessible interfaces with enterprise-grade reliability.
           </p>
         </div>
       </section>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {components.map((component) => (
-          <ComponentCard
-            key={component.title}
-            title={component.title}
-            description={component.description}
-            icon={component.icon}
-            to={component.to}
-            status={component.status}
-          />
-        ))}
+        {components
+          .filter(component => 
+            // Hide chatbot card for demo users
+            !(userRole === 'demo' && component.title === 'Chatbot')
+          )
+          .map((component) => (
+            <ComponentCard
+              key={component.title}
+              title={component.title}
+              description={component.description}
+              icon={component.icon}
+              to={component.to}
+              status={component.status}
+            />
+          ))}
       </div>
     </AppShell>
   );
