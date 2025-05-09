@@ -143,7 +143,7 @@ const IDSLogin = () => {
               mb: 2
             }}
           />
-          <Typography variant="h5" component="h2" align="center" fontWeight={500} mt={2}>
+          <Typography variant="h6" component="h2" align="center" fontWeight={500} mt={2}>
             Sign into IDS
           </Typography>
         </Box>
