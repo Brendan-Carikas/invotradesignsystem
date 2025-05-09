@@ -31,6 +31,8 @@ import AIPlaygroundDemo from "./pages/layout/shells/AIPlaygroundDemo";
 import ConversationalDesign from "./pages/knowledge/ConversationalDesign";
 import Playbooks from "./pages/knowledge/Playbooks";
 import Resources from "./pages/knowledge/Resources";
+// Import Flows pages
+import ConversationalFlows from "./pages/flows/ConversationalFlows";
 
 const queryClient = new QueryClient();
 
@@ -62,15 +64,18 @@ const App = () => (
                 <Route path="/components/application-shells/vertical" element={<VerticalShellDemo />} />
                 <Route path="/components/application-shells/ai-playground" element={<AIPlaygroundDemo />} />
                 <Route path="/components/chatbot" element={<ChatbotIndex />} />
-                <Route path="/pages/chatbot/basic" element={<BasicChatbotInterface />} />
-                <Route path="/pages/chatbot/variants" element={<ChatbotVariants />} />
-                <Route path="/pages/chatbot/suggestions" element={<ChatbotSuggestions />} />
-                <Route path="/pages/chatbot/feedback" element={<ChatbotFeedback />} />
+                <Route path="/components/chatbot/basic" element={<BasicChatbotInterface />} />
+                <Route path="/components/chatbot/variants" element={<ChatbotVariants />} />
+                <Route path="/components/chatbot/suggestions" element={<ChatbotSuggestions />} />
+                <Route path="/components/chatbot/feedback" element={<ChatbotFeedback />} />
                 
                 {/* Knowledge Base Routes */}
                 <Route path="/knowledge/conversational-design" element={<ConversationalDesign />} />
                 <Route path="/knowledge/playbooks" element={<Playbooks />} />
                 <Route path="/knowledge/resources" element={<Resources />} />
+                
+                {/* Flows Routes */}
+                <Route path="/flows/conversational-flows" element={<ConversationalFlows />} />
               </Route>
               {/* Redirect any unknown routes to login for unauthenticated users */}
               <Route path="*" element={<Navigate to="/" replace />} />
