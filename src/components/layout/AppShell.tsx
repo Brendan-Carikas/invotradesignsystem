@@ -4,7 +4,7 @@ import invotraIcon from "@/assets/images/invotra-icon.png";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot, LogOut, FileText, Book, Library } from "lucide-react";
+import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot, LogOut, FileText, Book, Library, GitBranch } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 
 // Import permission types
@@ -133,6 +133,10 @@ export default function AppShell({ children }: AppShellProps) {
             to: "/components/chatbot",
             icon: Bot,
             label: "Chatbot"
+          }, {
+            to: "/flows/conversational-flows",
+            icon: GitBranch,
+            label: "Flows"
           }]
         }, 
         {
@@ -224,6 +228,10 @@ export default function AppShell({ children }: AppShellProps) {
           to: "/components/chatbot",
           icon: Bot,
           label: "Chatbot"
+        }, {
+          to: "/flows/conversational-flows",
+          icon: GitBranch,
+          label: "Flows"
         }]
       }, 
       {
@@ -255,7 +263,7 @@ export default function AppShell({ children }: AppShellProps) {
           {!sidebarCollapsed && <Link to="/" className="flex items-center gap-2 animate-fade-in">
               <img src={invotraIcon} alt="Invotra Icon" className="h-5 w-5" />
               <span className="text-lg font-semibold text-primary">
-                {userRole === 'conversational' ? 'CID' : 'DesignSystem'}
+                {userRole === 'conversational' ? 'CxD' : 'DesignSystem'}
               </span>
             </Link>}
           <Button variant="ghost" size="icon" onClick={toggleSidebar} className="ml-auto text-muted-foreground">
