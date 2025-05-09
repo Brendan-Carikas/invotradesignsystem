@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Index from "./pages/Index";
+import ConversationalIndex from "./pages/ConversationalIndex";
 import ComponentDetail from "./pages/ComponentDetail";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -49,6 +50,7 @@ const App = () => (
               {/* Protected routes */}
               <Route element={<ProtectedRoute />}>
                 <Route path="/home" element={<Index />} />
+                <Route path="/conversational" element={<ConversationalIndex />} />
                 <Route path="/conversations" element={<ChatbotIndex />} />
                 <Route path="/components/:componentType" element={<ComponentDetail />} />
                 <Route path="/components/foundation" element={<Foundation />} />
