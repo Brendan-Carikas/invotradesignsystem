@@ -64,8 +64,20 @@ const IDSLogin = () => {
       if (result.success) {
         // Successful login
         console.log('User logged in successfully:', result.user.uid);
-        // Navigate to the main page
-        navigate('/conversations', { replace: true });
+        // Get the current user role from localStorage
+        const userRole = localStorage.getItem('userRole');
+        
+        // Redirect based on user role
+        if (userRole === 'conversational') {
+          // Redirect conversational users (chat@invotra.com) to the conversational page
+          navigate('/conversational', { replace: true });
+        } else if (userRole === 'demo') {
+          // Redirect demo users to the home page
+          navigate('/home', { replace: true });
+        } else {
+          // Redirect other users to the home page
+          navigate('/home', { replace: true });
+        }
       } else {
         // Handle authentication errors
         console.error('Login failed:', result.error);

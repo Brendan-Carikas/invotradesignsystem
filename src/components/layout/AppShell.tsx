@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot, LogOut, FileText, Book, Library } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
+
 // Import permission types
 type NavSection = 'overview' | 'structure' | 'basics' | 'interface' | 'conversation' | 'knowledge';
 type UserRole = 'admin' | 'conversational' | 'standard' | 'demo';
@@ -18,6 +19,7 @@ interface NavItemProps {
   isActive: boolean;
   action?: string;
 }
+
 const NavItem = ({
   to,
   icon: Icon,
@@ -26,29 +28,31 @@ const NavItem = ({
   isActive,
   action
 }: NavItemProps) => {
-  const { logout } = useAuth();
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  const handleClick = async (e: React.MouseEvent) => {
+  const handleClick = (e: React.MouseEvent) => {
     if (action === 'logout') {
       e.preventDefault();
-      try {
-        await logout();
+      logout().then(() => {
         navigate('/');
-      } catch (error) {
-        console.error('Logout error:', error);
-      }
+      });
     }
   };
 
-  return <Link 
-    to={to} 
-    className={cn("flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200", "hover:bg-primary/10", isActive ? "bg-primary/10 text-primary" : "text-foreground/80 hover:text-foreground")}
-    onClick={handleClick}
-  >
-    <Icon size={18} />
-    {!isCollapsed && <span className="animate-fade-in text-sm">{label}</span>}
-  </Link>;
+  return (
+    <Link 
+      to={to} 
+      className={cn(
+        "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
+        isActive ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+      )}
+      onClick={handleClick}
+    >
+      <Icon size={18} />
+      {!isCollapsed && <span>{label}</span>}
+    </Link>
+  );
 };
 
 interface NavGroupProps {
@@ -57,32 +61,30 @@ interface NavGroupProps {
   isCollapsed: boolean;
   addTopMargin?: boolean;
 }
+
 const NavGroup = ({
   title,
   children,
   isCollapsed,
   addTopMargin = false
 }: NavGroupProps) => {
-  return <div className={cn("mb-4", addTopMargin ? "mt-10 pt-4 border-t border-border/30" : "")}>
-      {!isCollapsed && <div className="mb-2 px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-          {title}
-        </div>}
-      <div className="space-y-1">
-        {children}
-      </div>
-    </div>;
+  return (
+    <div className={cn("space-y-1", addTopMargin && "mt-6")}>
+      {!isCollapsed && <h4 className="px-3 text-xs font-semibold text-muted-foreground">{title}</h4>}
+      {children}
+    </div>
+  );
 };
 
 interface AppShellProps {
   children: React.ReactNode;
 }
-const AppShell = ({
-  children
-}: AppShellProps) => {
+
+export default function AppShell({ children }: AppShellProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const location = useLocation();
-  const { userRole, hasPermission } = useAuth();
+  const { userRole } = useAuth();
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
@@ -96,7 +98,7 @@ const AppShell = ({
   const shouldShowNavSection = (section: NavSection): boolean => {
     // For chat@invotra.com users (conversational role), only show conversation design and knowledge base
     if (userRole === 'conversational') {
-      return section === 'conversation' || section === 'knowledge';
+      return section === 'conversation' || section === 'knowledge' || section === 'overview';
     }
     // For demo@invotra.com users (demo role), hide conversation design and knowledge base
     if (userRole === 'demo') {
@@ -110,99 +112,150 @@ const AppShell = ({
     return true;
   };
 
-  const navGroups = [{
-    title: "Overview",
-    section: 'overview' as NavSection,
-    items: [{
-      to: "/home",
-      icon: LayoutGrid,
-      label: "Overview"
-    }]
-  }, {
-    title: "Structure",
-    section: 'structure' as NavSection,
-    items: [{
-      to: "/components/application-shells",
-      icon: LayoutPanelTop,
-      label: "Application Shells"
-    }, {
-      to: "/components/layout/shells",
-      icon: Layout,
-      label: "Content Shells"
-    }]
-  }, {
-    title: "Basics",
-    section: 'basics' as NavSection,
-    items: [{
-      to: "/components/foundation",
-      icon: Package,
-      label: "Foundation"
-    }, {
-      to: "/components/iconography",
-      icon: Package,
-      label: "Iconography"
-    }, {
-      to: "/components/feedback",
-      icon: AlertCircle,
-      label: "Feedback"
-    }, {
-      to: "/components/headings",
-      icon: Heading,
-      label: "Headings"
-    }]
-  }, {
-    title: "Interface",
-    section: 'interface' as NavSection,
-    items: [{
-      to: "/components/overlays",
-      icon: PanelTop,
-      label: "Overlays"
-    }, {
-      to: "/components/grid-data-display",
-      icon: Grid,
-      label: "Grid Data Display"
-    }, {
-      to: "/components/data-visualization",
-      icon: LineChart,
-      label: "Data Visualization"
-    }, {
-      to: "/components/forms",
-      icon: FormInput,
-      label: "Forms"
-    }]
-  }, {
-    title: "Conversation Design",
-    section: 'conversation' as NavSection,
-    items: [{
-      to: "/components/chatbot",
-      icon: Bot,
-      label: "Chatbot"
-    }]
-  }, {
-    title: "Knowledge Base",
-    section: 'knowledge' as NavSection,
-    items: [{
-      to: "/knowledge/conversational-design",
-      icon: FileText,
-      label: "Conversational Design"
-    }, {
-      to: "/knowledge/playbooks",
-      icon: Book,
-      label: "Playbooks"
-    }, {
-      to: "/knowledge/resources",
-      icon: Library,
-      label: "Resources"
-    }]
-  }];
+  // Create different navigation groups based on user role
+  const getNavGroups = () => {
+    // Special navigation for conversational role (chat@invotra.com)
+    if (userRole === 'conversational') {
+      return [
+        {
+          title: "Overview",
+          section: 'overview' as NavSection,
+          items: [{
+            to: "/conversational",
+            icon: LayoutGrid,
+            label: "Overview"
+          }]
+        }, 
+        {
+          title: "Conversation Design",
+          section: 'conversation' as NavSection,
+          items: [{
+            to: "/components/chatbot",
+            icon: Bot,
+            label: "Chatbot"
+          }]
+        }, 
+        {
+          title: "Knowledge Base",
+          section: 'knowledge' as NavSection,
+          items: [{
+            to: "/knowledge/conversational-design",
+            icon: FileText,
+            label: "Conversational Design"
+          }, {
+            to: "/knowledge/playbooks",
+            icon: Book,
+            label: "Playbooks"
+          }, {
+            to: "/knowledge/resources",
+            icon: Library,
+            label: "Resources"
+          }]
+        }
+      ];
+    }
+    
+    // Standard navigation for other users
+    return [
+      {
+        title: "Overview",
+        section: 'overview' as NavSection,
+        items: [{
+          to: "/home",
+          icon: LayoutGrid,
+          label: "Overview"
+        }]
+      }, 
+      {
+        title: "Structure",
+        section: 'structure' as NavSection,
+        items: [{
+          to: "/components/application-shells",
+          icon: LayoutPanelTop,
+          label: "Application Shells"
+        }, {
+          to: "/components/layout/shells",
+          icon: Layout,
+          label: "Content Shells"
+        }]
+      }, 
+      {
+        title: "Basics",
+        section: 'basics' as NavSection,
+        items: [{
+          to: "/components/foundation",
+          icon: Package,
+          label: "Foundation"
+        }, {
+          to: "/components/iconography",
+          icon: AlertCircle,
+          label: "Iconography"
+        }]
+      }, 
+      {
+        title: "Interface",
+        section: 'interface' as NavSection,
+        items: [{
+          to: "/components/typography",
+          icon: Heading,
+          label: "Typography"
+        }, {
+          to: "/components/panels",
+          icon: PanelTop,
+          label: "Panels"
+        }, {
+          to: "/components/grid-data-display",
+          icon: Grid,
+          label: "Grid Data Display"
+        }, {
+          to: "/components/data-visualization",
+          icon: LineChart,
+          label: "Data Visualization"
+        }, {
+          to: "/components/forms",
+          icon: FormInput,
+          label: "Forms"
+        }]
+      }, 
+      {
+        title: "Conversation Design",
+        section: 'conversation' as NavSection,
+        items: [{
+          to: "/components/chatbot",
+          icon: Bot,
+          label: "Chatbot"
+        }]
+      }, 
+      {
+        title: "Knowledge Base",
+        section: 'knowledge' as NavSection,
+        items: [{
+          to: "/knowledge/conversational-design",
+          icon: FileText,
+          label: "Conversational Design"
+        }, {
+          to: "/knowledge/playbooks",
+          icon: Book,
+          label: "Playbooks"
+        }, {
+          to: "/knowledge/resources",
+          icon: Library,
+          label: "Resources"
+        }]
+      }
+    ];
+  };
 
-  return <div className="flex h-screen overflow-hidden bg-background text-foreground">
+  const navigationGroups = getNavGroups();
+  
+  return (
+    <div className="flex h-screen overflow-hidden bg-background text-foreground">
       <aside className={cn("fixed inset-y-0 left-0 z-20 flex flex-col border-r border-border/40 bg-sidebar transition-all duration-300 ease-in-out dark:bg-sidebar", sidebarCollapsed ? "w-16" : "w-64", "hidden md:flex")}>
         <div className="flex h-16 items-center justify-between gap-2 border-b border-border/40 px-4">
           {!sidebarCollapsed && <Link to="/" className="flex items-center gap-2 animate-fade-in">
               <img src={invotraIcon} alt="Invotra Icon" className="h-5 w-5" />
               <span className="text-lg font-semibold text-primary">
-                {userRole === 'conversational' ? 'CDI' : 'DesignSystem'}
+                {userRole === 'conversational' ? 'CID' : 'DesignSystem'}
               </span>
             </Link>}
           <Button variant="ghost" size="icon" onClick={toggleSidebar} className="ml-auto text-muted-foreground">
@@ -210,7 +263,7 @@ const AppShell = ({
           </Button>
         </div>
         <nav className="flex-1 space-y-1 p-2 overflow-y-auto">
-          {navGroups
+          {navigationGroups
             .filter(group => shouldShowNavSection(group.section)) // Filter groups based on user role
             .map(group => <NavGroup 
               key={group.title} 
@@ -254,7 +307,7 @@ const AppShell = ({
           </Button>
         </div>
         <nav className="flex-1 space-y-1 p-2 overflow-y-auto">
-          {navGroups.map(group => <NavGroup 
+          {navigationGroups.map(group => <NavGroup 
               key={group.title} 
               title={group.title} 
               isCollapsed={false}
@@ -300,6 +353,6 @@ const AppShell = ({
           </div>
         </main>
       </div>
-    </div>;
-};
-export default AppShell;
+    </div>
+  );
+}
