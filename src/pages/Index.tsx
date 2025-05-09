@@ -105,11 +105,10 @@ const Index = () => {
             Invotra Design System
           </div>
           <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
-            Beautiful UI Components
+            Beautiful UI and Layouts
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            A comprehensive design system with customizable themes, structured tokens, and optimized components.
-            Create consistent, accessible interfaces with enterprise-grade reliability.
+            A comprehensive design system that includes design tokens, layouts and custom components.
           </p>
         </div>
       </section>
