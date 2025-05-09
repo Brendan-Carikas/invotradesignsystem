@@ -1,5 +1,15 @@
 {
   "projects": {
-    "default": "designsystem-c58f9"
-  }
+    "default": "ids-project-597cc"
+  },
+  "targets": {
+    "ids-project-597cc": {
+      "hosting": {
+        "invotradesignsystem": [
+          "invotradesignsystem"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

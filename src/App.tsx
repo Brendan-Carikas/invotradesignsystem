@@ -26,6 +26,10 @@ import ChatbotVariants from "./pages/chatbot/ChatbotVariants";
 import ChatbotSuggestions from "./pages/chatbot/ChatbotSuggestions";
 import ChatbotFeedback from "./pages/chatbot/ChatbotFeedback";
 import AIPlaygroundDemo from "./pages/layout/shells/AIPlaygroundDemo";
+// Import Knowledge Base pages
+import ConversationalDesign from "./pages/knowledge/ConversationalDesign";
+import Playbooks from "./pages/knowledge/Playbooks";
+import Resources from "./pages/knowledge/Resources";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +64,11 @@ const App = () => (
                 <Route path="/pages/chatbot/variants" element={<ChatbotVariants />} />
                 <Route path="/pages/chatbot/suggestions" element={<ChatbotSuggestions />} />
                 <Route path="/pages/chatbot/feedback" element={<ChatbotFeedback />} />
+                
+                {/* Knowledge Base Routes */}
+                <Route path="/knowledge/conversational-design" element={<ConversationalDesign />} />
+                <Route path="/knowledge/playbooks" element={<Playbooks />} />
+                <Route path="/knowledge/resources" element={<Resources />} />
               </Route>
               {/* Redirect any unknown routes to login for unauthenticated users */}
               <Route path="*" element={<Navigate to="/" replace />} />
