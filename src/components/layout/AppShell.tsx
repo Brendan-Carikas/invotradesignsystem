@@ -70,7 +70,7 @@ const NavGroup = ({
 }: NavGroupProps) => {
   return (
     <div className={cn("space-y-1", addTopMargin && "mt-6")}>
-      {!isCollapsed && <h4 className="px-3 text-xs font-semibold text-muted-foreground">{title}</h4>}
+      {!isCollapsed && <h4 className="px-3 text-xs font-semibold text-muted-foreground mb-1 mt-0">{title}</h4>}
       {children}
     </div>
   );
@@ -296,7 +296,7 @@ export default function AppShell({ children }: AppShellProps) {
             <Menu size={18} />
           </Button>
         </div>
-        <nav className="flex-1 space-y-1 p-2 overflow-y-auto">
+        <nav className="flex-1 space-y- p-2 overflow-y-auto">
           {navigationGroups
             .filter(group => shouldShowNavSection(group.section)) // Filter groups based on user role
             .map(group => <NavGroup 
