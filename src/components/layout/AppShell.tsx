@@ -4,7 +4,7 @@ import invotraIcon from "@/assets/images/invotra-icon.png";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot, LogOut, FileText, Book, Library, GitBranch } from "lucide-react";
+import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot, LogOut, FileText, Book, Library, GitBranch, BarChart3, FileBarChart } from 'lucide-react';
 import { useAuth } from "../../contexts/AuthContext";
 
 // Import permission types
@@ -155,6 +155,19 @@ export default function AppShell({ children }: AppShellProps) {
             icon: Library,
             label: "Resources"
           }]
+        },
+        {
+          title: "Analytics and reports",
+          section: 'knowledge' as NavSection,
+          items: [{
+            to: "/knowledge/analytics",
+            icon: BarChart3,
+            label: "Analytics"
+          }, {
+            to: "/knowledge/reports",
+            icon: FileBarChart,
+            label: "Reports"
+          }]
         }
       ];
     }
@@ -250,6 +263,19 @@ export default function AppShell({ children }: AppShellProps) {
           icon: Library,
           label: "Resources"
         }]
+      },
+      {
+        title: "Analytics and reports",
+        section: 'knowledge' as NavSection,
+        items: [{
+          to: "/knowledge/analytics",
+          icon: BarChart3,
+          label: "Analytics"
+        }, {
+          to: "/knowledge/reports",
+          icon: FileBarChart,
+          label: "Reports"
+        }]
       }
     ];
   };
@@ -277,7 +303,7 @@ export default function AppShell({ children }: AppShellProps) {
               key={group.title} 
               title={group.title} 
               isCollapsed={sidebarCollapsed}
-              addTopMargin={["Structure", "Basics", "Interface", "Conversation Design"].includes(group.title)}
+              addTopMargin={["Structure", "Basics", "Interface", "Conversation Design", "Knowledge Base", "Analytics and reports"].includes(group.title)}
             >
               {group.items.map(item => <NavItem 
                 key={item.to} 
@@ -319,7 +345,7 @@ export default function AppShell({ children }: AppShellProps) {
               key={group.title} 
               title={group.title} 
               isCollapsed={false}
-              addTopMargin={["Structure", "Basics", "Interface", "Conversation Design"].includes(group.title)}
+              addTopMargin={["Structure", "Basics", "Interface", "Conversation Design", "Knowledge Base", "Analytics and reports"].includes(group.title)}
             >
               {group.items.map(item => <NavItem 
                 key={item.to} 
