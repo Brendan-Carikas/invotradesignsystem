@@ -15,14 +15,14 @@ const Analytics = () => {
       />
 
       <Tabs defaultValue="overview" className="w-full mt-8">
-        <TabsList className="mb-8 flex flex-wrap h-auto">
-          <TabsTrigger value="overview" className="mb-1">Overview</TabsTrigger>
-          <TabsTrigger value="interaction" className="mb-1">User Interaction</TabsTrigger>
-          <TabsTrigger value="experience" className="mb-1">User Experience</TabsTrigger>
-          <TabsTrigger value="performance" className="mb-1">Performance</TabsTrigger>
-          <TabsTrigger value="operational" className="mb-1">Operational</TabsTrigger>
-          <TabsTrigger value="business" className="mb-1">Business Impact</TabsTrigger>
-          <TabsTrigger value="ai" className="mb-1">Advanced AI</TabsTrigger>
+        <TabsList className="mb-8 flex flex-wrap h-auto justify-start">
+          <TabsTrigger value="overview" className="mb-1 mr-1">Overview</TabsTrigger>
+          <TabsTrigger value="interaction" className="mb-1 mr-1">User Interaction</TabsTrigger>
+          <TabsTrigger value="experience" className="mb-1 mr-1">User Experience</TabsTrigger>
+          <TabsTrigger value="performance" className="mb-1 mr-1">Performance</TabsTrigger>
+          <TabsTrigger value="operational" className="mb-1 mr-1">Operational</TabsTrigger>
+          <TabsTrigger value="business" className="mb-1 mr-1">Business Impact</TabsTrigger>
+          <TabsTrigger value="ai" className="mb-1 mr-1">Advanced AI</TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview" className="space-y-4">

@@ -1,12 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import AppShell from "@/components/layout/AppShell";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import TitleDescription from "@/components/TitleDescription";
-import { FileText, MessageSquare, Users, Brain, Sparkles } from "lucide-react";
+import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight } from "lucide-react";
+
+interface WorkflowStepProps {
+  title: string;
+  isActive: boolean;
+  onClick: () => void;
+}
+
+const WorkflowStep: React.FC<WorkflowStepProps> = ({ title, isActive, onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center justify-center w-16 h-16 rounded-full border-4 ${isActive ? 'border-primary bg-primary/10' : 'border-primary bg-white'} transition-all duration-300 hover:bg-primary/5`}
+    >
+      <span className="text-sm font-medium">{title}</span>
+    </button>
+  );
+};
+
+interface WorkflowStageProps {
+  stageNumber: string;
+  title: string;
+  steps: { id: string; title: string; description: string }[];
+  activeStep: string | null;
+  setActiveStep: (step: string | null) => void;
+  renderSteps: (steps: { id: string; title: string; description: string }[]) => React.ReactNode;
+}
+
+const WorkflowStage: React.FC<WorkflowStageProps> = ({ 
+  stageNumber, 
+  title, 
+  steps, 
+  activeStep, 
+  setActiveStep,
+  renderSteps 
+}) => {
+  return (
+    <div className="relative mb-12">
+      <div className="flex items-center">
+        <div className="w-1/4 pr-4">
+          <div className="text-sm text-muted-foreground">Workflow stage {stageNumber}</div>
+          <h3 className="text-xl font-semibold">{title}</h3>
+        </div>
+        <div className="w-3/4 relative">
+          {renderSteps(steps)}
+        </div>
+      </div>
+      {activeStep && steps.find(step => step.id === activeStep) && (
+        <div className="mt-4 ml-[25%] pl-8 pr-4 py-3 bg-muted rounded-md">
+          <h4 className="font-medium mb-1">{steps.find(step => step.id === activeStep)?.title}</h4>
+          <p className="text-sm text-muted-foreground">{steps.find(step => step.id === activeStep)?.description}</p>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const ConversationalDesign = () => {
+  const [activeStep, setActiveStep] = useState<string | null>(null);
   return (
     <AppShell>
       <TitleDescription
@@ -15,12 +71,13 @@ const ConversationalDesign = () => {
         titleSize="h1"
       />
 
-      <Tabs defaultValue="principles" className="mt-8">
-        <TabsList className="mb-8 flex flex-wrap h-auto">
-          <TabsTrigger value="principles" className="mb-1">Design principles</TabsTrigger>
-          <TabsTrigger value="patterns" className="mb-1">Conversation patterns</TabsTrigger>
-          <TabsTrigger value="personas" className="mb-1">User personas</TabsTrigger>
-          <TabsTrigger value="ai" className="mb-1">AI guidelines</TabsTrigger>
+      <Tabs defaultValue="workflow" className="mt-8">
+        <TabsList className="mb-8 flex flex-wrap h-auto justify-start">
+          <TabsTrigger value="workflow" className="mb-1 mr-1">Conversational AI workflow</TabsTrigger>
+          <TabsTrigger value="principles" className="mb-1 mr-1">Design principles</TabsTrigger>
+          <TabsTrigger value="patterns" className="mb-1 mr-1">Conversation patterns</TabsTrigger>
+          <TabsTrigger value="personas" className="mb-1 mr-1">User personas</TabsTrigger>
+          <TabsTrigger value="ai" className="mb-1 mr-1">AI guidelines</TabsTrigger>
         </TabsList>
 
         {/* Design Principles Tab */}
@@ -397,6 +454,44 @@ const ConversationalDesign = () => {
                 <p className="text-muted-foreground">
                   Approaches for testing and refining prompts to improve AI responses over time. Includes methodologies for evaluation, common pitfalls, and strategies for addressing them.
                 </p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Conversational AI Workflow Tab */}
+        <TabsContent value="workflow" className="space-y-8">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Brain className="h-5 w-5 text-primary" />
+                Conversational AI workflow
+              </CardTitle>
+              <CardDescription>
+                Visualization of the conversational AI design and development process
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col items-left">
+                <div className="relative">
+                  <img 
+                    src="/src/assets/images/ConvAIWorkflow.png" 
+                    alt="Conversational AI Workflow Diagram" 
+                    className="max-w-full h-auto rounded-md shadow-md"
+                    style={{ filter: 'grayscale(100%)' }}
+                  />
+                  <div 
+                    className="absolute inset-0 bg-[#005EA5] mix-blend-color opacity-60 rounded-md"
+                  ></div>
+                </div>
+                <div className="mt-6 text-sm text-muted-foreground max-w-3xl">
+                  <p>The workflow diagram illustrates the three key stages of conversational AI development:</p>
+                  <ul className="list-disc pl-5 mt-2 space-y-2">
+                    <li><strong>Stage 01: Strategize</strong> - Define the operational, technical, audience, and persona aspects of your conversational AI solution.</li>
+                    <li><strong>Stage 02: Design</strong> - Create and refine conversation flows through an iterative process of empathizing, verbalizing, drafting, elevating, and validating.</li>
+                    <li><strong>Stage 03: Build</strong> - Implement the solution through training, testing, connecting to systems, deploying, and monitoring performance.</li>
+                  </ul>
+                </div>
               </div>
             </CardContent>
           </Card>

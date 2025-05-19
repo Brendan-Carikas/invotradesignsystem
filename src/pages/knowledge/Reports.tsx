@@ -26,10 +26,10 @@ const Reports = () => {
       />
 
       <Tabs defaultValue="recent" className="w-full">
-        <TabsList className="mb-4">
-          <TabsTrigger value="recent">Recent Reports</TabsTrigger>
-          <TabsTrigger value="scheduled">Scheduled Reports</TabsTrigger>
-          <TabsTrigger value="custom">Custom Reports</TabsTrigger>
+        <TabsList className="mb-4 flex flex-wrap h-auto justify-start">
+          <TabsTrigger value="recent" className="mb-1 mr-1">Recent Reports</TabsTrigger>
+          <TabsTrigger value="scheduled" className="mb-1 mr-1">Scheduled Reports</TabsTrigger>
+          <TabsTrigger value="custom" className="mb-1 mr-1">Custom Reports</TabsTrigger>
         </TabsList>
         
         <TabsContent value="recent" className="space-y-4">
