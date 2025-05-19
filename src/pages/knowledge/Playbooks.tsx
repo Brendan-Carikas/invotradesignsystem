@@ -16,11 +16,12 @@ const Playbooks = () => {
       />
 
       <Tabs defaultValue="onboarding" className="mt-8">
-        <TabsList className="mb-8 flex flex-wrap h-auto">
-          <TabsTrigger value="onboarding" className="mb-1">Onboarding</TabsTrigger>
-          <TabsTrigger value="support" className="mb-1">Customer support</TabsTrigger>
-          <TabsTrigger value="sales" className="mb-1">Sales & marketing</TabsTrigger>
-          <TabsTrigger value="templates" className="mb-1">Templates</TabsTrigger>
+        <TabsList className="mb-8 flex flex-wrap h-auto justify-start">
+          <TabsTrigger value="onboarding" className="mb-1 mr-1">Onboarding</TabsTrigger>
+          <TabsTrigger value="support" className="mb-1 mr-1">Customer support</TabsTrigger>
+          <TabsTrigger value="sales" className="mb-1 mr-1">Sales & marketing</TabsTrigger>
+          <TabsTrigger value="templates" className="mb-1 mr-1">Templates</TabsTrigger>
+          <TabsTrigger value="bestpractices" className="mb-1 mr-1">Checklists</TabsTrigger>
         </TabsList>
 
         {/* Onboarding Playbook */}
@@ -243,6 +244,11 @@ const Playbooks = () => {
             </CardContent>
           </Card>
 
+
+        </TabsContent>
+
+        {/* Best Practices Tab */}
+        <TabsContent value="bestpractices" className="space-y-8">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">

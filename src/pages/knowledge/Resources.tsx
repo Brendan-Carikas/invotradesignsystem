@@ -16,11 +16,11 @@ const Resources = () => {
       />
 
       <Tabs defaultValue="books" className="mt-8">
-        <TabsList className="mb-8 flex flex-wrap h-auto">
-          <TabsTrigger value="books" className="mb-1">Books & articles</TabsTrigger>
-          <TabsTrigger value="courses" className="mb-1">Courses & videos</TabsTrigger>
-          <TabsTrigger value="tools" className="mb-1">Tools & templates</TabsTrigger>
-          <TabsTrigger value="examples" className="mb-1">Examples & case studies</TabsTrigger>
+        <TabsList className="mb-8 flex flex-wrap h-auto justify-start">
+          <TabsTrigger value="books" className="mb-1 mr-1">Books & articles</TabsTrigger>
+          <TabsTrigger value="courses" className="mb-1 mr-1">Courses & videos</TabsTrigger>
+          <TabsTrigger value="tools" className="mb-1 mr-1">Tools & templates</TabsTrigger>
+          <TabsTrigger value="examples" className="mb-1 mr-1">Examples & case studies</TabsTrigger>
         </TabsList>
 
         {/* Books & Articles Tab */}
