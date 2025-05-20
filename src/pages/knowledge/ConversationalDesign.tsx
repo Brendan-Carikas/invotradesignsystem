@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import TitleDescription from "@/components/TitleDescription";
 import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight } from "lucide-react";
+import workflowImage from "@/assets/images/ConvAIWorkflow.png";
 
 interface WorkflowStepProps {
   title: string;
@@ -475,7 +476,7 @@ const ConversationalDesign = () => {
               <div className="flex flex-col items-left">
                 <div className="relative">
                   <img 
-                    src="/src/assets/images/ConvAIWorkflow.png" 
+                    src={workflowImage} 
                     alt="Conversational AI Workflow Diagram" 
                     className="max-w-full h-auto rounded-md shadow-md"
                     style={{ filter: 'grayscale(100%)' }}
