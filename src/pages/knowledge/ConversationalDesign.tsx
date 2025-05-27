@@ -6,6 +6,10 @@ import { Separator } from "@/components/ui/separator";
 import TitleDescription from "@/components/TitleDescription";
 import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight } from "lucide-react";
 import workflowImage from "@/assets/images/ConvAIWorkflow.png";
+import ValueExperienceMatrix from "@/components/ValueExperienceMatrix";
+
+// Import tab components
+import BotPersonaTab from "@/components/conversational-design/BotPersonaTab";
 
 interface WorkflowStepProps {
   title: string;
@@ -75,9 +79,12 @@ const ConversationalDesign = () => {
       <Tabs defaultValue="workflow" className="mt-8">
         <TabsList className="mb-8 flex flex-wrap h-auto justify-start">
           <TabsTrigger value="workflow" className="mb-1 mr-1">Conversational AI workflow</TabsTrigger>
+          <TabsTrigger value="integralperspective" className="mb-1 mr-1">Integral Perspective</TabsTrigger>
+
           <TabsTrigger value="principles" className="mb-1 mr-1">Design principles</TabsTrigger>
           <TabsTrigger value="patterns" className="mb-1 mr-1">Conversation patterns</TabsTrigger>
           <TabsTrigger value="personas" className="mb-1 mr-1">User personas</TabsTrigger>
+          <TabsTrigger value="botpersona" className="mb-1 mr-1">Bot Personas</TabsTrigger>
           <TabsTrigger value="ai" className="mb-1 mr-1">AI guidelines</TabsTrigger>
         </TabsList>
 
@@ -363,16 +370,21 @@ const ConversationalDesign = () => {
           </Card>
         </TabsContent>
 
+        {/* Bot Persona Tab */}
+        <TabsContent value="botpersona">
+          <BotPersonaTab />
+        </TabsContent>
+
         {/* AI Guidelines Tab */}
         <TabsContent value="ai" className="space-y-8">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" />
-                AI-specific considerations
+                <Brain className="h-5 w-5 text-primary" />
+                AI capabilities and limitations
               </CardTitle>
               <CardDescription>
-                Guidelines for designing with AI-powered conversational systems
+                Guidelines for working with AI models in conversational interfaces
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -455,6 +467,133 @@ const ConversationalDesign = () => {
                 <p className="text-muted-foreground">
                   Approaches for testing and refining prompts to improve AI responses over time. Includes methodologies for evaluation, common pitfalls, and strategies for addressing them.
                 </p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Integral Perspective Tab */}
+        <TabsContent value="integralperspective" className="space-y-8">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Brain className="h-5 w-5 text-primary" />
+                Value-Experience Matrix
+              </CardTitle>
+              <CardDescription>
+                A progressive framework for elevating conversational experiences from function to delight
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <ValueExperienceMatrix />
+              
+              <div>
+                <h3 className="text-lg font-medium mb-2">01: Founding Value (Function)</h3>
+                <p className="text-muted-foreground">
+                  The essential foundation of any conversational experience, focused on basic functionality.
+                </p>
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Characteristics</h4>
+                    <p className="text-sm text-muted-foreground">Nothing but potential, basic functionality</p>
+                  </div>
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Design Principles</h4>
+                    <p className="text-sm text-muted-foreground">Be inclusive, human-centric, empathetic, and goal-driven</p>
+                  </div>
+                </div>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h3 className="text-lg font-medium mb-2">02: Function</h3>
+                <p className="text-muted-foreground">
+                  Building on the foundation with basic integrations and practical utility.
+                </p>
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Characteristics</h4>
+                    <p className="text-sm text-muted-foreground">FAQ bot with some integrations</p>
+                  </div>
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Design Principles</h4>
+                    <p className="text-sm text-muted-foreground">Acknowledgment, confirmation, clear prompts, discourse markers, active language, simple language, never dead-end street, repair</p>
+                  </div>
+                </div>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h3 className="text-lg font-medium mb-2">03: Trust</h3>
+                <p className="text-muted-foreground">
+                  Establishing reliability and consistency across multiple channels.
+                </p>
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Characteristics</h4>
+                    <p className="text-sm text-muted-foreground">Integrated bot on multiple channels</p>
+                  </div>
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Design Principles</h4>
+                    <p className="text-sm text-muted-foreground">Detailed persona, consistency, personality content, onboarding content, explainability, accountability</p>
+                  </div>
+                </div>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h3 className="text-lg font-medium mb-2">04: Behavior</h3>
+                <p className="text-muted-foreground">
+                  Creating proactive, contextual experiences across multiple channels.
+                </p>
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Characteristics</h4>
+                    <p className="text-sm text-muted-foreground">Proactive contextual & omnichannel bot</p>
+                  </div>
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Design Principles</h4>
+                    <p className="text-sm text-muted-foreground">BJ Fogg Model, Cialdini principles, reciprocity, commitment, social proof, authority, liking, scarcity</p>
+                  </div>
+                </div>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h3 className="text-lg font-medium mb-2">05: Delight</h3>
+                <p className="text-muted-foreground">
+                  Creating exceptional experiences that surprise and delight users.
+                </p>
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Characteristics</h4>
+                    <p className="text-sm text-muted-foreground">Delightful bot, first point of contact, can help with almost everything</p>
+                  </div>
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Design Principles</h4>
+                    <p className="text-sm text-muted-foreground">Visual design, custom voices, sonic design, virtual beings, seamless (consolidated experience)</p>
+                  </div>
+                </div>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h3 className="text-lg font-medium mb-2">Implementation Strategy</h3>
+                <p className="text-muted-foreground">
+                  For effective implementation of the value-experience matrix:
+                </p>
+                <ul className="mt-2 space-y-1 text-sm text-muted-foreground list-disc list-inside">
+                  <li>Assess your current position on the matrix</li>
+                  <li>Set clear objectives for progression to the next level</li>
+                  <li>Implement design principles appropriate for your target level</li>
+                  <li>Measure user satisfaction and engagement at each stage</li>
+                  <li>Iterate based on user feedback and performance metrics</li>
+                </ul>
               </div>
             </CardContent>
           </Card>
