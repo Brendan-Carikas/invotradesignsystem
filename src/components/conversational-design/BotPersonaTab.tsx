@@ -1,18 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Plus, Edit, Trash2, Calendar, Building, Users, Eye, Check } from "lucide-react";
-import { BotPersona, sampleBotPersonas } from "@/types/BotPersona";
+import { Plus, Edit, Trash2, Calendar, Building, Users, Eye, Check, Loader2 } from "lucide-react";
+import { BotPersona } from "@/types/BotPersona";
 import BotPersonaForm from "./BotPersonaForm";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
+import { getBotPersonas, createBotPersona, updateBotPersona, deleteBotPersona } from "@/lib/supabase";
+import { useToast } from "@/components/ui/use-toast";
 
 const BotPersonaTab = () => {
-  const [personas, setPersonas] = useState<BotPersona[]>(sampleBotPersonas);
+  const [personas, setPersonas] = useState<BotPersona[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isOverviewDialogOpen, setIsOverviewDialogOpen] = useState(false);
   const [currentPersona, setCurrentPersona] = useState<BotPersona | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchPersonas();
+  }, []);
+
+  const fetchPersonas = async () => {
+    setIsLoading(true);
+    try {
+      const data = await getBotPersonas();
+      setPersonas(data);
+    } catch (error) {
+      console.error('Failed to fetch bot personas:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load bot personas. Please try again later.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleCreateNew = () => {
     setCurrentPersona(undefined);
@@ -29,64 +54,73 @@ const BotPersonaTab = () => {
     setIsOverviewDialogOpen(true);
   };
 
-  const handleDelete = (id: string) => {
-    setPersonas(personas.filter(p => p.id !== id));
-  };
-
-  const handleSave = (personaData: Partial<BotPersona>) => {
-    if (currentPersona) {
-      // Update existing persona
-      setPersonas(personas.map(p => 
-        p.id === currentPersona.id ? { ...p, ...personaData, updatedAt: new Date() } : p
-      ));
-    } else {
-      // Create new persona
-      const newPersona: BotPersona = {
-        id: Date.now().toString(),
-        name: personaData.name || "Unnamed Bot",
-        organization: personaData.organization || "",
-        audience: personaData.audience || "",
-        brandTone: personaData.brandTone || "",
-        serviceTasks: personaData.serviceTasks || "",
-        persuasiveTasks: personaData.persuasiveTasks || "",
-        channels: personaData.channels || "",
-        register: personaData.register || {
-          formal: false,
-          sincere: false,
-          serious: false,
-          subjective: false,
-          casual: false,
-          humorous: false,
-        },
-        age: personaData.age,
-        gender: personaData.gender,
-        personality: personaData.personality || "",
-        backstory: personaData.backstory,
-        geography: personaData.geography,
-        botTone: personaData.botTone || "",
-        soundsLike: personaData.soundsLike,
-        chatsLike: personaData.chatsLike,
-        otherIdentity: personaData.otherIdentity,
-        typicalPhrases: personaData.typicalPhrases || "",
-        introductions: personaData.introductions || "",
-        acknowledgements: personaData.acknowledgements || "",
-        confirmations: personaData.confirmations || "",
-        apologies: personaData.apologies || "",
-        otherVocabulary: personaData.otherVocabulary,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      setPersonas([...personas, newPersona]);
+  const handleDelete = async (id: string) => {
+    try {
+      const success = await deleteBotPersona(id);
+      if (success) {
+        setPersonas(personas.filter(p => p.id !== id));
+        toast({
+          title: 'Success',
+          description: 'Bot persona deleted successfully.',
+        });
+      } else {
+        throw new Error('Failed to delete bot persona');
+      }
+    } catch (error) {
+      console.error('Error deleting bot persona:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete bot persona. Please try again.',
+        variant: 'destructive',
+      });
     }
-    setIsDialogOpen(false);
   };
 
-  const formatDate = (date: Date) => {
+  const handleSave = async (personaData: Partial<BotPersona>) => {
+    try {
+      if (currentPersona) {
+        // Update existing persona
+        const updatedPersona = await updateBotPersona(currentPersona.id, personaData);
+        if (updatedPersona) {
+          setPersonas(personas.map(p => p.id === currentPersona.id ? updatedPersona : p));
+          toast({
+            title: 'Success',
+            description: 'Bot persona updated successfully.',
+          });
+        } else {
+          throw new Error('Failed to update bot persona');
+        }
+      } else {
+        // Create new persona
+        const newPersona = await createBotPersona(personaData as Omit<BotPersona, 'id'>);
+        if (newPersona) {
+          setPersonas([...personas, newPersona]);
+          toast({
+            title: 'Success',
+            description: 'Bot persona created successfully.',
+          });
+        } else {
+          throw new Error('Failed to create bot persona');
+        }
+      }
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error('Error saving bot persona:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to save bot persona. Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const formatDate = (date: Date | string) => {
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
-    }).format(date);
+    }).format(dateObj);
   };
 
   return (
@@ -101,39 +135,55 @@ const BotPersonaTab = () => {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {personas.map(persona => (
-          <Card key={persona.id} className="overflow-hidden">
-            <CardHeader className="pb-2">
-              <CardTitle>{persona.name}</CardTitle>
-              <CardDescription className="flex items-center gap-1">
-                <Building className="h-3 w-3" /> {persona.organization}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pb-2">
-              <div className="space-y-2">
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Users className="h-3 w-3" /> {persona.audience.substring(0, 100)}{persona.audience.length > 100 ? '...' : ''}
+      {isLoading ? (
+        <div className="flex justify-center items-center h-64">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <span className="ml-2 text-lg">Loading bot personas...</span>
+        </div>
+      ) : personas.length === 0 ? (
+        <div className="flex flex-col justify-center items-center h-64">
+          <p className="text-lg text-muted-foreground">No bot personas found.</p>
+          <p className="text-sm text-muted-foreground mb-4">Create your first bot persona to get started.</p>
+          <Button onClick={handleCreateNew}>
+            <Plus className="h-4 w-4 mr-2" />
+            Create New Persona
+          </Button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {personas.map((persona) => (
+            <Card key={persona.id} className="overflow-hidden">
+              <CardHeader className="pb-2">
+                <CardTitle>{persona.name}</CardTitle>
+                <CardDescription className="flex items-center gap-1">
+                  <Building className="h-3 w-3" /> {persona.organization}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pb-2">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                    <Users className="h-3 w-3" /> {persona.audience?.substring(0, 100)}{persona.audience && persona.audience.length > 100 ? '...' : ''}
+                  </div>
+                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                    <Calendar className="h-3 w-3" /> Updated {formatDate(persona.updatedAt)}
+                  </div>
                 </div>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Calendar className="h-3 w-3" /> Updated {formatDate(persona.updatedAt)}
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-end gap-2 pt-2">
-              <Button variant="outline" size="sm" onClick={() => handleOverview(persona)} title="Overview">
-                <Eye className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => handleDelete(persona.id)} title="Delete">
-                <Trash2 className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => handleEdit(persona)} title="Edit">
-                <Edit className="h-4 w-4" />
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
+              </CardContent>
+              <CardFooter className="flex justify-end gap-2 pt-2">
+                <Button variant="outline" size="sm" onClick={() => handleOverview(persona)} title="Overview">
+                  <Eye className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => handleEdit(persona)} title="Edit">
+                  <Edit className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => handleDelete(persona.id)} title="Delete">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      )}
 
       {/* Create/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
