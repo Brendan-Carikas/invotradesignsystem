@@ -51,10 +51,37 @@ const BotPersonaForm: React.FC<BotPersonaFormProps> = ({ persona, onSave, onCanc
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Only submit if we're on the review step
     if (currentStep === steps.length - 1) {
-      onSave(formData);
+      // Prepare data for submission
+      const preparedData: Partial<BotPersona> = {
+        ...formData,
+        // Ensure all required fields have at least empty strings
+        name: formData.name || '',
+        organization: formData.organization || '',
+        audience: formData.audience || '',
+        brandTone: formData.brandTone || '',
+        serviceTasks: formData.serviceTasks || '',
+        persuasiveTasks: formData.persuasiveTasks || '',
+        channels: formData.channels || '',
+        personality: formData.personality || '',
+        botTone: formData.botTone || '',
+        typicalPhrases: formData.typicalPhrases || '',
+        introductions: formData.introductions || '',
+        acknowledgements: formData.acknowledgements || '',
+        confirmations: formData.confirmations || '',
+        apologies: formData.apologies || '',
+        // Ensure register is properly formatted
+        register: formData.register || {
+          formal: false,
+          sincere: false,
+          serious: false,
+          subjective: false,
+          casual: false,
+          humorous: false,
+        }
+      };
+      
+      onSave(preparedData);
     } else {
       // Otherwise, move to the next step
       nextStep();

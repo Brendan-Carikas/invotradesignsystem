@@ -1,3 +1,12 @@
+export interface RegisterOptions {
+  formal: boolean;
+  sincere: boolean;
+  serious: boolean;
+  subjective: boolean;
+  casual: boolean;
+  humorous: boolean;
+}
+
 export interface BotPersona {
   id: string;
   name: string;
@@ -7,14 +16,7 @@ export interface BotPersona {
   serviceTasks: string;
   persuasiveTasks: string;
   channels: string;
-  register: {
-    formal: boolean;
-    sincere: boolean;
-    serious: boolean;
-    subjective: boolean;
-    casual: boolean;
-    humorous: boolean;
-  };
+  register: RegisterOptions;
   age?: string;
   gender?: string;
   personality: string;
@@ -30,8 +32,8 @@ export interface BotPersona {
   confirmations: string;
   apologies: string;
   otherVocabulary?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string | Date; // ISO string when from Supabase, Date object when local
+  updatedAt: string | Date; // ISO string when from Supabase, Date object when local
 }
 
 export const sampleBotPersonas: BotPersona[] = [
@@ -102,7 +104,7 @@ export const sampleBotPersonas: BotPersona[] = [
     confirmations: "Perfect! That's been submitted successfully.",
     apologies: "Oops! Sorry about that confusion. Let me clarify.",
     otherVocabulary: undefined,
-    createdAt: new Date(2025, 2, 10),
-    updatedAt: new Date(2025, 4, 5)
+    createdAt: new Date(2025, 2, 10).toISOString(),
+    updatedAt: new Date(2025, 4, 18).toISOString()
   }
 ];
