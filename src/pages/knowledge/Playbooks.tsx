@@ -15,7 +15,7 @@ const Playbooks = () => {
         titleSize="h1"
       />
 
-      <Tabs defaultValue="onboarding" className="mt-8">
+      <Tabs defaultValue="systeminstructions" className="mt-8">
         <TabsList className="mb-8 flex flex-wrap h-auto justify-start">
         <TabsTrigger value="systeminstructions" className="mb-1 mr-1">Extract System instructions</TabsTrigger>
           <TabsTrigger value="onboarding" className="mb-1 mr-1">Onboarding</TabsTrigger>
