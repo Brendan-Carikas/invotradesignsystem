@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
-const AudiencePersonaTab = () => {
+export const AudiencePersonaTab = () => {
   const [personas, setPersonas] = useState<AudiencePersona[]>(sampleAudiencePersonas);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isOverviewDialogOpen, setIsOverviewDialogOpen] = useState(false);
@@ -634,4 +634,4 @@ const AudiencePersonaTab = () => {
   );
 };
 
-export default AudiencePersonaTab;
+// We're now using a named export instead of a default export
