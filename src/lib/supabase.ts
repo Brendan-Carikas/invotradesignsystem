@@ -259,30 +259,13 @@ export const createAudiencePersona = async (persona: Omit<AudiencePersona, 'id'>
     const sanitizedData = {
       name: persona.name || '',
       description: persona.description || '',
-      // Include old fields with empty values to satisfy NOT NULL constraints
-      demographics: '',  // Empty string for NOT NULL constraint
-      goals: '',         // Empty string for NOT NULL constraint
-      pain_points: persona.turn_offs_challenges || null,
-      behaviors: null,
-      preferences: null,
-      tech_proficiency: null,
-      // New fields
-      age: persona.age || null,
-      gender: persona.gender || null,
-      personality: persona.personality || null,
-      geography: persona.geography || null,
-      culture: persona.culture || null,
-      family_life: persona.family_life || null,
-      backstory: persona.backstory || null,
-      education: persona.education || null,
-      occupation: persona.occupation || null,
-      income: persona.income || null,
-      living_situation: persona.living_situation || null,
-      interests_hobbies: persona.interests_hobbies || null,
-      turn_offs_challenges: persona.turn_offs_challenges || null,
+      demographics: persona.demographics || '',
+      goals: persona.goals || '',
+      pain_points: persona.pain_points || null,
       motivations: persona.motivations || null,
-      devices: persona.devices || null,
-      preferred_channels: persona.preferred_channels || null,
+      behaviors: persona.behaviors || null,
+      preferences: persona.preferences || null,
+      tech_proficiency: persona.tech_proficiency || null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     };
@@ -324,30 +307,13 @@ export const updateAudiencePersona = async (id: string, persona: Partial<Audienc
     // Only include fields that are provided
     if (persona.name !== undefined) sanitizedData.name = persona.name;
     if (persona.description !== undefined) sanitizedData.description = persona.description;
-    
-    // Handle old fields - keep them in the update for backward compatibility
-    // We'll map turn_offs_challenges to pain_points to maintain some data consistency
-    if (persona.turn_offs_challenges !== undefined) {
-      sanitizedData.pain_points = persona.turn_offs_challenges;
-    }
-    
-    // Handle new fields
-    if (persona.age !== undefined) sanitizedData.age = persona.age;
-    if (persona.gender !== undefined) sanitizedData.gender = persona.gender;
-    if (persona.personality !== undefined) sanitizedData.personality = persona.personality;
-    if (persona.geography !== undefined) sanitizedData.geography = persona.geography;
-    if (persona.culture !== undefined) sanitizedData.culture = persona.culture;
-    if (persona.family_life !== undefined) sanitizedData.family_life = persona.family_life;
-    if (persona.backstory !== undefined) sanitizedData.backstory = persona.backstory;
-    if (persona.education !== undefined) sanitizedData.education = persona.education;
-    if (persona.occupation !== undefined) sanitizedData.occupation = persona.occupation;
-    if (persona.income !== undefined) sanitizedData.income = persona.income;
-    if (persona.living_situation !== undefined) sanitizedData.living_situation = persona.living_situation;
-    if (persona.interests_hobbies !== undefined) sanitizedData.interests_hobbies = persona.interests_hobbies;
-    if (persona.turn_offs_challenges !== undefined) sanitizedData.turn_offs_challenges = persona.turn_offs_challenges;
+    if (persona.demographics !== undefined) sanitizedData.demographics = persona.demographics;
+    if (persona.goals !== undefined) sanitizedData.goals = persona.goals;
+    if (persona.pain_points !== undefined) sanitizedData.pain_points = persona.pain_points;
     if (persona.motivations !== undefined) sanitizedData.motivations = persona.motivations;
-    if (persona.devices !== undefined) sanitizedData.devices = persona.devices;
-    if (persona.preferred_channels !== undefined) sanitizedData.preferred_channels = persona.preferred_channels;
+    if (persona.behaviors !== undefined) sanitizedData.behaviors = persona.behaviors;
+    if (persona.preferences !== undefined) sanitizedData.preferences = persona.preferences;
+    if (persona.tech_proficiency !== undefined) sanitizedData.tech_proficiency = persona.tech_proficiency;
     
     // Update in Supabase
     const { data, error } = await supabase
