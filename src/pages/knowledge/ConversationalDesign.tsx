@@ -4,13 +4,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import TitleDescription from "@/components/TitleDescription";
-import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight } from "lucide-react";
+import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight, Target } from "lucide-react";
 import workflowImage from "@/assets/images/ConvAIWorkflow.png";
 import ValueExperienceMatrix from "@/components/ValueExperienceMatrix";
 
 // Import tab components
 import BotPersonaTab from "@/components/conversational-design/BotPersonaTab";
 import { AudiencePersonaTab } from "@/components/conversational-design/AudiencePersonaTab";
+import ConversationalAIWorkflowTab from "@/components/conversational-design/ConversationalAIWorkflowTab";
 
 interface WorkflowStepProps {
   title: string;
@@ -77,21 +78,49 @@ const ConversationalDesign = () => {
         titleSize="h1"
       />
 
-      <Tabs defaultValue="workflow" className="mt-8">
-        <TabsList className="mb-8 flex flex-wrap h-auto justify-start">
-          <TabsTrigger value="workflow" className="mb-1 mr-1">Conversational AI workflow</TabsTrigger>
-          <TabsTrigger value="integralperspective" className="mb-1 mr-1">Integral Perspective</TabsTrigger>
-          <TabsTrigger value="audiencepersonas" className="mb-1 mr-1">Audience Personas</TabsTrigger>
-          <TabsTrigger value="botpersona" className="mb-1 mr-1">Bot Personas</TabsTrigger>
-          <TabsTrigger value="principles" className="mb-1 mr-1">Design principles</TabsTrigger>
-          <TabsTrigger value="patterns" className="mb-1 mr-1">Conversation patterns</TabsTrigger>
-          <TabsTrigger value="personas" className="mb-1 mr-1">User personas</TabsTrigger>
-
-          <TabsTrigger value="ai" className="mb-1 mr-1">AI guidelines</TabsTrigger>
-        </TabsList>
-
-        {/* Design Principles Tab */}
-        <TabsContent value="principles" className="space-y-8">
+      <div className="flex flex-col md:flex-row gap-6 mt-8">
+        <Tabs defaultValue="workflow" className="w-full">
+          <div className="flex flex-col md:flex-row gap-6">
+            <div className="md:w-64 min-w-[250px]">
+              <TabsList className="flex flex-col h-auto items-start p-0 bg-transparent">
+                <TabsTrigger value="workflow" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <Brain className="h-4 w-4 mr-2" />
+                  Conversational AI workflow
+                </TabsTrigger>
+                <TabsTrigger value="integralperspective" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <Target className="h-4 w-4 mr-2" />
+                  Integral Perspective
+                </TabsTrigger>
+                <TabsTrigger value="audiencepersonas" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <Users className="h-4 w-4 mr-2" />
+                  Audience Personas
+                </TabsTrigger>
+                <TabsTrigger value="botpersona" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  Bot Personas
+                </TabsTrigger>
+                <TabsTrigger value="principles" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <FileText className="h-4 w-4 mr-2" />
+                  Design principles
+                </TabsTrigger>
+                <TabsTrigger value="patterns" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Conversation patterns
+                </TabsTrigger>
+                <TabsTrigger value="personas" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <Users className="h-4 w-4 mr-2" />
+                  User personas
+                </TabsTrigger>
+                <TabsTrigger value="ai" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <Brain className="h-4 w-4 mr-2" />
+                  AI guidelines
+                </TabsTrigger>
+              </TabsList>
+            </div>
+            <div className="flex-1 min-w-0">
+              
+              {/* Design Principles Tab */}
+              <TabsContent value="principles" className="space-y-8">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -373,13 +402,39 @@ const ConversationalDesign = () => {
         </TabsContent>
 
         {/* Audience Personas Tab */}
-        <TabsContent value="audiencepersonas">
-          <AudiencePersonaTab />
+        <TabsContent value="audiencepersonas" className="space-y-8">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5 text-primary" />
+                Audience Personas
+              </CardTitle>
+              <CardDescription>
+                Define and manage audience personas for your conversational experiences
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <AudiencePersonaTab />
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* Bot Persona Tab */}
-        <TabsContent value="botpersona">
-          <BotPersonaTab />
+        <TabsContent value="botpersona" className="space-y-8">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5 text-primary" />
+                Bot Personas
+              </CardTitle>
+              <CardDescription>
+                Create and manage bot personas for your conversational AI solutions
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <BotPersonaTab />
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* AI Guidelines Tab */}
@@ -608,42 +663,12 @@ const ConversationalDesign = () => {
 
         {/* Conversational AI Workflow Tab */}
         <TabsContent value="workflow" className="space-y-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Brain className="h-5 w-5 text-primary" />
-                Conversational AI workflow
-              </CardTitle>
-              <CardDescription>
-                Visualization of the conversational AI design and development process
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col items-left">
-                <div className="relative">
-                  <img 
-                    src={workflowImage} 
-                    alt="Conversational AI Workflow Diagram" 
-                    className="max-w-full h-auto rounded-md shadow-md"
-                    style={{ filter: 'grayscale(100%)' }}
-                  />
-                  <div 
-                    className="absolute inset-0 bg-[#005EA5] mix-blend-color opacity-60 rounded-md"
-                  ></div>
-                </div>
-                <div className="mt-6 text-sm text-muted-foreground max-w-3xl">
-                  <p>The workflow diagram illustrates the three key stages of conversational AI development:</p>
-                  <ul className="list-disc pl-5 mt-2 space-y-2">
-                    <li><strong>Stage 01: Strategize</strong> - Define the operational, technical, audience, and persona aspects of your conversational AI solution.</li>
-                    <li><strong>Stage 02: Design</strong> - Create and refine conversation flows through an iterative process of empathizing, verbalizing, drafting, elevating, and validating.</li>
-                    <li><strong>Stage 03: Build</strong> - Implement the solution through training, testing, connecting to systems, deploying, and monitoring performance.</li>
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <ConversationalAIWorkflowTab />
         </TabsContent>
-      </Tabs>
+            </div>
+          </div>
+        </Tabs>
+      </div>
     </AppShell>
   );
 };
