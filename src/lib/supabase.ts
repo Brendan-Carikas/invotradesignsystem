@@ -1,6 +1,23 @@
 import { createClient } from '@supabase/supabase-js';
 import { BotPersona, RegisterOptions } from '@/types/BotPersona';
 
+// Define AudiencePersona type
+export interface AudiencePersona {
+  id: string;
+  name: string;
+  description: string;
+  demographics: string;
+  goals: string;
+  pain_points?: string;
+  painPoints?: string;
+  preferences: string;
+  behaviors: string;
+  created_at?: string;
+  updated_at?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
@@ -147,6 +164,90 @@ export const deleteBotPersona = async (id: string): Promise<boolean> => {
   
   if (error) {
     console.error('Error deleting bot persona:', error);
+    return false;
+  }
+  
+  return true;
+};
+
+// Audience Persona related functions
+export const getAudiencePersonas = async (): Promise<AudiencePersona[]> => {
+  const { data, error } = await supabase
+    .from('audience_personas')
+    .select('*');
+  
+  if (error) {
+    console.error('Error fetching audience personas:', error);
+    return [];
+  }
+  
+  if (!data) return [];
+  
+  // Transform snake_case to camelCase
+  return data.map(persona => {
+    const camelCasedPersona = camelCaseKeys(persona) as AudiencePersona;
+    
+    // Handle specific field transformations if needed
+    if (persona.pain_points) {
+      camelCasedPersona.painPoints = persona.pain_points;
+    }
+    
+    return camelCasedPersona;
+  });
+};
+
+export const createAudiencePersona = async (persona: Omit<AudiencePersona, 'id'>): Promise<AudiencePersona | null> => {
+  // Prepare data for Supabase (convert camelCase to snake_case)
+  const preparedData = {
+    ...snakeCaseKeys(persona),
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
+  
+  const { data, error } = await supabase
+    .from('audience_personas')
+    .insert(preparedData)
+    .select('*')
+    .single();
+  
+  if (error) {
+    console.error('Error creating audience persona:', error);
+    return null;
+  }
+  
+  return camelCaseKeys(data) as AudiencePersona;
+};
+
+export const updateAudiencePersona = async (persona: AudiencePersona): Promise<AudiencePersona | null> => {
+  // Prepare data for Supabase (convert camelCase to snake_case)
+  const preparedData = {
+    ...snakeCaseKeys(persona),
+    updated_at: new Date().toISOString()
+  };
+  
+  const { data, error } = await supabase
+    .from('audience_personas')
+    .update(preparedData)
+    .eq('id', persona.id)
+    .select('*')
+    .single();
+  
+  if (error) {
+    console.error('Error updating audience persona:', error);
+    return null;
+  }
+  
+  return camelCaseKeys(data) as AudiencePersona;
+};
+
+export const deleteAudiencePersona = async (id: string): Promise<boolean> => {
+  const { error } = await supabase
+    .from('audience_personas')
+    .delete()
+    .eq('id', id);
+  
+  if (error) {
+    console.error('Error deleting audience persona:', error);
     return false;
   }
   

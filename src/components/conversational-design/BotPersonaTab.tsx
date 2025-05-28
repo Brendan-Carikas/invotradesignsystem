@@ -123,14 +123,15 @@ const BotPersonaTab = () => {
   const [personas, setPersonas] = useState<BotPersona[]>(sampleBotPersonas);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isOverviewDialogOpen, setIsOverviewDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [personaToDelete, setPersonaToDelete] = useState<BotPersona | undefined>(undefined);
   const [currentPersona, setCurrentPersona] = useState<BotPersona | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
-  // Initialize with sample personas by default
+  // Initialize with sample personas and fetch from Supabase
   useEffect(() => {
-    // No need to fetch from Supabase initially since we're using sample data
-    // fetchPersonas();
+    fetchPersonasAndMerge();
   }, []);
 
   // Function to add sample personas to Supabase
@@ -172,6 +173,33 @@ const BotPersonaTab = () => {
     }
   };
 
+  // Fetch personas from Supabase and merge with sample personas
+  const fetchPersonasAndMerge = async () => {
+    setIsLoading(true);
+    try {
+      const data = await getBotPersonas();
+      
+      // Create a map of existing sample persona IDs for quick lookup
+      const samplePersonaIds = new Set(sampleBotPersonas.map(p => p.id));
+      
+      // Filter out any Supabase personas that have the same ID as sample personas
+      const uniqueSupabasePersonas = data.filter(p => !samplePersonaIds.has(p.id));
+      
+      // Combine sample personas with unique Supabase personas
+      setPersonas([...sampleBotPersonas, ...uniqueSupabasePersonas]);
+    } catch (error) {
+      console.error('Failed to fetch bot personas:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load bot personas. Please try again later.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  // Original fetch function (kept for reference but not used)
   const fetchPersonas = async () => {
     setIsLoading(true);
     try {
@@ -206,15 +234,29 @@ const BotPersonaTab = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      const success = await deleteBotPersona(id);
-      if (success) {
+      // Check if this is a sample persona (which can't be deleted from Supabase)
+      const isSamplePersona = sampleBotPersonas.some(p => p.id === id);
+      
+      if (isSamplePersona) {
+        // For sample personas, just remove from the local state
         setPersonas(personas.filter(p => p.id !== id));
         toast({
           title: 'Success',
-          description: 'Bot persona deleted successfully.',
+          description: 'Sample bot persona removed from view.',
         });
       } else {
-        throw new Error('Failed to delete bot persona');
+        // For Supabase personas, delete from the database
+        const success = await deleteBotPersona(id);
+        if (success) {
+          // Refresh the entire personas list to ensure consistency
+          await fetchPersonasAndMerge();
+          toast({
+            title: 'Success',
+            description: 'Bot persona deleted successfully.',
+          });
+        } else {
+          throw new Error('Failed to delete bot persona');
+        }
       }
     } catch (error) {
       console.error('Error deleting bot persona:', error);
@@ -232,7 +274,8 @@ const BotPersonaTab = () => {
         // Update existing persona
         const updatedPersona = await updateBotPersona(currentPersona.id, personaData);
         if (updatedPersona) {
-          setPersonas(personas.map(p => p.id === currentPersona.id ? updatedPersona : p));
+          // Refresh the entire personas list to ensure consistency
+          await fetchPersonasAndMerge();
           toast({
             title: 'Success',
             description: 'Bot persona updated successfully.',
@@ -244,7 +287,8 @@ const BotPersonaTab = () => {
         // Create new persona
         const newPersona = await createBotPersona(personaData as Omit<BotPersona, 'id'>);
         if (newPersona) {
-          setPersonas([...personas, newPersona]);
+          // Refresh the entire personas list to ensure consistency
+          await fetchPersonasAndMerge();
           toast({
             title: 'Success',
             description: 'Bot persona created successfully.',
@@ -326,7 +370,15 @@ const BotPersonaTab = () => {
                 <Button variant="outline" size="sm" onClick={() => handleEdit(persona)} title="Edit">
                   <Edit className="h-4 w-4" />
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => handleDelete(persona.id)} title="Delete">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setPersonaToDelete(persona);
+                    setIsDeleteDialogOpen(true);
+                  }}
+                  title="Delete"
+                >
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </CardFooter>
@@ -346,6 +398,35 @@ const BotPersonaTab = () => {
             onSave={handleSave}
             onCancel={() => setIsDialogOpen(false)}
           />
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p>Are you sure you want to delete the bot persona "{personaToDelete?.name}"?</p>
+            <p className="text-muted-foreground mt-2">This action cannot be undone.</p>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                if (personaToDelete) {
+                  handleDelete(personaToDelete.id);
+                  setIsDeleteDialogOpen(false);
+                }
+              }}
+            >
+              Delete
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
 
