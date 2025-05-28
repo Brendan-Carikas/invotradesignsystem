@@ -10,7 +10,7 @@ import ValueExperienceMatrix from "@/components/ValueExperienceMatrix";
 
 // Import tab components
 import BotPersonaTab from "@/components/conversational-design/BotPersonaTab";
-import AudiencePersonaTab from "@/components/conversational-design/AudiencePersonaTab";
+import { AudiencePersonaTab } from "@/components/conversational-design/AudiencePersonaTab";
 
 interface WorkflowStepProps {
   title: string;
@@ -81,12 +81,12 @@ const ConversationalDesign = () => {
         <TabsList className="mb-8 flex flex-wrap h-auto justify-start">
           <TabsTrigger value="workflow" className="mb-1 mr-1">Conversational AI workflow</TabsTrigger>
           <TabsTrigger value="integralperspective" className="mb-1 mr-1">Integral Perspective</TabsTrigger>
-
+          <TabsTrigger value="audiencepersonas" className="mb-1 mr-1">Audience Personas</TabsTrigger>
+          <TabsTrigger value="botpersona" className="mb-1 mr-1">Bot Personas</TabsTrigger>
           <TabsTrigger value="principles" className="mb-1 mr-1">Design principles</TabsTrigger>
           <TabsTrigger value="patterns" className="mb-1 mr-1">Conversation patterns</TabsTrigger>
           <TabsTrigger value="personas" className="mb-1 mr-1">User personas</TabsTrigger>
-          <TabsTrigger value="audiencepersonas" className="mb-1 mr-1">Audience Personas</TabsTrigger>
-          <TabsTrigger value="botpersona" className="mb-1 mr-1">Bot Personas</TabsTrigger>
+
           <TabsTrigger value="ai" className="mb-1 mr-1">AI guidelines</TabsTrigger>
         </TabsList>
 
