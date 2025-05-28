@@ -18,7 +18,7 @@ const sampleBotPersonas: BotPersona[] = [
     id: "healthcare-sales-1",
     name: "HealthGuide",
     organization: "MediCare Solutions",
-    audiencePersonas: [],
+    audience: "Healthcare providers, hospital administrators, and medical professionals",
     brandTone: "Professional, knowledgeable, and compassionate",
     serviceTasks: "Product demonstrations, pricing inquiries, scheduling consultations, technical specifications",
     persuasiveTasks: "ROI calculations, case studies sharing, competitive comparisons, trial offers",
@@ -53,7 +53,7 @@ const sampleBotPersonas: BotPersona[] = [
     id: "travel-cs-1",
     name: "Voyager",
     organization: "Horizon Travel Agency",
-    audiencePersonas: [],
+    audience: "Travelers, vacation planners, business travel coordinators",
     brandTone: "Friendly, enthusiastic, and service-oriented",
     serviceTasks: "Booking assistance, itinerary changes, travel recommendations, loyalty program inquiries",
     persuasiveTasks: "Upselling premium experiences, travel insurance, package deals, loyalty program enrollment",
@@ -88,7 +88,7 @@ const sampleBotPersonas: BotPersona[] = [
     id: "bank-hr-1",
     name: "ResourceOne",
     organization: "Global Financial Partners",
-    audiencePersonas: [],
+    audience: "Bank employees across all levels, from entry-level to executives",
     brandTone: "Professional, discreet, and supportive",
     serviceTasks: "Benefits inquiries, policy clarifications, leave management, onboarding assistance, performance review guidance",
     persuasiveTasks: "Wellness program participation, professional development opportunities, internal job applications",
@@ -363,7 +363,17 @@ const BotPersonaTab = () => {
               key={persona.id}
               id={persona.id}
               name={persona.name}
-              description={persona.organization || ''}
+              description={persona.audience || ''}
+              icon={<Building className="h-3 w-3" />}
+              subtitle={persona.organization}
+              details={[
+                {
+                  icon: <Users className="h-3 w-3" />,
+                  text: persona.audience?.substring(0, 100) + (persona.audience && persona.audience.length > 100 ? '...' : '') || ''
+                }
+              ]}
+              audiencePersonas={persona.audiencePersonas}
+              audiencePersonasList={audiencePersonas}
               updatedAt={persona.updatedAt ? persona.updatedAt.toString() : undefined}
               onView={() => handleOverview(persona)}
               onEdit={() => handleEdit(persona)}
@@ -443,7 +453,11 @@ const BotPersonaTab = () => {
                     </div>
                   </div>
                   <Separator />
-
+                  <div>
+                    <Label className="text-sm text-muted-foreground">Audience</Label>
+                    <p className="font-medium">{currentPersona.audience || "Not specified"}</p>
+                  </div>
+                  <Separator />
                   <div>
                     <Label className="text-sm text-muted-foreground">Audience Personas</Label>
                     {currentPersona.audiencePersonas && currentPersona.audiencePersonas.length > 0 ? (

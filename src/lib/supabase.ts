@@ -89,7 +89,8 @@ export const createBotPersona = async (persona: Omit<BotPersona, 'id'>): Promise
     const sanitizedData = {
       name: persona.name || '',
       organization: persona.organization || '',
-      audience_personas: persona.audiencePersonas || [], // Array of audience persona IDs
+      audience: persona.audience || '',
+      audience_personas: persona.audiencePersonas || [], // Add audience_personas field
       brand_tone: persona.brandTone || '',
       service_tasks: persona.serviceTasks || '',
       persuasive_tasks: persona.persuasiveTasks || '',
@@ -159,7 +160,8 @@ export const updateBotPersona = async (id: string, persona: Partial<BotPersona>)
     // Only include fields that are provided
     if (persona.name !== undefined) sanitizedData.name = persona.name;
     if (persona.organization !== undefined) sanitizedData.organization = persona.organization;
-    if (persona.audiencePersonas !== undefined) sanitizedData.audience_personas = persona.audiencePersonas; // Array of audience persona IDs
+    if (persona.audience !== undefined) sanitizedData.audience = persona.audience;
+    if (persona.audiencePersonas !== undefined) sanitizedData.audience_personas = persona.audiencePersonas; // Add audience_personas field
     if (persona.brandTone !== undefined) sanitizedData.brand_tone = persona.brandTone;
     if (persona.serviceTasks !== undefined) sanitizedData.service_tasks = persona.serviceTasks;
     if (persona.persuasiveTasks !== undefined) sanitizedData.persuasive_tasks = persona.persuasiveTasks;
