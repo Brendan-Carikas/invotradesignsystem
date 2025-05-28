@@ -276,18 +276,6 @@ const AudiencePersonaTab = () => {
               id={persona.id}
               name={persona.name}
               description={persona.description}
-              icon={<FileText className="h-3 w-3" />}
-              subtitle={persona.description.substring(0, 60) + (persona.description.length > 60 ? '...' : '')}
-              details={[
-                {
-                  icon: <Users className="h-3 w-3" />,
-                  text: `${persona.age || ''} ${persona.gender || ''}`.trim() || 'No demographic info'
-                },
-                {
-                  icon: <Target className="h-3 w-3" />,
-                  text: persona.motivations?.substring(0, 80) + (persona.motivations && persona.motivations.length > 80 ? '...' : '') || 'No motivations specified'
-                }
-              ]}
               updatedAt={persona.updated_at}
               onView={() => handleView(persona)}
               onEdit={() => handleEdit(persona)}

@@ -99,7 +99,6 @@ const BotPersonaForm: React.FC<BotPersonaFormProps> = ({ persona, onSave, onCanc
         // Ensure all required fields have at least empty strings
         name: formData.name || '',
         organization: formData.organization || '',
-        audience: formData.audience || '',
         audiencePersonas: formData.audiencePersonas || [], // Include audience personas
         brandTone: formData.brandTone || '',
         serviceTasks: formData.serviceTasks || '',
@@ -196,18 +195,7 @@ const BotPersonaForm: React.FC<BotPersonaFormProps> = ({ persona, onSave, onCanc
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="audience">Audience</Label>
-          <textarea
-            id="audience"
-            name="audience"
-            value={formData.audience || ""}
-            onChange={handleChange}
-            placeholder="Describe the primary audience for this bot"
-            className="w-full h-24 p-2 border rounded-md"
-            required
-          />
-        </div>
+
 
         <div className="space-y-2">
           <Label htmlFor="audiencePersonas">Audience personas</Label>
@@ -631,11 +619,7 @@ const BotPersonaForm: React.FC<BotPersonaFormProps> = ({ persona, onSave, onCanc
               </div>
             </div>
             <Separator />
-            <div>
-              <Label className="text-sm text-muted-foreground">Audience</Label>
-              <p className="font-medium">{formData.audience || "Not specified"}</p>
-            </div>
-            <Separator />
+
             <div>
               <Label className="text-sm text-muted-foreground">Audience Personas</Label>
               {formData.audiencePersonas && formData.audiencePersonas.length > 0 ? (
