@@ -1,22 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { BotPersona, RegisterOptions } from '@/types/BotPersona';
-
-// Define AudiencePersona type
-export interface AudiencePersona {
-  id: string;
-  name: string;
-  description: string;
-  demographics: string;
-  goals: string;
-  pain_points?: string;
-  painPoints?: string;
-  preferences: string;
-  behaviors: string;
-  created_at?: string;
-  updated_at?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import { AudiencePersona } from '@/types/AudiencePersona';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
@@ -95,161 +79,285 @@ export const getBotPersonas = async (): Promise<BotPersona[]> => {
 };
 
 export const createBotPersona = async (persona: Omit<BotPersona, 'id'>): Promise<BotPersona | null> => {
-  // Prepare data for Supabase - convert to snake_case and handle dates
-  const preparedData = {
-    ...snakeCaseKeys(persona),
-    // Ensure register is stored as a JSON object
-    register: persona.register || {
-      formal: false,
-      sincere: false,
-      serious: false,
-      subjective: false,
-      casual: false,
-      humorous: false
-    },
-    // Add timestamps if not present
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
-  };
-  
-  const { data, error } = await supabase
-    .from('bot_personas')
-    .insert([preparedData])
-    .select()
-    .single();
-  
-  if (error) {
+  try {
+    // Validate required fields
+    if (!persona.name) {
+      throw new Error('Name is required');
+    }
+    
+    // Sanitize and prepare data for Supabase
+    const sanitizedData = {
+      name: persona.name || '',
+      organization: persona.organization || '',
+      audience: persona.audience || '',
+      brand_tone: persona.brandTone || '',
+      service_tasks: persona.serviceTasks || '',
+      persuasive_tasks: persona.persuasiveTasks || '',
+      channels: persona.channels || '',
+      register: persona.register || {
+        formal: false,
+        sincere: false,
+        serious: false,
+        subjective: false,
+        casual: false,
+        humorous: false
+      },
+      age: persona.age || null,
+      gender: persona.gender || null,
+      personality: persona.personality || '',
+      backstory: persona.backstory || null,
+      geography: persona.geography || null,
+      bot_tone: persona.botTone || '',
+      sounds_like: persona.soundsLike || null,
+      chats_like: persona.chatsLike || null,
+      other_identity: persona.otherIdentity || null,
+      typical_phrases: persona.typicalPhrases || '',
+      introductions: persona.introductions || '',
+      acknowledgements: persona.acknowledgements || '',
+      confirmations: persona.confirmations || '',
+      apologies: persona.apologies || '',
+      other_vocabulary: persona.otherVocabulary || null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    
+    // Insert into Supabase
+    const { data, error } = await supabase
+      .from('bot_personas')
+      .insert([sanitizedData])
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('Error creating bot persona:', error);
+      throw new Error(`Failed to create bot persona: ${error.message}`);
+    }
+    
+    if (!data) {
+      throw new Error('No data returned after creating bot persona');
+    }
+    
+    // Transform back to camelCase for the application
+    return camelCaseKeys(data) as BotPersona;
+  } catch (error) {
     console.error('Error creating bot persona:', error);
     return null;
   }
-  
-  // Transform back to camelCase for the application
-  return camelCaseKeys(data) as BotPersona;
 };
 
 export const updateBotPersona = async (id: string, persona: Partial<BotPersona>): Promise<BotPersona | null> => {
-  // Prepare data for Supabase - convert to snake_case and handle dates
-  const preparedData = {
-    ...snakeCaseKeys(persona),
-    // Update timestamp
-    updated_at: new Date().toISOString()
-  };
-  
-  // If register is being updated, ensure it's properly formatted
-  if (persona.register) {
-    preparedData.register = persona.register;
-  }
-  
-  const { data, error } = await supabase
-    .from('bot_personas')
-    .update(preparedData)
-    .eq('id', id)
-    .select()
-    .single();
-  
-  if (error) {
+  try {
+    if (!id) {
+      throw new Error('ID is required for updating a bot persona');
+    }
+    
+    // Sanitize and prepare data for Supabase
+    const sanitizedData: Record<string, any> = {
+      updated_at: new Date().toISOString()
+    };
+    
+    // Only include fields that are provided
+    if (persona.name !== undefined) sanitizedData.name = persona.name;
+    if (persona.organization !== undefined) sanitizedData.organization = persona.organization;
+    if (persona.audience !== undefined) sanitizedData.audience = persona.audience;
+    if (persona.brandTone !== undefined) sanitizedData.brand_tone = persona.brandTone;
+    if (persona.serviceTasks !== undefined) sanitizedData.service_tasks = persona.serviceTasks;
+    if (persona.persuasiveTasks !== undefined) sanitizedData.persuasive_tasks = persona.persuasiveTasks;
+    if (persona.channels !== undefined) sanitizedData.channels = persona.channels;
+    if (persona.register !== undefined) sanitizedData.register = persona.register;
+    if (persona.age !== undefined) sanitizedData.age = persona.age;
+    if (persona.gender !== undefined) sanitizedData.gender = persona.gender;
+    if (persona.personality !== undefined) sanitizedData.personality = persona.personality;
+    if (persona.backstory !== undefined) sanitizedData.backstory = persona.backstory;
+    if (persona.geography !== undefined) sanitizedData.geography = persona.geography;
+    if (persona.botTone !== undefined) sanitizedData.bot_tone = persona.botTone;
+    if (persona.soundsLike !== undefined) sanitizedData.sounds_like = persona.soundsLike;
+    if (persona.chatsLike !== undefined) sanitizedData.chats_like = persona.chatsLike;
+    if (persona.otherIdentity !== undefined) sanitizedData.other_identity = persona.otherIdentity;
+    if (persona.typicalPhrases !== undefined) sanitizedData.typical_phrases = persona.typicalPhrases;
+    if (persona.introductions !== undefined) sanitizedData.introductions = persona.introductions;
+    if (persona.acknowledgements !== undefined) sanitizedData.acknowledgements = persona.acknowledgements;
+    if (persona.confirmations !== undefined) sanitizedData.confirmations = persona.confirmations;
+    if (persona.apologies !== undefined) sanitizedData.apologies = persona.apologies;
+    if (persona.otherVocabulary !== undefined) sanitizedData.other_vocabulary = persona.otherVocabulary;
+    
+    // Update in Supabase
+    const { data, error } = await supabase
+      .from('bot_personas')
+      .update(sanitizedData)
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('Error updating bot persona:', error);
+      throw new Error(`Failed to update bot persona: ${error.message}`);
+    }
+    
+    if (!data) {
+      throw new Error(`Bot persona with id ${id} not found`);
+    }
+    
+    // Transform back to camelCase for the application
+    return camelCaseKeys(data) as BotPersona;
+  } catch (error) {
     console.error('Error updating bot persona:', error);
     return null;
   }
-  
-  // Transform back to camelCase for the application
-  return camelCaseKeys(data) as BotPersona;
 };
 
 export const deleteBotPersona = async (id: string): Promise<boolean> => {
-  const { error } = await supabase
-    .from('bot_personas')
-    .delete()
-    .eq('id', id);
-  
-  if (error) {
+  try {
+    if (!id) {
+      throw new Error('ID is required for deleting a bot persona');
+    }
+    
+    const { error } = await supabase
+      .from('bot_personas')
+      .delete()
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error deleting bot persona:', error);
+      throw new Error(`Failed to delete bot persona: ${error.message}`);
+    }
+    
+    return true;
+  } catch (error) {
     console.error('Error deleting bot persona:', error);
     return false;
   }
-  
-  return true;
 };
 
 // Audience Persona related functions
 export const getAudiencePersonas = async (): Promise<AudiencePersona[]> => {
-  const { data, error } = await supabase
-    .from('audience_personas')
-    .select('*');
-  
-  if (error) {
+  try {
+    const { data, error } = await supabase
+      .from('audience_personas')
+      .select('*');
+    
+    if (error) {
+      console.error('Error fetching audience personas:', error);
+      throw new Error(`Failed to fetch audience personas: ${error.message}`);
+    }
+    
+    return data || [];
+  } catch (error) {
     console.error('Error fetching audience personas:', error);
     return [];
   }
-  
-  if (!data) return [];
-  
-  // Transform snake_case to camelCase
-  return data.map(persona => {
-    const camelCasedPersona = camelCaseKeys(persona) as AudiencePersona;
-    
-    // Handle specific field transformations if needed
-    if (persona.pain_points) {
-      camelCasedPersona.painPoints = persona.pain_points;
-    }
-    
-    return camelCasedPersona;
-  });
 };
 
 export const createAudiencePersona = async (persona: Omit<AudiencePersona, 'id'>): Promise<AudiencePersona | null> => {
-  // Prepare data for Supabase (convert camelCase to snake_case)
-  const preparedData = {
-    ...snakeCaseKeys(persona),
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
-  };
-  
-  const { data, error } = await supabase
-    .from('audience_personas')
-    .insert(preparedData)
-    .select('*')
-    .single();
-  
-  if (error) {
+  try {
+    // Validate required fields
+    if (!persona.name) {
+      throw new Error('Name is required');
+    }
+    
+    // Sanitize and prepare data for Supabase
+    const sanitizedData = {
+      name: persona.name || '',
+      description: persona.description || '',
+      demographics: persona.demographics || '',
+      goals: persona.goals || '',
+      pain_points: persona.pain_points || null,
+      motivations: persona.motivations || null,
+      behaviors: persona.behaviors || null,
+      preferences: persona.preferences || null,
+      tech_proficiency: persona.tech_proficiency || null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    
+    // Insert into Supabase
+    const { data, error } = await supabase
+      .from('audience_personas')
+      .insert([sanitizedData])
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('Error creating audience persona:', error);
+      throw new Error(`Failed to create audience persona: ${error.message}`);
+    }
+    
+    if (!data) {
+      throw new Error('No data returned after creating audience persona');
+    }
+    
+    return data as AudiencePersona;
+  } catch (error) {
     console.error('Error creating audience persona:', error);
     return null;
   }
-  
-  return camelCaseKeys(data) as AudiencePersona;
 };
 
-export const updateAudiencePersona = async (persona: AudiencePersona): Promise<AudiencePersona | null> => {
-  // Prepare data for Supabase (convert camelCase to snake_case)
-  const preparedData = {
-    ...snakeCaseKeys(persona),
-    updated_at: new Date().toISOString()
-  };
-  
-  const { data, error } = await supabase
-    .from('audience_personas')
-    .update(preparedData)
-    .eq('id', persona.id)
-    .select('*')
-    .single();
-  
-  if (error) {
+export const updateAudiencePersona = async (id: string, persona: Partial<AudiencePersona>): Promise<AudiencePersona | null> => {
+  try {
+    if (!id) {
+      throw new Error('ID is required for updating an audience persona');
+    }
+    
+    // Sanitize and prepare data for Supabase
+    const sanitizedData: Record<string, any> = {
+      updated_at: new Date().toISOString()
+    };
+    
+    // Only include fields that are provided
+    if (persona.name !== undefined) sanitizedData.name = persona.name;
+    if (persona.description !== undefined) sanitizedData.description = persona.description;
+    if (persona.demographics !== undefined) sanitizedData.demographics = persona.demographics;
+    if (persona.goals !== undefined) sanitizedData.goals = persona.goals;
+    if (persona.pain_points !== undefined) sanitizedData.pain_points = persona.pain_points;
+    if (persona.motivations !== undefined) sanitizedData.motivations = persona.motivations;
+    if (persona.behaviors !== undefined) sanitizedData.behaviors = persona.behaviors;
+    if (persona.preferences !== undefined) sanitizedData.preferences = persona.preferences;
+    if (persona.tech_proficiency !== undefined) sanitizedData.tech_proficiency = persona.tech_proficiency;
+    
+    // Update in Supabase
+    const { data, error } = await supabase
+      .from('audience_personas')
+      .update(sanitizedData)
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('Error updating audience persona:', error);
+      throw new Error(`Failed to update audience persona: ${error.message}`);
+    }
+    
+    if (!data) {
+      throw new Error(`Audience persona with id ${id} not found`);
+    }
+    
+    return data as AudiencePersona;
+  } catch (error) {
     console.error('Error updating audience persona:', error);
     return null;
   }
-  
-  return camelCaseKeys(data) as AudiencePersona;
 };
 
 export const deleteAudiencePersona = async (id: string): Promise<boolean> => {
-  const { error } = await supabase
-    .from('audience_personas')
-    .delete()
-    .eq('id', id);
-  
-  if (error) {
+  try {
+    if (!id) {
+      throw new Error('ID is required for deleting an audience persona');
+    }
+    
+    const { error } = await supabase
+      .from('audience_personas')
+      .delete()
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error deleting audience persona:', error);
+      throw new Error(`Failed to delete audience persona: ${error.message}`);
+    }
+    
+    return true;
+  } catch (error) {
     console.error('Error deleting audience persona:', error);
     return false;
   }
-  
-  return true;
 };
