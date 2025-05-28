@@ -11,6 +11,7 @@ export interface BotPersona {
   id: string;
   name: string;
   organization: string;
+  audience: string;
   audiencePersonas?: string[]; // Array of audience persona IDs
   brandTone: string;
   serviceTasks: string;
@@ -41,7 +42,7 @@ export const sampleBotPersonas: BotPersona[] = [
     id: "1",
     name: "Helpdesk Assistant",
     organization: "IT Department",
-    audiencePersonas: [],
+    audience: "Internal employees with technical issues",
     brandTone: "Professional, helpful, and patient",
     serviceTasks: "Troubleshooting, password resets, software installation guidance",
     persuasiveTasks: "Encouraging security best practices",
@@ -76,7 +77,7 @@ export const sampleBotPersonas: BotPersona[] = [
     id: "2",
     name: "Onboarding Guide",
     organization: "HR Department",
-    audiencePersonas: [],
+    audience: "New employees",
     brandTone: "Friendly, welcoming, and encouraging",
     serviceTasks: "Orientation, paperwork guidance, policy explanations",
     persuasiveTasks: "Encouraging completion of onboarding tasks",
