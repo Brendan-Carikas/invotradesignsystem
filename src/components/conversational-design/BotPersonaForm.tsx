@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BotPersona } from "@/types/BotPersona";
+import { AudiencePersona } from "@/types/AudiencePersona";
+import { getAudiencePersonas } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface BotPersonaFormProps {
   persona?: BotPersona;
@@ -24,12 +28,34 @@ const BotPersonaForm: React.FC<BotPersonaFormProps> = ({ persona, onSave, onCanc
         casual: false,
         humorous: false,
       },
+      audiencePersonas: [],
     }
   );
+
+  // State for audience personas
+  const [audiencePersonas, setAudiencePersonas] = useState<AudiencePersona[]>([]);
+  const [isLoadingPersonas, setIsLoadingPersonas] = useState(false);
 
   // Wizard state
   const [currentStep, setCurrentStep] = useState<number>(0);
   const steps = ["Context", "Identity", "Standard Vocabulary", "Review"];
+  
+  // Fetch audience personas when component mounts
+  useEffect(() => {
+    const fetchAudiencePersonas = async () => {
+      setIsLoadingPersonas(true);
+      try {
+        const personas = await getAudiencePersonas();
+        setAudiencePersonas(personas);
+      } catch (error) {
+        console.error('Error fetching audience personas:', error);
+      } finally {
+        setIsLoadingPersonas(false);
+      }
+    };
+    
+    fetchAudiencePersonas();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -49,6 +75,21 @@ const BotPersonaForm: React.FC<BotPersonaFormProps> = ({ persona, onSave, onCanc
     }));
   };
 
+  // Handle audience persona selection/deselection
+  const handleAudiencePersonaToggle = (personaId: string) => {
+    setFormData((prev) => {
+      const currentPersonas = prev.audiencePersonas || [];
+      const updatedPersonas = currentPersonas.includes(personaId)
+        ? currentPersonas.filter(id => id !== personaId) // Remove if already selected
+        : [...currentPersonas, personaId]; // Add if not selected
+      
+      return {
+        ...prev,
+        audiencePersonas: updatedPersonas
+      };
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (currentStep === steps.length - 1) {
@@ -59,6 +100,7 @@ const BotPersonaForm: React.FC<BotPersonaFormProps> = ({ persona, onSave, onCanc
         name: formData.name || '',
         organization: formData.organization || '',
         audience: formData.audience || '',
+        audiencePersonas: formData.audiencePersonas || [], // Include audience personas
         brandTone: formData.brandTone || '',
         serviceTasks: formData.serviceTasks || '',
         persuasiveTasks: formData.persuasiveTasks || '',
@@ -165,6 +207,64 @@ const BotPersonaForm: React.FC<BotPersonaFormProps> = ({ persona, onSave, onCanc
             className="w-full h-24 p-2 border rounded-md"
             required
           />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="audiencePersonas">Audience personas</Label>
+          {isLoadingPersonas ? (
+            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+              <span>Loading audience personas...</span>
+            </div>
+          ) : audiencePersonas.length === 0 ? (
+            <div className="text-sm text-muted-foreground">No audience personas available</div>
+          ) : (
+            <div className="border rounded-md p-2">
+              <div className="flex flex-wrap gap-2 mb-2">
+                {formData.audiencePersonas && formData.audiencePersonas.length > 0 ? (
+                  formData.audiencePersonas.map(personaId => {
+                    const persona = audiencePersonas.find(p => p.id === personaId);
+                    return persona ? (
+                      <Badge key={persona.id} variant="secondary" className="flex items-center gap-1">
+                        {persona.name}
+                        <button
+                          type="button"
+                          onClick={() => handleAudiencePersonaToggle(persona.id)}
+                          className="h-3.5 w-3.5 rounded-full hover:bg-muted-foreground/20"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </Badge>
+                    ) : null;
+                  })
+                ) : (
+                  <div className="text-sm text-muted-foreground">No personas selected</div>
+                )}
+              </div>
+              
+              <ScrollArea className="h-40">
+                <div className="space-y-1">
+                  {audiencePersonas.map(persona => (
+                    <div 
+                      key={persona.id}
+                      className={`flex items-center justify-between p-2 text-sm rounded-md cursor-pointer hover:bg-muted ${
+                        formData.audiencePersonas?.includes(persona.id) ? 'bg-muted' : ''
+                      }`}
+                      onClick={() => handleAudiencePersonaToggle(persona.id)}
+                    >
+                      <div>
+                        <div className="font-medium">{persona.name}</div>
+                        <div className="text-xs text-muted-foreground">{persona.description}</div>
+                      </div>
+                      {formData.audiencePersonas?.includes(persona.id) && (
+                        <Check className="h-4 w-4 text-primary" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -534,6 +634,24 @@ const BotPersonaForm: React.FC<BotPersonaFormProps> = ({ persona, onSave, onCanc
             <div>
               <Label className="text-sm text-muted-foreground">Audience</Label>
               <p className="font-medium">{formData.audience || "Not specified"}</p>
+            </div>
+            <Separator />
+            <div>
+              <Label className="text-sm text-muted-foreground">Audience Personas</Label>
+              {formData.audiencePersonas && formData.audiencePersonas.length > 0 ? (
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {formData.audiencePersonas.map(personaId => {
+                    const persona = audiencePersonas.find(p => p.id === personaId);
+                    return persona ? (
+                      <span key={persona.id} className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
+                        {persona.name}
+                      </span>
+                    ) : null;
+                  })}
+                </div>
+              ) : (
+                <p className="font-medium">No audience personas selected</p>
+              )}
             </div>
             <Separator />
             <div>

@@ -12,6 +12,7 @@ export interface BotPersona {
   name: string;
   organization: string;
   audience: string;
+  audiencePersonas?: string[]; // Array of audience persona IDs
   brandTone: string;
   serviceTasks: string;
   persuasiveTasks: string;

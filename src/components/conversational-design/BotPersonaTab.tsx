@@ -3,12 +3,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Plus, Edit, Trash2, Calendar, Building, Users, Eye, Check, Loader2 } from "lucide-react";
+import PersonaCard, { formatDate } from "./PersonaCard";
 import { BotPersona } from "@/types/BotPersona";
 import BotPersonaForm from "./BotPersonaForm";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
-import { getBotPersonas, createBotPersona, updateBotPersona, deleteBotPersona } from "@/lib/supabase";
+import { getBotPersonas, createBotPersona, updateBotPersona, deleteBotPersona, getAudiencePersonas } from "@/lib/supabase";
 import { useToast } from "@/components/ui/use-toast";
+import { AudiencePersona } from "@/types/AudiencePersona";
 
 // Sample bot personas for different use cases
 const sampleBotPersonas: BotPersona[] = [
@@ -126,6 +128,8 @@ const BotPersonaTab = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [personaToDelete, setPersonaToDelete] = useState<BotPersona | undefined>(undefined);
   const [currentPersona, setCurrentPersona] = useState<BotPersona | undefined>(undefined);
+  const [botPersonas, setBotPersonas] = useState<BotPersona[]>([]);
+  const [audiencePersonas, setAudiencePersonas] = useState<AudiencePersona[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
@@ -177,6 +181,7 @@ const BotPersonaTab = () => {
   const fetchPersonasAndMerge = async () => {
     setIsLoading(true);
     try {
+      // Fetch bot personas
       const data = await getBotPersonas();
       
       // Create a map of existing sample persona IDs for quick lookup
@@ -187,11 +192,15 @@ const BotPersonaTab = () => {
       
       // Combine sample personas with unique Supabase personas
       setPersonas([...sampleBotPersonas, ...uniqueSupabasePersonas]);
+      
+      // Fetch audience personas
+      const audiencePersonasData = await getAudiencePersonas();
+      setAudiencePersonas(audiencePersonasData);
     } catch (error) {
-      console.error('Failed to fetch bot personas:', error);
+      console.error('Failed to fetch personas:', error);
       toast({
         title: 'Error',
-        description: 'Failed to load bot personas. Please try again later.',
+        description: 'Failed to load personas. Please try again later.',
         variant: 'destructive',
       });
     } finally {
@@ -321,15 +330,6 @@ const BotPersonaTab = () => {
     }
   };
 
-  const formatDate = (date: Date | string) => {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    }).format(dateObj);
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -359,43 +359,29 @@ const BotPersonaTab = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {personas.map((persona) => (
-            <Card key={persona.id} className="overflow-hidden">
-              <CardHeader className="pb-2">
-                <CardTitle>{persona.name}</CardTitle>
-                <CardDescription className="flex items-center gap-1">
-                  <Building className="h-3 w-3" /> {persona.organization}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pb-2">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <Users className="h-3 w-3" /> {persona.audience?.substring(0, 100)}{persona.audience && persona.audience.length > 100 ? '...' : ''}
-                  </div>
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <Calendar className="h-3 w-3" /> Updated {formatDate(persona.updatedAt)}
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter className="flex justify-end gap-2 pt-2">
-                <Button variant="outline" size="sm" onClick={() => handleOverview(persona)} title="Overview">
-                  <Eye className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="sm" onClick={() => handleEdit(persona)} title="Edit">
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setPersonaToDelete(persona);
-                    setIsDeleteDialogOpen(true);
-                  }}
-                  title="Delete"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </CardFooter>
-            </Card>
+            <PersonaCard
+              key={persona.id}
+              id={persona.id}
+              name={persona.name}
+              description={persona.audience || ''}
+              icon={<Building className="h-3 w-3" />}
+              subtitle={persona.organization}
+              details={[
+                {
+                  icon: <Users className="h-3 w-3" />,
+                  text: persona.audience?.substring(0, 100) + (persona.audience && persona.audience.length > 100 ? '...' : '') || ''
+                }
+              ]}
+              audiencePersonas={persona.audiencePersonas}
+              audiencePersonasList={audiencePersonas}
+              updatedAt={persona.updatedAt ? persona.updatedAt.toString() : undefined}
+              onView={() => handleOverview(persona)}
+              onEdit={() => handleEdit(persona)}
+              onDelete={() => {
+                setPersonaToDelete(persona);
+                setIsDeleteDialogOpen(true);
+              }}
+            />
           ))}
         </div>
       )}
@@ -470,6 +456,24 @@ const BotPersonaTab = () => {
                   <div>
                     <Label className="text-sm text-muted-foreground">Audience</Label>
                     <p className="font-medium">{currentPersona.audience || "Not specified"}</p>
+                  </div>
+                  <Separator />
+                  <div>
+                    <Label className="text-sm text-muted-foreground">Audience Personas</Label>
+                    {currentPersona.audiencePersonas && currentPersona.audiencePersonas.length > 0 ? (
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {currentPersona.audiencePersonas.map(personaId => {
+                          const persona = audiencePersonas.find(p => p.id === personaId);
+                          return persona ? (
+                            <span key={persona.id} className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
+                              {persona.name}
+                            </span>
+                          ) : null;
+                        })}
+                      </div>
+                    ) : (
+                      <p className="font-medium">No audience personas selected</p>
+                    )}
                   </div>
                   <Separator />
                   <div>
