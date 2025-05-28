@@ -85,7 +85,7 @@ const ConversationalDesign = () => {
           <TabsTrigger value="principles" className="mb-1 mr-1">Design principles</TabsTrigger>
           <TabsTrigger value="patterns" className="mb-1 mr-1">Conversation patterns</TabsTrigger>
           <TabsTrigger value="personas" className="mb-1 mr-1">User personas</TabsTrigger>
-          <TabsTrigger value="audiencepersona" className="mb-1 mr-1">Audience Personas</TabsTrigger>
+          <TabsTrigger value="audiencepersonas" className="mb-1 mr-1">Audience Personas</TabsTrigger>
           <TabsTrigger value="botpersona" className="mb-1 mr-1">Bot Personas</TabsTrigger>
           <TabsTrigger value="ai" className="mb-1 mr-1">AI guidelines</TabsTrigger>
         </TabsList>
@@ -373,7 +373,7 @@ const ConversationalDesign = () => {
         </TabsContent>
 
         {/* Audience Personas Tab */}
-        <TabsContent value="audiencepersona">
+        <TabsContent value="audiencepersonas">
           <AudiencePersonaTab />
         </TabsContent>
 

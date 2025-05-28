@@ -268,42 +268,55 @@ const BotPersonaTab = () => {
     }
   };
 
-  const handleSave = async (personaData: Partial<BotPersona>) => {
+  const handleSave = async (persona: BotPersona) => {
     try {
-      if (currentPersona) {
+      // Validate required fields
+      if (!persona.name?.trim()) {
+        toast({
+          variant: 'destructive',
+          title: 'Validation Error',
+          description: 'Bot persona name is required.',
+        });
+        return;
+      }
+
+      let savedPersona: BotPersona | null = null;
+      
+      if (persona.id) {
         // Update existing persona
-        const updatedPersona = await updateBotPersona(currentPersona.id, personaData);
-        if (updatedPersona) {
-          // Refresh the entire personas list to ensure consistency
-          await fetchPersonasAndMerge();
+        savedPersona = await updateBotPersona(persona.id, persona);
+        if (savedPersona) {
+          setPersonas(prev => prev.map(p => p.id === persona.id ? savedPersona! : p));
           toast({
             title: 'Success',
-            description: 'Bot persona updated successfully.',
+            description: `Bot persona ${persona.name} updated successfully.`,
           });
+          setIsDialogOpen(false);
+          fetchPersonasAndMerge();
         } else {
           throw new Error('Failed to update bot persona');
         }
       } else {
         // Create new persona
-        const newPersona = await createBotPersona(personaData as Omit<BotPersona, 'id'>);
-        if (newPersona) {
-          // Refresh the entire personas list to ensure consistency
-          await fetchPersonasAndMerge();
+        savedPersona = await createBotPersona(persona);
+        if (savedPersona) {
+          setPersonas(prev => [...prev, savedPersona!]);
           toast({
             title: 'Success',
-            description: 'Bot persona created successfully.',
+            description: `Bot persona ${persona.name} created successfully.`,
           });
+          setIsDialogOpen(false);
+          fetchPersonasAndMerge();
         } else {
           throw new Error('Failed to create bot persona');
         }
       }
-      setIsDialogOpen(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving bot persona:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to save bot persona. Please try again.',
         variant: 'destructive',
+        title: 'Error',
+        description: error.message || 'Failed to save bot persona.',
       });
     }
   };
