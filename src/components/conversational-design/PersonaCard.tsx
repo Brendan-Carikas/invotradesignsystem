@@ -41,7 +41,7 @@ const PersonaCard: React.FC<PersonaCardProps> = ({
   return (
     <Card className="overflow-hidden">
       <CardHeader className="pb-2">
-        <CardTitle>{name}</CardTitle>
+        <CardTitle className="text-lg">{name}</CardTitle>
         <CardDescription className="text-xs pt-2">
           {description}
         </CardDescription>

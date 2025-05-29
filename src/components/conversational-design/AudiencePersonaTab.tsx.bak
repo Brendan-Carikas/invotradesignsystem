@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
-export const AudiencePersonaTab = () => {
+const AudiencePersonaTab = () => {
   const [personas, setPersonas] = useState<AudiencePersona[]>(sampleAudiencePersonas);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isOverviewDialogOpen, setIsOverviewDialogOpen] = useState(false);
@@ -244,7 +244,7 @@ export const AudiencePersonaTab = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
- 
+        <h2 className="text-2xl font-bold">Audience Personas</h2>
         <Button onClick={handleCreate}>
           <Plus className="mr-2 h-4 w-4" /> Create New Persona
         </Button>
@@ -634,4 +634,4 @@ export const AudiencePersonaTab = () => {
   );
 };
 
-// We're now using a named export instead of a default export
+export default AudiencePersonaTab;
