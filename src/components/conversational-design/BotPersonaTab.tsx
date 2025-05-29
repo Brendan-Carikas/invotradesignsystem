@@ -333,10 +333,7 @@ const BotPersonaTab = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold">Bot Personas</h2>
-          <p className="text-muted-foreground">Manage your chatbot personas</p>
-        </div>
+     
         <Button onClick={handleCreateNew} className="flex items-center gap-2">
           <Plus className="h-4 w-4" /> Create New Persona
         </Button>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { Plus, Users, Target, FileText } from 'lucide-react';
+import PersonaCard from './PersonaCard';
 import { useToast } from '@/components/ui/use-toast';
 import { AudiencePersona, sampleAudiencePersonas } from '@/types/AudiencePersona';
 import { 
@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
-export const AudiencePersonaTab = () => {
+const AudiencePersonaTab = () => {
   const [personas, setPersonas] = useState<AudiencePersona[]>(sampleAudiencePersonas);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isOverviewDialogOpen, setIsOverviewDialogOpen] = useState(false);
@@ -139,24 +139,6 @@ export const AudiencePersonaTab = () => {
         return;
       }
 
-      if (!formData.demographics?.trim()) {
-        toast({
-          variant: 'destructive',
-          title: 'Validation Error',
-          description: 'Demographics information is required.',
-        });
-        return;
-      }
-
-      if (!formData.goals?.trim()) {
-        toast({
-          variant: 'destructive',
-          title: 'Validation Error',
-          description: 'Goals are required.',
-        });
-        return;
-      }
-
       let savedPersona: AudiencePersona | null = null;
       
       if (currentPersona?.id && !currentPersona.id.startsWith('sample-')) {
@@ -178,13 +160,22 @@ export const AudiencePersonaTab = () => {
         const newPersona = {
           name: formData.name!,
           description: formData.description!,
-          demographics: formData.demographics!,
-          goals: formData.goals!,
-          pain_points: formData.pain_points,
+          age: formData.age,
+          gender: formData.gender,
+          personality: formData.personality,
+          geography: formData.geography,
+          culture: formData.culture,
+          family_life: formData.family_life,
+          backstory: formData.backstory,
+          education: formData.education,
+          occupation: formData.occupation,
+          income: formData.income,
+          living_situation: formData.living_situation,
+          interests_hobbies: formData.interests_hobbies,
+          turn_offs_challenges: formData.turn_offs_challenges,
           motivations: formData.motivations,
-          behaviors: formData.behaviors,
-          preferences: formData.preferences,
-          tech_proficiency: formData.tech_proficiency,
+          devices: formData.devices,
+          preferred_channels: formData.preferred_channels,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         };
@@ -207,13 +198,22 @@ export const AudiencePersonaTab = () => {
         const newPersona = {
           name: formData.name!,
           description: formData.description!,
-          demographics: formData.demographics!,
-          goals: formData.goals!,
-          pain_points: formData.pain_points,
+          age: formData.age,
+          gender: formData.gender,
+          personality: formData.personality,
+          geography: formData.geography,
+          culture: formData.culture,
+          family_life: formData.family_life,
+          backstory: formData.backstory,
+          education: formData.education,
+          occupation: formData.occupation,
+          income: formData.income,
+          living_situation: formData.living_situation,
+          interests_hobbies: formData.interests_hobbies,
+          turn_offs_challenges: formData.turn_offs_challenges,
           motivations: formData.motivations,
-          behaviors: formData.behaviors,
-          preferences: formData.preferences,
-          tech_proficiency: formData.tech_proficiency,
+          devices: formData.devices,
+          preferred_channels: formData.preferred_channels,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         };
@@ -244,7 +244,7 @@ export const AudiencePersonaTab = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
- 
+        <h2 className="text-2xl font-bold">Audience Personas</h2>
         <Button onClick={handleCreate}>
           <Plus className="mr-2 h-4 w-4" /> Create New Persona
         </Button>
@@ -252,49 +252,38 @@ export const AudiencePersonaTab = () => {
       
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <p>Loading audience personas...</p>
+          <div className="flex items-center">
+            <div className="mr-2">
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            </div>
+            <p>Loading audience personas...</p>
+          </div>
+        </div>
+      ) : personas.length === 0 ? (
+        <div className="flex flex-col justify-center items-center h-64">
+          <p className="text-lg text-muted-foreground">No audience personas found.</p>
+          <p className="text-sm text-muted-foreground mb-4">Create your first audience persona to get started.</p>
+          <Button onClick={handleCreate}>
+            <Plus className="h-4 w-4 mr-2" />
+            Create New Persona
+          </Button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {personas.map((persona) => (
-            <Card key={persona.id} className="h-full flex flex-col">
-              <CardHeader>
-                <CardTitle>{persona.name}</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-muted-foreground mb-4">{persona.description}</p>
-                <div className="space-y-2">
-                  <div>
-                    <span className="font-medium">Demographics:</span> {persona.demographics}
-                  </div>
-                  <div>
-                    <span className="font-medium">Goals:</span> {persona.goals}
-                  </div>
-                  <div>
-                    <span className="font-medium">Pain Points:</span> {persona.pain_points || 'N/A'}
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter className="flex justify-end gap-2">
-                <Button variant="outline" size="sm" onClick={() => handleView(persona)} title="View">
-                  <Eye className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="sm" onClick={() => handleEdit(persona)} title="Edit">
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setPersonaToDelete(persona);
-                    setIsDeleteDialogOpen(true);
-                  }}
-                  title="Delete"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </CardFooter>
-            </Card>
+            <PersonaCard
+              key={persona.id}
+              id={persona.id}
+              name={persona.name}
+              description={persona.description}
+              updatedAt={persona.updated_at}
+              onView={() => handleView(persona)}
+              onEdit={() => handleEdit(persona)}
+              onDelete={() => {
+                setPersonaToDelete(persona);
+                setIsDeleteDialogOpen(true);
+              }}
+            />
           ))}
         </div>
       )}
@@ -306,7 +295,7 @@ export const AudiencePersonaTab = () => {
             <DialogTitle>{currentPersona ? `Edit ${currentPersona.name}` : 'Create New Audience Persona'}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name *</Label>
                 <Input 
@@ -332,37 +321,145 @@ export const AudiencePersonaTab = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="demographics">Demographics *</Label>
-                <Textarea 
-                  id="demographics" 
-                  name="demographics" 
-                  value={formData.demographics || ''} 
+                <Label htmlFor="age">Age</Label>
+                <Input 
+                  id="age" 
+                  name="age" 
+                  value={formData.age || ''} 
                   onChange={handleInputChange} 
-                  placeholder="Age range, location, education level, etc."
-                  required
+                  placeholder="e.g., 25-34"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="goals">Goals *</Label>
-                <Textarea 
-                  id="goals" 
-                  name="goals" 
-                  value={formData.goals || ''} 
+                <Label htmlFor="gender">Gender</Label>
+                <Input 
+                  id="gender" 
+                  name="gender" 
+                  value={formData.gender || ''} 
                   onChange={handleInputChange} 
-                  placeholder="What are their primary goals and objectives?"
-                  required
+                  placeholder="e.g., Various"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="pain_points">Pain Points</Label>
+                <Label htmlFor="personality">Personality</Label>
                 <Textarea 
-                  id="pain_points" 
-                  name="pain_points" 
-                  value={formData.pain_points || ''} 
+                  id="personality" 
+                  name="personality" 
+                  value={formData.personality || ''} 
                   onChange={handleInputChange} 
-                  placeholder="What challenges or frustrations do they face?"
+                  placeholder="Key personality traits"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="geography">Geography</Label>
+                <Input 
+                  id="geography" 
+                  name="geography" 
+                  value={formData.geography || ''} 
+                  onChange={handleInputChange} 
+                  placeholder="Location information"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="culture">Culture</Label>
+                <Textarea 
+                  id="culture" 
+                  name="culture" 
+                  value={formData.culture || ''} 
+                  onChange={handleInputChange} 
+                  placeholder="Cultural background or influences"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="family_life">Family Life</Label>
+                <Textarea 
+                  id="family_life" 
+                  name="family_life" 
+                  value={formData.family_life || ''} 
+                  onChange={handleInputChange} 
+                  placeholder="Family situation"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="backstory">Backstory</Label>
+                <Textarea 
+                  id="backstory" 
+                  name="backstory" 
+                  value={formData.backstory || ''} 
+                  onChange={handleInputChange} 
+                  placeholder="Background information"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="education">Education</Label>
+                <Input 
+                  id="education" 
+                  name="education" 
+                  value={formData.education || ''} 
+                  onChange={handleInputChange} 
+                  placeholder="Educational background"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="occupation">Occupation</Label>
+                <Input 
+                  id="occupation" 
+                  name="occupation" 
+                  value={formData.occupation || ''} 
+                  onChange={handleInputChange} 
+                  placeholder="Job or profession"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="income">Income</Label>
+                <Input 
+                  id="income" 
+                  name="income" 
+                  value={formData.income || ''} 
+                  onChange={handleInputChange} 
+                  placeholder="Income level"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="living_situation">Living Situation</Label>
+                <Textarea 
+                  id="living_situation" 
+                  name="living_situation" 
+                  value={formData.living_situation || ''} 
+                  onChange={handleInputChange} 
+                  placeholder="Housing situation"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="interests_hobbies">Interests/Hobbies</Label>
+                <Textarea 
+                  id="interests_hobbies" 
+                  name="interests_hobbies" 
+                  value={formData.interests_hobbies || ''} 
+                  onChange={handleInputChange} 
+                  placeholder="What they enjoy doing"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="turn_offs_challenges">Turn Offs/Challenges</Label>
+                <Textarea 
+                  id="turn_offs_challenges" 
+                  name="turn_offs_challenges" 
+                  value={formData.turn_offs_challenges || ''} 
+                  onChange={handleInputChange} 
+                  placeholder="Pain points and challenges"
                 />
               </div>
               
@@ -373,40 +470,29 @@ export const AudiencePersonaTab = () => {
                   name="motivations" 
                   value={formData.motivations || ''} 
                   onChange={handleInputChange} 
-                  placeholder="What drives their decisions and actions?"
+                  placeholder="What drives their decisions"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="behaviors">Behaviors</Label>
-                <Textarea 
-                  id="behaviors" 
-                  name="behaviors" 
-                  value={formData.behaviors || ''} 
+                <Label htmlFor="devices">Devices</Label>
+                <Input 
+                  id="devices" 
+                  name="devices" 
+                  value={formData.devices || ''} 
                   onChange={handleInputChange} 
-                  placeholder="How do they typically behave when making decisions?"
+                  placeholder="Technology devices used"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="preferences">Preferences</Label>
+                <Label htmlFor="preferred_channels">Preferred Channels</Label>
                 <Textarea 
-                  id="preferences" 
-                  name="preferences" 
-                  value={formData.preferences || ''} 
+                  id="preferred_channels" 
+                  name="preferred_channels" 
+                  value={formData.preferred_channels || ''} 
                   onChange={handleInputChange} 
-                  placeholder="What are their communication preferences?"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="tech_proficiency">Tech Proficiency</Label>
-                <Textarea 
-                  id="tech_proficiency" 
-                  name="tech_proficiency" 
-                  value={formData.tech_proficiency || ''} 
-                  onChange={handleInputChange} 
-                  placeholder="How comfortable are they with technology?"
+                  placeholder="Communication channels they prefer"
                 />
               </div>
             </div>
@@ -462,18 +548,68 @@ export const AudiencePersonaTab = () => {
               </div>
               
               <div>
-                <h3 className="text-lg font-medium">Demographics</h3>
-                <p className="text-muted-foreground">{currentPersona.demographics}</p>
+                <h3 className="text-lg font-medium">Age</h3>
+                <p className="text-muted-foreground">{currentPersona.age || 'N/A'}</p>
               </div>
               
               <div>
-                <h3 className="text-lg font-medium">Goals</h3>
-                <p className="text-muted-foreground">{currentPersona.goals}</p>
+                <h3 className="text-lg font-medium">Gender</h3>
+                <p className="text-muted-foreground">{currentPersona.gender || 'N/A'}</p>
               </div>
               
               <div>
-                <h3 className="text-lg font-medium">Pain Points</h3>
-                <p className="text-muted-foreground">{currentPersona.pain_points || 'N/A'}</p>
+                <h3 className="text-lg font-medium">Personality</h3>
+                <p className="text-muted-foreground">{currentPersona.personality || 'N/A'}</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-medium">Geography</h3>
+                <p className="text-muted-foreground">{currentPersona.geography || 'N/A'}</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-medium">Culture</h3>
+                <p className="text-muted-foreground">{currentPersona.culture || 'N/A'}</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-medium">Family Life</h3>
+                <p className="text-muted-foreground">{currentPersona.family_life || 'N/A'}</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-medium">Backstory</h3>
+                <p className="text-muted-foreground">{currentPersona.backstory || 'N/A'}</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-medium">Education</h3>
+                <p className="text-muted-foreground">{currentPersona.education || 'N/A'}</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-medium">Occupation</h3>
+                <p className="text-muted-foreground">{currentPersona.occupation || 'N/A'}</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-medium">Income</h3>
+                <p className="text-muted-foreground">{currentPersona.income || 'N/A'}</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-medium">Living Situation</h3>
+                <p className="text-muted-foreground">{currentPersona.living_situation || 'N/A'}</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-medium">Interests/Hobbies</h3>
+                <p className="text-muted-foreground">{currentPersona.interests_hobbies || 'N/A'}</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-medium">Turn Offs/Challenges</h3>
+                <p className="text-muted-foreground">{currentPersona.turn_offs_challenges || 'N/A'}</p>
               </div>
               
               <div>
@@ -482,18 +618,13 @@ export const AudiencePersonaTab = () => {
               </div>
               
               <div>
-                <h3 className="text-lg font-medium">Behaviors</h3>
-                <p className="text-muted-foreground">{currentPersona.behaviors || 'N/A'}</p>
+                <h3 className="text-lg font-medium">Devices</h3>
+                <p className="text-muted-foreground">{currentPersona.devices || 'N/A'}</p>
               </div>
               
               <div>
-                <h3 className="text-lg font-medium">Preferences</h3>
-                <p className="text-muted-foreground">{currentPersona.preferences || 'N/A'}</p>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-medium">Tech Proficiency</h3>
-                <p className="text-muted-foreground">{currentPersona.tech_proficiency || 'N/A'}</p>
+                <h3 className="text-lg font-medium">Preferred Channels</h3>
+                <p className="text-muted-foreground">{currentPersona.preferred_channels || 'N/A'}</p>
               </div>
             </div>
           )}
@@ -503,4 +634,4 @@ export const AudiencePersonaTab = () => {
   );
 };
 
-
+export default AudiencePersonaTab;
