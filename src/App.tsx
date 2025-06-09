@@ -30,11 +30,10 @@ import AIPlaygroundDemo from "./pages/layout/shells/AIPlaygroundDemo";
 // Import Knowledge Base pages
 import ConversationalDesign from "./pages/knowledge/ConversationalDesign";
 import Playbooks from "./pages/knowledge/Playbooks";
-import Resources from "./pages/knowledge/Resources";
+// import Resources from "./pages/knowledge/Resources";
 import Analytics from "./pages/knowledge/Analytics";
 import Reports from "./pages/knowledge/Reports";
-// Import Flows pages
-import ConversationalFlows from "./pages/flows/ConversationalFlows";
+// Flows functionality now integrated into ConversationalDesign
 
 const queryClient = new QueryClient();
 
@@ -74,12 +73,11 @@ const App = () => (
                 {/* Knowledge Base Routes */}
                 <Route path="/knowledge/conversational-design" element={<ConversationalDesign />} />
                 <Route path="/knowledge/playbooks" element={<Playbooks />} />
-                <Route path="/knowledge/resources" element={<Resources />} />
+                {/* <Route path="/knowledge/resources" element={<Resources />} /> */}
                 <Route path="/knowledge/analytics" element={<Analytics />} />
                 <Route path="/knowledge/reports" element={<Reports />} />
                 
-                {/* Flows Routes */}
-                <Route path="/flows/conversational-flows" element={<ConversationalFlows />} />
+                {/* Flows functionality now integrated into ConversationalDesign */}
               </Route>
               {/* Redirect any unknown routes to login for unauthenticated users */}
               <Route path="*" element={<Navigate to="/" replace />} />

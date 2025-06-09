@@ -133,10 +133,6 @@ export default function AppShell({ children }: AppShellProps) {
             to: "/components/chatbot",
             icon: Bot,
             label: "Chatbot"
-          }, {
-            to: "/flows/conversational-flows",
-            icon: GitBranch,
-            label: "Flows"
           }]
         }, 
         {
@@ -150,10 +146,6 @@ export default function AppShell({ children }: AppShellProps) {
             to: "/knowledge/playbooks",
             icon: Book,
             label: "Playbooks"
-          }, {
-            to: "/knowledge/resources",
-            icon: Library,
-            label: "Resources"
           }]
         },
         {
@@ -241,10 +233,6 @@ export default function AppShell({ children }: AppShellProps) {
           to: "/components/chatbot",
           icon: Bot,
           label: "Chatbot"
-        }, {
-          to: "/flows/conversational-flows",
-          icon: GitBranch,
-          label: "Flows"
         }]
       }, 
       {
@@ -258,10 +246,6 @@ export default function AppShell({ children }: AppShellProps) {
           to: "/knowledge/playbooks",
           icon: Book,
           label: "Playbooks"
-        }, {
-          to: "/knowledge/resources",
-          icon: Library,
-          label: "Resources"
         }]
       },
       {
