@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import TitleDescription from "@/components/TitleDescription";
-import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight, Target } from "lucide-react";
+import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight, Target, GitBranch } from "lucide-react";
 import workflowImage from "@/assets/images/ConvAIWorkflow.png";
 import ValueExperienceMatrix from "@/components/ValueExperienceMatrix";
 
@@ -12,6 +12,7 @@ import ValueExperienceMatrix from "@/components/ValueExperienceMatrix";
 import BotPersonaTab from "@/components/conversational-design/BotPersonaTab";
 import { AudiencePersonaTab } from "@/components/conversational-design/AudiencePersonaTab";
 import ConversationalAIWorkflowTab from "@/components/conversational-design/ConversationalAIWorkflowTab";
+import FlowsTab from "@/components/conversational-design/FlowsTab";
 
 interface WorkflowStepProps {
   title: string;
@@ -99,7 +100,12 @@ const ConversationalDesign = () => {
                   <MessageSquare className="h-4 w-4 mr-2" />
                   Bot Personas
                 </TabsTrigger>
-                <TabsTrigger value="principles" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                <TabsTrigger value="flows" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <GitBranch className="h-4 w-4 mr-2" />
+                  Conversation flows
+                </TabsTrigger>
+                {/* Commented out tabs as requested */}
+                {/* <TabsTrigger value="principles" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
                   <FileText className="h-4 w-4 mr-2" />
                   Design principles
                 </TabsTrigger>
@@ -114,7 +120,8 @@ const ConversationalDesign = () => {
                 <TabsTrigger value="ai" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
                   <Brain className="h-4 w-4 mr-2" />
                   AI guidelines
-                </TabsTrigger>
+                </TabsTrigger> */}
+                
               </TabsList>
             </div>
             <div className="flex-1 min-w-0">
@@ -664,6 +671,11 @@ const ConversationalDesign = () => {
         {/* Conversational AI Workflow Tab */}
         <TabsContent value="workflow" className="space-y-8">
           <ConversationalAIWorkflowTab />
+        </TabsContent>
+
+        {/* Conversation Flows Tab */}
+        <TabsContent value="flows" className="space-y-8">
+          <FlowsTab />
         </TabsContent>
             </div>
           </div>
