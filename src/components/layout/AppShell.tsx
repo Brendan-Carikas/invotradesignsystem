@@ -4,7 +4,7 @@ import invotraIcon from "@/assets/images/invotra-icon.png";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot, LogOut, FileText, Book, Library, GitBranch, BarChart3, FileBarChart } from 'lucide-react';
+import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot, LogOut, FileText, Book, Library, GitBranch, BarChart3, FileBarChart, Users, MessageSquare } from 'lucide-react';
 import { useAuth } from "../../contexts/AuthContext";
 
 // Import permission types
@@ -133,6 +133,14 @@ export default function AppShell({ children }: AppShellProps) {
             to: "/components/chatbot",
             icon: Bot,
             label: "Chatbot"
+          }, {
+            to: "/knowledge/audience-personas",
+            icon: Users,
+            label: "Audience Personas"
+          }, {
+            to: "/knowledge/bot-personas",
+            icon: MessageSquare,
+            label: "Bot Personas"
           }]
         }, 
         {
@@ -233,6 +241,14 @@ export default function AppShell({ children }: AppShellProps) {
           to: "/components/chatbot",
           icon: Bot,
           label: "Chatbot"
+        }, {
+          to: "/knowledge/audience-personas",
+          icon: Users,
+          label: "Audience Personas"
+        }, {
+          to: "/knowledge/bot-personas",
+          icon: MessageSquare,
+          label: "Bot Personas"
         }]
       }, 
       {

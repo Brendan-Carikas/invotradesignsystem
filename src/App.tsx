@@ -28,11 +28,8 @@ import ChatbotSuggestions from "./pages/chatbot/ChatbotSuggestions";
 import ChatbotFeedback from "./pages/chatbot/ChatbotFeedback";
 import AIPlaygroundDemo from "./pages/layout/shells/AIPlaygroundDemo";
 // Import Knowledge Base pages
-import ConversationalDesign from "./pages/knowledge/ConversationalDesign";
-import Playbooks from "./pages/knowledge/Playbooks";
+import { ConversationalDesign, Playbooks, Analytics, Reports, AudiencePersonas, BotPersonas } from "./pages/knowledge";
 // import Resources from "./pages/knowledge/Resources";
-import Analytics from "./pages/knowledge/Analytics";
-import Reports from "./pages/knowledge/Reports";
 // Flows functionality now integrated into ConversationalDesign
 
 const queryClient = new QueryClient();
@@ -76,6 +73,8 @@ const App = () => (
                 {/* <Route path="/knowledge/resources" element={<Resources />} /> */}
                 <Route path="/knowledge/analytics" element={<Analytics />} />
                 <Route path="/knowledge/reports" element={<Reports />} />
+                <Route path="/knowledge/audience-personas" element={<AudiencePersonas />} />
+                <Route path="/knowledge/bot-personas" element={<BotPersonas />} />
                 
                 {/* Flows functionality now integrated into ConversationalDesign */}
               </Route>

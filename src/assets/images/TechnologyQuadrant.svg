@@ -1,0 +1,23 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="512" y="140" font-family="sans-serif" font-size="60" font-weight="bold" text-anchor="middle" fill="#14213D">Technology</text>
+  
+  <!-- Quadrant labels -->
+  <text x="205" y="280" font-family="sans-serif" font-size="40" font-weight="normal" text-anchor="middle" fill="#14213D">Mindset</text>
+  <text x="819" y="280" font-family="sans-serif" font-size="40" font-weight="normal" text-anchor="middle" fill="#14213D">Skillset</text>
+  <text x="205" y="888" font-family="sans-serif" font-size="40" font-weight="normal" text-anchor="middle" fill="#14213D">Culture</text>
+  <text x="819" y="888" font-family="sans-serif" font-size="40" font-weight="normal" text-anchor="middle" fill="#14213D">Systems</text>
+  
+  <!-- Horizontal line -->
+  <line x1="153" y1="575" x2="871" y2="575" stroke="#14213D" stroke-width="2" />
+  
+  <!-- Vertical line -->
+  <line x1="512" y1="230" x2="512" y2="920" stroke="#14213D" stroke-width="2" />
+  
+  <!-- Background circle in bottom-right quadrant -->
+  <circle cx="512" cy="575" r="350" fill="#F5F5F5" opacity="0.5" />
+  
+  <!-- Single color quarter circle in bottom-right quadrant -->
+  <path d="M512 575 L512 925 A350 350 0 0 0 862 575 Z" fill="#3D5A80" opacity="0.7" />
+  <circle cx="512" cy="575" r="50" fill="#FDF0D5" />
+</svg>
