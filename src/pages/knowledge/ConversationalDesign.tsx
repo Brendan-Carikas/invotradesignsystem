@@ -92,14 +92,6 @@ const ConversationalDesign = () => {
                   <Target className="h-4 w-4 mr-2" />
                   Integral Perspective
                 </TabsTrigger>
-                <TabsTrigger value="audiencepersonas" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
-                  <Users className="h-4 w-4 mr-2" />
-                  Audience Personas
-                </TabsTrigger>
-                <TabsTrigger value="botpersona" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  Bot Personas
-                </TabsTrigger>
                 <TabsTrigger value="flows" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
                   <GitBranch className="h-4 w-4 mr-2" />
                   Conversation flows
@@ -408,41 +400,7 @@ const ConversationalDesign = () => {
           </Card>
         </TabsContent>
 
-        {/* Audience Personas Tab */}
-        <TabsContent value="audiencepersonas" className="space-y-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-primary" />
-                Audience Personas
-              </CardTitle>
-              <CardDescription>
-                Define and manage audience personas for your conversational experiences
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <AudiencePersonaTab />
-            </CardContent>
-          </Card>
-        </TabsContent>
 
-        {/* Bot Persona Tab */}
-        <TabsContent value="botpersona" className="space-y-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-primary" />
-                Bot Personas
-              </CardTitle>
-              <CardDescription>
-                Create and manage bot personas for your conversational AI solutions
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <BotPersonaTab />
-            </CardContent>
-          </Card>
-        </TabsContent>
 
         {/* AI Guidelines Tab */}
         <TabsContent value="ai" className="space-y-8">
