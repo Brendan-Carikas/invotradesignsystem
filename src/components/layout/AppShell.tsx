@@ -132,7 +132,7 @@ export default function AppShell({ children }: AppShellProps) {
           items: [{
             to: "/components/chatbot",
             icon: Bot,
-            label: "Chatbot"
+            label: "AI Assistants"
           }, {
             to: "/knowledge/audience-personas",
             icon: Users,
