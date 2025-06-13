@@ -4,9 +4,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import TitleDescription from "@/components/TitleDescription";
-import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight, Target, GitBranch } from "lucide-react";
+import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight, Target, GitBranch, Layers } from "lucide-react";
 import { Heart } from "lucide-react";
 import workflowImage from "@/assets/images/ConvAIWorkflow.png";
+import chatAnatomyImage from "@/assets/images/ChatAnatomy.png";
 import ValueExperienceMatrix from "@/components/ValueExperienceMatrix";
 
 // Import tab components
@@ -104,6 +105,10 @@ const ConversationalDesign = () => {
                 <TabsTrigger value="empathygrid" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
                   <Heart className="h-4 w-4 mr-2" />
                   Empathy Grid
+                </TabsTrigger>
+                <TabsTrigger value="anatomy" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <Layers className="h-4 w-4 mr-2" />
+                  Anatomy
                 </TabsTrigger>
                 <TabsTrigger value="flows" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
                   <GitBranch className="h-4 w-4 mr-2" />
@@ -531,63 +536,63 @@ const ConversationalDesign = () => {
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium mb-2">Requirements</h3>
+                  <h3 className="text-lg font-medium mb-2">1. Requirements</h3>
                   <p className="text-muted-foreground">
                     Understand your audience, their needs, and pain points, create a chatbot personality (persona) that fits your brand.
                   </p>
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-medium mb-2">Use case selection</h3>
+                  <h3 className="text-lg font-medium mb-2">2. Use case selection</h3>
                   <p className="text-muted-foreground">
                     Select which customer need you're going to address.
                   </p>
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-medium mb-2">Bot & user needs</h3>
+                  <h3 className="text-lg font-medium mb-2">3. Bot & user needs</h3>
                   <p className="text-muted-foreground">
                     Map out what the customer wants and needs and what the AI assistant needs to help the customer.
                   </p>
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-medium mb-2">Sample dialog</h3>
+                  <h3 className="text-lg font-medium mb-2">4. Sample dialog</h3>
                   <p className="text-muted-foreground">
                     Create sample dialogs, preferably voice first, and refine these conversations focusing on natural language and user experience.
                   </p>
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-medium mb-2">Wizard of Oz testing</h3>
+                  <h3 className="text-lg font-medium mb-2">5. Wizard of Oz testing</h3>
                   <p className="text-muted-foreground">
                     Build prototypes and test them with real users to gather feedback - we advise a method that we call the 'Wizard of Oz' test.
                   </p>
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-medium mb-2">Long tail</h3>
+                  <h3 className="text-lg font-medium mb-2">6. Long tail</h3>
                   <p className="text-muted-foreground">
                     Apply solutions for when the conversation goes off track, including handover options and/or fallbacks.
                   </p>
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-medium mb-2">Implementation</h3>
+                  <h3 className="text-lg font-medium mb-2">7. Implementation</h3>
                   <p className="text-muted-foreground">
                     Build the dialog in the platform - this is done by Conversation Designers or AI Trainers, depending on agreed responsibilities.
                   </p>
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-medium mb-2">AI training</h3>
+                  <h3 className="text-lg font-medium mb-2">8. AI training</h3>
                   <p className="text-muted-foreground">
                     Train the NLU model to match relevant dialogues to incoming questions.
                   </p>
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-medium mb-2">Iteration and Optimization</h3>
+                  <h3 className="text-lg font-medium mb-2">9. Iteration and Optimization</h3>
                   <p className="text-muted-foreground">
                     Once implemented, continuously refine the conversations based on user interactions and feedback - for example by investigating spikes in drop outs in certain dialogs.
                   </p>
@@ -861,6 +866,35 @@ const ConversationalDesign = () => {
                     <p className="text-sm text-muted-foreground">Emotionally intelligent conversations create memorable experiences that distinguish your brand</p>
                   </div>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Anatomy Tab */}
+        <TabsContent value="anatomy" className="space-y-8">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Layers className="h-5 w-5 text-primary" />
+                Anatomy of a Conversational Interface
+              </CardTitle>
+              <CardDescription>
+                Understanding the key components and structure of conversational interfaces
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="w-full h-[500px] relative mb-6">
+                <img 
+                  src={chatAnatomyImage} 
+                  alt="Anatomy of a Conversational Interface" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="space-y-4">
+                <p className="text-muted-foreground">
+                  The anatomy of a conversational interface includes various components that work together to create a seamless user experience. Understanding these elements helps in designing more effective conversational systems.
+                </p>
               </div>
             </CardContent>
           </Card>
