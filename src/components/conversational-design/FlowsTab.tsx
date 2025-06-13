@@ -10,7 +10,10 @@ const FlowsTab = () => {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Conversational Flows</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <GitBranch className="h-5 w-5 text-primary" />
+            Conversational Flows
+          </CardTitle>
           <CardDescription>
             Design and implement effective conversation patterns for different user scenarios
           </CardDescription>

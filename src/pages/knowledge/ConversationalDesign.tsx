@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import TitleDescription from "@/components/TitleDescription";
 import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight, Target, GitBranch } from "lucide-react";
+import { Heart } from "lucide-react";
 import workflowImage from "@/assets/images/ConvAIWorkflow.png";
 import ValueExperienceMatrix from "@/components/ValueExperienceMatrix";
 
@@ -88,9 +89,21 @@ const ConversationalDesign = () => {
                   <Brain className="h-4 w-4 mr-2" />
                   Conversational AI workflow
                 </TabsTrigger>
+                <TabsTrigger value="designprocess" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <FileText className="h-4 w-4 mr-2" />
+                  Design Process
+                </TabsTrigger>
                 <TabsTrigger value="integralperspective" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
                   <Target className="h-4 w-4 mr-2" />
                   Integral Perspective
+                </TabsTrigger>
+                <TabsTrigger value="maturitymodel" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <ArrowRight className="h-4 w-4 mr-2" />
+                  Maturity Model
+                </TabsTrigger>
+                <TabsTrigger value="empathygrid" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <Heart className="h-4 w-4 mr-2" />
+                  Empathy Grid
                 </TabsTrigger>
                 <TabsTrigger value="flows" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
                   <GitBranch className="h-4 w-4 mr-2" />
@@ -499,6 +512,91 @@ const ConversationalDesign = () => {
           </Card>
         </TabsContent>
 
+        {/* Design Process Tab */}
+        <TabsContent value="designprocess" className="space-y-8">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-primary" />
+                Design Process
+              </CardTitle>
+              <CardDescription>
+                A structured approach to creating effective conversational experiences
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <p className="text-muted-foreground">
+                This is traditionally divided up into three stages: Requirements, Happy Conversation design, Detailed design.
+              </p>
+              
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Requirements</h3>
+                  <p className="text-muted-foreground">
+                    Understand your audience, their needs, and pain points, create a chatbot personality (persona) that fits your brand.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Use case selection</h3>
+                  <p className="text-muted-foreground">
+                    Select which customer need you're going to address.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Bot & user needs</h3>
+                  <p className="text-muted-foreground">
+                    Map out what the customer wants and needs and what the AI assistant needs to help the customer.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Sample dialog</h3>
+                  <p className="text-muted-foreground">
+                    Create sample dialogs, preferably voice first, and refine these conversations focusing on natural language and user experience.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Wizard of Oz testing</h3>
+                  <p className="text-muted-foreground">
+                    Build prototypes and test them with real users to gather feedback - we advise a method that we call the 'Wizard of Oz' test.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Long tail</h3>
+                  <p className="text-muted-foreground">
+                    Apply solutions for when the conversation goes off track, including handover options and/or fallbacks.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Implementation</h3>
+                  <p className="text-muted-foreground">
+                    Build the dialog in the platform - this is done by Conversation Designers or AI Trainers, depending on agreed responsibilities.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-medium mb-2">AI training</h3>
+                  <p className="text-muted-foreground">
+                    Train the NLU model to match relevant dialogues to incoming questions.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Iteration and Optimization</h3>
+                  <p className="text-muted-foreground">
+                    Once implemented, continuously refine the conversations based on user interactions and feedback - for example by investigating spikes in drop outs in certain dialogs.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         {/* Integral Perspective Tab */}
         <TabsContent value="integralperspective" className="space-y-8">
           <Card>
@@ -621,6 +719,148 @@ const ConversationalDesign = () => {
                   <li>Measure user satisfaction and engagement at each stage</li>
                   <li>Iterate based on user feedback and performance metrics</li>
                 </ul>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Maturity Model Tab */}
+        <TabsContent value="maturitymodel" className="space-y-8">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ArrowRight className="h-5 w-5 text-primary" />
+                Conversational AI Maturity Model
+              </CardTitle>
+              <CardDescription>
+                A framework for assessing and developing conversational AI capabilities
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="w-full h-[400px] relative mb-6">
+                <img 
+                  src="/assets/knowledgebase/Maturity Model.png" 
+                  alt="Conversational AI Maturity Model" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-4 rounded-md bg-[#f5f5f5] border-l-4 border-[#9c27b0]">
+                  <p className="text-sm font-medium mb-2">Mindset</p>
+                  <p className="text-sm text-muted-foreground">
+                    This quadrant ensures that leadership and teams embrace the value of conversation design as a strategic investment, not just a technical feature. It cultivates a shared awareness that human-centered conversations drive long-term business outcomes
+                  </p>
+                </div>
+                <div className="p-4 rounded-md bg-[#f5f5f5] border-l-4 border-[#ed6c02]">
+                  <p className="text-sm font-medium mb-2">Skillset</p>
+                  <p className="text-sm text-muted-foreground">
+                    Focuses on hiring and developing the right roles and expertise—conversation designers, AI trainers, UX-engineers, data analysts—capable of executing a professional design-to-deployment workflow. Without specialized skills, even the best strategy will fail to come to life linkedin.com.
+                  </p>
+                </div>
+                <div className="p-4 rounded-md bg-[#f5f5f5] border-l-4 border-[#2e7d32]">
+                  <p className="text-sm font-medium mb-2">Culture</p>
+                  <p className="text-sm text-muted-foreground">
+                    Means fostering a collaborative, learning-oriented environment where cross-functional teams can iterate on performance, share insights, and continually improve. This reinforces trust in conversational AI and ensures ethical, inclusive, and contextually aware design practices
+                  </p>
+                </div>
+                <div className="p-4 rounded-md bg-[#f5f5f5] border-l-4 border-[#00bcd4]">
+                  <p className="text-sm font-medium mb-2">Systems</p>
+                  <p className="text-sm text-muted-foreground">
+                    Refers to the processes, tools, platforms, and data pipelines that support conversation projects. This includes version control, analytics dashboards, testing methods (e.g. "Wizard‑of‑Oz"), NLU/LLM training infrastructure, and CI/CD for updates. Reliable systems enable consistent quality and iteration
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Empathy Grid Tab */}
+        <TabsContent value="empathygrid" className="space-y-8">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Heart className="h-5 w-5 text-primary" />
+                Empathy Grid for Conversational Design
+              </CardTitle>
+              <CardDescription>
+                A framework for understanding user needs and emotions to create more empathetic conversational experiences
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="w-full h-[400px] relative mb-6">
+                <img 
+                  src="/assets/knowledgebase/The Empathy Algorithm Grid.png" 
+                  alt="The Empathy Algorithm Grid" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-4 rounded-md bg-[#f5f5f5] border-l-4 border-[#e53935]">
+                  <p className="text-sm font-medium mb-2">Squandering</p>
+                  <p className="text-sm text-muted-foreground">
+                    You've invested heavily in automation — but forgot the human. Customers avoid your Assistant. It's fast, but soulless. You've scaled something nobody wants to talk to.
+                  </p>
+                </div>
+                <div className="p-4 rounded-md bg-[#f5f5f5] border-l-4 border-[#4caf50]">
+                  <p className="text-sm font-medium mb-2">Leading</p>
+                  <p className="text-sm text-muted-foreground">
+                    This is where the magic happens. Builders and poets working together. Automation meets empathy. Systems that scale and resonate. When these forces are aligned, cost to serve goes down — not because you're cutting corners, but because you're earning trust.
+                  </p>
+                </div>
+                <div className="p-4 rounded-md bg-[#f5f5f5] border-l-4 border-[#ffc107]">
+                  <p className="text-sm font-medium mb-2">Discovering</p>
+                  <p className="text-sm text-muted-foreground">
+                    You're just getting started. A few basic flows. Maybe a FAQ bot. Low empathy, low automation. You're learning — but still invisible.
+                  </p>
+                </div>
+                <div className="p-4 rounded-md bg-[#f5f5f5] border-l-4 border-[#2196f3]">
+                  <p className="text-sm font-medium mb-2">Wandering</p>
+                  <p className="text-sm text-muted-foreground">
+                    You've created warm, novel experiences — but there's no structure. No business case. Delight without discipline. Poets without builders.
+                  </p>
+                </div>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h3 className="text-lg font-medium mb-2">Applying the Empathy Grid</h3>
+                <p className="text-muted-foreground mb-4">
+                  The Empathy Grid helps conversation designers create more human-centered AI interactions by systematically considering the user's complete experience:
+                </p>
+                <ul className="space-y-2 text-sm text-muted-foreground list-disc list-inside">
+                  <li>Use during user research to organize observations and insights</li>
+                  <li>Apply when creating user personas to add emotional depth</li>
+                  <li>Reference when writing conversation flows to ensure emotional intelligence</li>
+                  <li>Revisit when analyzing conversation analytics to understand user satisfaction</li>
+                  <li>Share with stakeholders to build empathy throughout the organization</li>
+                </ul>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h3 className="text-lg font-medium mb-2">Benefits of Empathy-Driven Design</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Increased User Satisfaction</h4>
+                    <p className="text-sm text-muted-foreground">Users feel understood and valued, leading to higher satisfaction scores and retention</p>
+                  </div>
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Reduced Friction</h4>
+                    <p className="text-sm text-muted-foreground">Anticipating user needs and emotions reduces points of frustration in the conversation flow</p>
+                  </div>
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Higher Completion Rates</h4>
+                    <p className="text-sm text-muted-foreground">Empathetic conversations keep users engaged through complex processes and tasks</p>
+                  </div>
+                  <div className="bg-muted p-3 rounded-md">
+                    <h4 className="font-medium text-sm mb-1">Brand Differentiation</h4>
+                    <p className="text-sm text-muted-foreground">Emotionally intelligent conversations create memorable experiences that distinguish your brand</p>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

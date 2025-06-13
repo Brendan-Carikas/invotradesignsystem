@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, Calendar } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { AudiencePersona, sampleAudiencePersonas } from '@/types/AudiencePersona';
 import { 
@@ -12,6 +12,22 @@ import {
   deleteAudiencePersona 
 } from '@/lib/supabase';
 import { Input } from '@/components/ui/input';
+
+// Helper function to format dates
+const formatDate = (dateString?: string) => {
+  if (!dateString) return 'N/A';
+  
+  try {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric' 
+    }).format(date);
+  } catch (error) {
+    return 'Invalid date';
+  }
+};
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
@@ -257,22 +273,18 @@ export const AudiencePersonaTab = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {personas.map((persona) => (
-            <Card key={persona.id} className="h-full flex flex-col">
-              <CardHeader>
-                <CardTitle>{persona.name}</CardTitle>
+            <Card key={persona.id} className="h-full flex flex-col overflow-hidden">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">{persona.name}</CardTitle>
+                <CardTitle className="text-xs pt-2 text-muted-foreground font-normal">{persona.description}</CardTitle>
               </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-muted-foreground mb-4">{persona.description}</p>
-                <div className="space-y-2">
-                  <div>
-                    <span className="font-medium">Demographics:</span> {persona.demographics}
-                  </div>
-                  <div>
-                    <span className="font-medium">Goals:</span> {persona.goals}
-                  </div>
-                  <div>
-                    <span className="font-medium">Pain Points:</span> {persona.pain_points || 'N/A'}
-                  </div>
+              <CardContent className="flex-grow pb-2">
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  {persona.updated_at && (
+                    <>
+                      <Calendar className="h-3 w-3" /> Updated {formatDate(persona.updated_at)}
+                    </>
+                  )}
                 </div>
               </CardContent>
               <CardFooter className="flex justify-end gap-2">
