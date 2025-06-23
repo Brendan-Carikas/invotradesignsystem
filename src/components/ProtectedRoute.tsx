@@ -20,8 +20,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // If user has conversational role, ensure they only access appropriate pages
   if (userRole === 'conversational') {
-    // Allow access to conversational page, knowledge pages, and chatbot pages
-    const allowedPaths = ['/conversational', '/knowledge', '/components/chatbot'];
+    // Allow access to conversational page, knowledge pages, chatbot pages, and conversation analyser
+    const allowedPaths = ['/conversational', '/knowledge', '/components/chatbot', '/conversation/analyser'];
     
     // Check if the current path is allowed for conversational users
     const isAllowedPath = allowedPaths.some(path => location.pathname.startsWith(path));

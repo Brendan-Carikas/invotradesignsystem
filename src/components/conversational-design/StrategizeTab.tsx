@@ -305,7 +305,7 @@ const StrategizeTab: React.FC = () => {
 
             <AccordionItem value="technical">
               <AccordionTrigger>
-                <h3 className="text-lg font-medium text-gray-500">Assistant Personas</h3>
+                <h3 className="text-lg font-medium text-gray-500">Bot Personas</h3>
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-4 pt-2">
@@ -355,7 +355,7 @@ const StrategizeTab: React.FC = () => {
 
 
 <GuidanceCard 
-                    title="Assistant persona"
+                    title="Bot persona"
                     checklist={[
                       { text: "Complete the Bot persona" },
                       { text: "These can be found under 'Bot Personas' in the left navigation." },

@@ -5,10 +5,11 @@ export interface AIAssistant {
   name: string;
   description: string;
   botPersona: string;
+  botPersonaName?: string; // Added to store the name of the bot persona
   flow: string;
   systemPrompt: string;
-  icon: ReactElement;
   createdAt: string;
+  icon: ReactNode;
 }
 
 export interface Message {

@@ -26,6 +26,8 @@ import {
 import AIAssistantEditForm from "@/components/conversational-design/AIAssistantEditForm";
 import AIAssistantViewDialog from "@/components/conversational-design/AIAssistantViewDialog";
 import { AIAssistant, Message } from "@/types/AIAssistant";
+import { BotPersona } from "@/types/BotPersona";
+import { getBotPersonas } from "@/lib/supabase";
 
 // Interface moved to @/types/AIAssistant.ts
 
@@ -43,25 +45,62 @@ const ChatbotIndex = () => {
     systemPrompt: "",
   });
   const [assistants, setAssistants] = useState<AIAssistant[]>([]);
+  const [botPersonas, setBotPersonas] = useState<BotPersona[]>([]);
   const { toast } = useToast();
 
-  // Load assistants from local storage on component mount
+  // Load assistants from local storage on component mount and fetch bot personas
   useEffect(() => {
-    const savedAssistants = localStorage.getItem("aiAssistants");
-    if (savedAssistants) {
+    // Fetch bot personas first
+    const fetchBotPersonas = async () => {
       try {
-        // Parse the saved data but we need to re-add the icon JSX element
-        const parsedAssistants = JSON.parse(savedAssistants);
-        const assistantsWithIcons = parsedAssistants.map((assistant: Omit<AIAssistant, 'icon'>) => ({
-          ...assistant,
-          icon: <Bot className="h-5 w-5" />
-        }));
-        setAssistants(assistantsWithIcons);
+        const data = await getBotPersonas();
+        setBotPersonas(data);
+        
+        // After bot personas are loaded, load saved assistants
+        loadSavedAssistants(data);
       } catch (error) {
-        console.error("Error parsing assistants from localStorage:", error);
+        console.error('Failed to fetch bot personas:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load bot personas. Please try again later.',
+          variant: 'destructive',
+        });
+        
+        // Still try to load assistants even if bot personas failed
+        loadSavedAssistants([]);
       }
-    }
-  }, []);
+    };
+    
+    // Helper function to load saved assistants and add botPersonaName
+    const loadSavedAssistants = (personas: BotPersona[]) => {
+      const savedAssistants = localStorage.getItem("aiAssistants");
+      if (savedAssistants) {
+        try {
+          const parsedAssistants = JSON.parse(savedAssistants);
+          // Add back the icon property and ensure botPersonaName exists
+          const assistantsWithIcons = parsedAssistants.map((assistant: Omit<AIAssistant, 'icon'>) => {
+            // Find the bot persona name if it doesn't exist
+            let botPersonaName = assistant.botPersonaName;
+            if (!botPersonaName && assistant.botPersona) {
+              const persona = personas.find(p => p.id === assistant.botPersona);
+              botPersonaName = persona ? persona.name : assistant.botPersona;
+            }
+            
+            return {
+              ...assistant,
+              botPersonaName,
+              icon: <Bot className="h-5 w-5" />
+            };
+          });
+          setAssistants(assistantsWithIcons);
+        } catch (error) {
+          console.error("Error parsing saved assistants:", error);
+        }
+      }
+    };
+    
+    fetchBotPersonas();
+  }, [toast]);
 
   // Save assistants to local storage whenever they change
   useEffect(() => {
@@ -176,18 +215,27 @@ const ChatbotIndex = () => {
       return;
     }
 
+    // Find the bot persona name based on the selected ID
+    const selectedPersonaId = formData.botPersona;
+    const selectedPersona = botPersonas.find(p => p.id === selectedPersonaId);
+    const botPersonaName = selectedPersona ? selectedPersona.name : selectedPersonaId;
+
     if (currentAssistant) {
       // Update existing assistant
+      const updatedAssistant = {
+        ...currentAssistant,
+        name: formData.name,
+        description: formData.description,
+        botPersona: formData.botPersona,
+        botPersonaName: botPersonaName, // Add the bot persona name
+        flow: formData.flow,
+        systemPrompt: formData.systemPrompt,
+      };
+
+      // Update the assistant in the state
       setAssistants(prev => prev.map(a => {
         if (a.id === currentAssistant.id) {
-          return {
-            ...a,
-            name: formData.name,
-            description: formData.description,
-            botPersona: formData.botPersona,
-            flow: formData.flow,
-            systemPrompt: formData.systemPrompt,
-          };
+          return updatedAssistant;
         }
         return a;
       }));
@@ -203,6 +251,7 @@ const ChatbotIndex = () => {
         name: formData.name,
         description: formData.description,
         botPersona: formData.botPersona,
+        botPersonaName: botPersonaName, // Add the bot persona name
         flow: formData.flow,
         systemPrompt: formData.systemPrompt,
         createdAt: new Date().toISOString(),
@@ -382,6 +431,23 @@ const ChatbotIndex = () => {
     }
   ];
 
+  // Helper function to get bot persona name from ID
+  const getBotPersonaName = (personaId: string) => {
+    console.log('Looking up persona ID:', personaId);
+    console.log('Available personas:', botPersonas);
+    
+    // Check if personaId is a valid string
+    if (!personaId || typeof personaId !== 'string') {
+      console.log('Invalid personaId:', personaId);
+      return 'Unknown';
+    }
+    
+    const persona = botPersonas.find(p => p.id === personaId);
+    console.log('Found persona:', persona);
+    
+    return persona ? persona.name : personaId;
+  };
+
   return (
     <AppShell>
       <TitleDescription
@@ -390,23 +456,29 @@ const ChatbotIndex = () => {
         titleSize="h1"
       />
       
+      <div className="mt-4 mb-6">
+        <Button onClick={handleCreate} className="flex items-center gap-2">
+          <Plus className="h-4 w-4" /> Create New Assistant
+        </Button>
+      </div>
+      
       {/* Display section for custom AI assistants */}
       {assistants.length > 0 && (
         <>
-          <h2 className="text-2xl font-semibold mt-8 mb-4">Your AI Assistants</h2>
+        
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
             {assistants.map((assistant) => (
               <Card key={assistant.id} className="overflow-hidden">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg">{assistant.name}</CardTitle>
-                  <CardDescription className="text-xs pt-2">
+                  <CardDescription className="text-xs pt-2 line-clamp-3 h-[4.5em] overflow-hidden">
                     {assistant.description}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="pb-2">
                   <div className="space-y-2 text-xs text-muted-foreground">
                     <div className="flex items-center gap-1">
-                      <span className="font-medium">Bot Persona:</span> {assistant.botPersona}
+                      <span className="font-medium">Bot Persona:</span> {assistant.botPersonaName || getBotPersonaName(assistant.botPersona)}
                     </div>
                     <div className="flex items-center gap-1">
                       <span className="font-medium">Flow:</span> {assistant.flow}
@@ -560,16 +632,7 @@ const ChatbotIndex = () => {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Floating Action Button */}
-      <div className="fixed bottom-6 right-6">
-        <Button
-          onClick={handleCreate}
-          size="icon"
-          className="h-14 w-14 rounded-full shadow-lg"
-        >
-          <Plus className="h-6 w-6" />
-        </Button>
-      </div>
+      {/* Button has been moved to the header section */}
     </AppShell>
   );
 };

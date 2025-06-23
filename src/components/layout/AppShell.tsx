@@ -4,11 +4,11 @@ import invotraIcon from "@/assets/images/invotra-icon.png";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot, LogOut, FileText, Book, Library, GitBranch, BarChart3, FileBarChart, Users, MessageSquare } from 'lucide-react';
+import { Menu, X, LayoutGrid, LayoutPanelTop, Layout, Package, AlertCircle, Heading, PanelTop, Grid, LineChart, FormInput, Bot, LogOut, FileText, Book, Library, GitBranch, BarChart3, FileBarChart, Users, MessageSquare, Mail } from 'lucide-react';
 import { useAuth } from "../../contexts/AuthContext";
 
 // Import permission types
-type NavSection = 'overview' | 'structure' | 'basics' | 'interface' | 'conversation' | 'knowledge';
+type NavSection = 'overview' | 'structure' | 'basics' | 'interface' | 'conversation' | 'knowledge' | 'emails';
 type UserRole = 'admin' | 'conversational' | 'standard' | 'demo';
 
 interface NavItemProps {
@@ -60,16 +60,18 @@ interface NavGroupProps {
   children: React.ReactNode;
   isCollapsed: boolean;
   addTopMargin?: boolean;
+  className?: string;
 }
 
 const NavGroup = ({
   title,
   children,
   isCollapsed,
-  addTopMargin = false
+  addTopMargin = false,
+  className
 }: NavGroupProps) => {
   return (
-    <div className={cn("space-y-1", addTopMargin && "mt-6")}>
+    <div className={cn("space-y-1", addTopMargin && "mt-6", className)}>
       {!isCollapsed && <h4 className="px-3 text-xs font-semibold text-muted-foreground mb-1 mt-0">{title}</h4>}
       {children}
     </div>
@@ -98,11 +100,15 @@ export default function AppShell({ children }: AppShellProps) {
   const shouldShowNavSection = (section: NavSection): boolean => {
     // For chat@invotra.com users (conversational role), only show conversation design and knowledge base
     if (userRole === 'conversational') {
+      // Explicitly exclude 'emails' section for chat@invotra.com users
+      if (section === 'emails') {
+        return false;
+      }
       return section === 'conversation' || section === 'knowledge' || section === 'overview';
     }
-    // For demo@invotra.com users (demo role), hide conversation design and knowledge base
+    // For demo@invotra.com users (demo role), hide conversation design and knowledge base, but show emails
     if (userRole === 'demo') {
-      return section !== 'conversation' && section !== 'knowledge';
+      return section === 'emails' || (section !== 'conversation' && section !== 'knowledge');
     }
     // Admin users can see everything
     if (userRole === 'admin') {
@@ -125,7 +131,7 @@ export default function AppShell({ children }: AppShellProps) {
             icon: LayoutGrid,
             label: "Overview"
           }]
-        }, 
+        },
         {
           title: "Conversation Design",
           section: 'conversation' as NavSection,
@@ -141,6 +147,10 @@ export default function AppShell({ children }: AppShellProps) {
             to: "/knowledge/bot-personas",
             icon: MessageSquare,
             label: "Bot Personas"
+          }, {
+            to: "/conversation/analyser",
+            icon: BarChart3,
+            label: "Conversation Analyser"
           }]
         }, 
         {
@@ -233,7 +243,17 @@ export default function AppShell({ children }: AppShellProps) {
           icon: FormInput,
           label: "Forms"
         }]
-      }, 
+      },
+      {
+        title: "Templates",
+        section: 'emails' as NavSection,
+        addTopMargin: true, // This uses the built-in mt-6 class
+        items: [{
+          to: "/templates/emails",
+          icon: Mail,
+          label: "Email"
+        }]
+      },
       {
         title: "Conversation Design",
         section: 'conversation' as NavSection,
@@ -249,6 +269,10 @@ export default function AppShell({ children }: AppShellProps) {
           to: "/knowledge/bot-personas",
           icon: MessageSquare,
           label: "Bot Personas"
+        }, {
+          to: "/conversation/analyser",
+          icon: BarChart3,
+          label: "Conversation Analyser"
         }]
       }, 
       {
@@ -304,6 +328,7 @@ export default function AppShell({ children }: AppShellProps) {
               title={group.title} 
               isCollapsed={sidebarCollapsed}
               addTopMargin={["Structure", "Basics", "Interface", "Conversation Design", "Knowledge Base", "Analytics and reports"].includes(group.title)}
+              className={group.title === "Templates" ? "mt-8" : ""}
             >
               {group.items.map(item => <NavItem 
                 key={item.to} 
