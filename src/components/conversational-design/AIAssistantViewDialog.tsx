@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AIAssistant, Message } from "@/types/AIAssistant";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Copy } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface AIAssistantViewDialogProps {
   assistant: AIAssistant | undefined;
@@ -22,6 +24,24 @@ const AIAssistantViewDialog: React.FC<AIAssistantViewDialogProps> = ({
   onClose, 
   onEdit 
 }) => {
+  const { toast } = useToast();
+  
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast({
+        title: "Copied to clipboard",
+        description: "System prompt has been copied to clipboard.",
+        duration: 2000,
+      });
+    }).catch(err => {
+      console.error('Failed to copy text: ', err);
+      toast({
+        title: "Copy failed",
+        description: "Could not copy to clipboard.",
+        variant: "destructive",
+      });
+    });
+  };
   return (
     <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
       <DialogHeader>
@@ -70,7 +90,18 @@ const AIAssistantViewDialog: React.FC<AIAssistantViewDialogProps> = ({
             </div>
             {assistant?.systemPrompt && (
               <div>
-                <h3 className="font-medium">System Prompt</h3>
+                <div className="flex justify-between items-center">
+                  <h3 className="font-medium">System Prompt</h3>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-8 w-8 p-0" 
+                    onClick={() => copyToClipboard(assistant.systemPrompt)}
+                    title="Copy to clipboard"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
                 <div className="bg-muted p-3 rounded-md mt-1 text-sm">
                   <p className="whitespace-pre-wrap">{assistant.systemPrompt}</p>
                 </div>
