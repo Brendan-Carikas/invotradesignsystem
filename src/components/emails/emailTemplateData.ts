@@ -45,7 +45,7 @@ export const emailTemplates: EmailTemplate[] = [
         </div>
         
         <p>Welcome,</p>
-        <p>You've been invited to join the admin dashboard for managing your organisation's chatbot assistants.</p>
+        <p>You've been invited to join your organisation’s Arto account.</p>
         <p>Click below to set up your account and get started:</p>
         <p style="text-align: center;">
           <a href="https://armada-dev-dev-login.auth.eu-west-2.amazoncognito.com/signup?client_id=1prcurugcmkvue1i7b3loo4mme&response_type=code&scope=email+openid+profile&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback&state=eyJpbnZpdGF0aW9uSWQiOiJiNGI2M2UxMS04ODVkLTQyMmMtODVkZC0yYjJhNTllZmJlN2YiLCJ0ZW5hbnRJZCI6ImM1YWM0ZmI4LWRkODItNDhmZi1hMmNhLTVmZGIwODY5YTJiMSJ9" style="background-color:#0e092e
@@ -65,7 +65,7 @@ export const emailTemplates: EmailTemplate[] = [
 
 Hello,
 
-You have been invited to join the Arto platform. We're excited to have you on board!
+You've been invited to join your organisation’s Arto account.
 
 To get started, please visit the following link to create your account:
 https://example.com/register
