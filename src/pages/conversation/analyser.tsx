@@ -1,35 +1,19 @@
 import React, { useState, useRef } from "react";
-import AppShell from "../../components/layout/AppShell";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
-import { Avatar } from "../../components/ui/avatar";
-import { Button } from "../../components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
-import { Bot, User, ThumbsUp, ThumbsDown, AlertCircle, CheckCircle2, Clock, Download, Upload, AlertTriangle, BarChart, X } from "lucide-react";
-import { toast } from "../../components/ui/use-toast";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../../components/ui/dialog";
-import { sampleConversation } from "../../data/conversations";
-import { analyzeConversation, ConversationAnalysisResult } from "../../lib/openai";
-import { AnalysisResults } from "../../components/conversation/AnalysisResults";
+import AppShell from "@/components/layout/AppShell";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Bot, User, ThumbsUp, ThumbsDown, AlertCircle, CheckCircle2, Clock, Download, Upload, AlertTriangle } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { sampleConversation } from "@/data/conversations";
 
 // Message component for displaying individual messages
-const Message = ({ 
-  message, 
-  showStarterPrompts = false,
-  isHighlighted = false,
-  messageRef
-}: { 
-  message: any, 
-  showStarterPrompts?: boolean,
-  isHighlighted?: boolean,
-  messageRef?: (node: HTMLDivElement | null) => void
-}) => {
+const Message = ({ message, showStarterPrompts = false }) => {
   const isUser = message.role === "user";
   
   return (
-    <div 
-      ref={messageRef}
-      className={`mb-6 ${isUser ? 'pl-14' : 'pr-14'} ${isHighlighted ? "ring-2 ring-blue-500 shadow-lg animate-pulse" : ""}`}
-    >
+    <div className={`mb-6 ${isUser ? 'pl-14' : 'pr-14'}`}>
       <div className={`flex gap-4 ${isUser ? 'flex-row-reverse' : ''}`}>
         <div className={`flex-shrink-0 ${isUser ? 'mr-0' : 'ml-0'}`}>
           <Avatar className={`h-10 w-10 ${isUser ? 'bg-blue-100' : 'bg-green-100'}`}>
@@ -38,23 +22,10 @@ const Message = ({
         </div>
         <div className={`flex-1 max-w-[80%] ${isUser ? 'ml-auto' : 'mr-auto'}`}>
           <div className={`p-4 pb-2 rounded-lg ${isUser ? 'text-sm bg-blue-50 text-primary-900' : 'text-sm bg-green-50 text-primary-900'}`}>
-            <div className="flex justify-between items-center mb-1">
-              <div className="font-medium">
-                {isUser ? "User" : "Assistant"}
-                {isHighlighted && (
-                  <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
-                    Referenced in analysis
-                  </span>
-                )}
-              </div>
-              <div className="text-xs text-muted-foreground">
-                {message.id && <span className="mr-2 text-xs">#{message.id}</span>}
-              </div>
-            </div>
             <p className="whitespace-pre-wrap mb-3">{message.content}</p>
             {!isUser && message.starterPrompts && showStarterPrompts && (
               <div className="flex flex-wrap gap-2 mb-3">
-                {message.starterPrompts.map((prompt: string, index: number) => (
+                {message.starterPrompts.map((prompt, index) => (
                   <div key={index} className="px-3 py-1 bg-white rounded-full text-xs border border-gray-200 text-gray-700 hover:bg-gray-50 cursor-pointer">
                     {prompt}
                   </div>
@@ -126,13 +97,6 @@ export default function ConversationAnalyser() {
   const [importError, setImportError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showStarterPrompts, setShowStarterPrompts] = useState(true);
-  const [analysis, setAnalysis] = useState<ConversationAnalysisResult | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [isAnalysisDrawerOpen, setIsAnalysisDrawerOpen] = useState(false);
-  
-  // State and refs for message highlighting and scrolling
-  const [highlightedMessageId, setHighlightedMessageId] = useState<number | null>(null);
-  const messageRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
   // Function to handle exporting conversation as JSON
   const handleExportConversation = () => {
@@ -150,58 +114,6 @@ export default function ConversationAnalyser() {
       title: "Conversation exported",
       description: `Saved as ${exportFileDefaultName}`,
     });
-  };
-
-  // Function to handle clicking on a message reference in the analysis
-  const handleMessageReferenceClick = (messageId: number) => {
-    // Keep the analysis drawer open
-    // Highlight the referenced message
-    setHighlightedMessageId(messageId);
-    
-    // Scroll to the message
-    setTimeout(() => {
-      const messageElement = messageRefs.current[messageId];
-      if (messageElement) {
-        messageElement.scrollIntoView({ behavior: "smooth", block: "center" });
-        
-        // Remove highlight after a few seconds
-        setTimeout(() => {
-          setHighlightedMessageId(null);
-        }, 3000);
-      }
-    }, 100);
-  };
-
-  // Function to analyze conversation using server-side API
-  const handleAnalyzeConversation = async () => {
-    try {
-      setIsAnalyzing(true);
-      
-      const analysisResult = await analyzeConversation(conversation, {
-        includeTopics: true,
-        includeSuggestions: true,
-        detailedAnalysis: true
-      });
-      
-      setAnalysis(analysisResult);
-      
-      // Open the analysis drawer when analysis is complete
-      setIsAnalysisDrawerOpen(true);
-      
-      toast({
-        title: "Analysis Complete",
-        description: "Conversation analysis has been generated successfully."
-      });
-    } catch (error) {
-      console.error("Analysis error:", error);
-      toast({
-        title: "Analysis Failed",
-        description: error instanceof Error ? error.message : "An unknown error occurred",
-        variant: "destructive"
-      });
-    } finally {
-      setIsAnalyzing(false);
-    }
   };
 
   // Function to trigger file input click
@@ -278,11 +190,7 @@ export default function ConversationAnalyser() {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              className="flex items-center gap-2"
-              onClick={handleImportClick}
-            >
+            <Button variant="outline" onClick={handleImportClick} className="flex items-center gap-2">
               <Upload className="h-4 w-4" />
               Import
             </Button>
@@ -293,129 +201,56 @@ export default function ConversationAnalyser() {
               accept=".json" 
               className="hidden" 
             />
-            <Button 
-              variant="outline" 
-              className="flex items-center gap-2"
-              onClick={handleExportConversation}
-            >
+            <Button onClick={handleExportConversation} className="flex items-center gap-2">
               <Download className="h-4 w-4" />
               Export
-            </Button>
-
-            <Button 
-              onClick={analysis ? () => setIsAnalysisDrawerOpen(true) : handleAnalyzeConversation} 
-              disabled={isAnalyzing}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
-            >
-              <BarChart className="h-4 w-4" />
-              {isAnalyzing ? "Analyzing..." : analysis ? "View Analysis" : "Analyze"}
             </Button>
           </div>
         </div>
 
-        <div className="flex gap-6 h-[calc(100vh-12rem)]">
-          {/* Conversation Card */}
-          <Card className="flex-1 flex flex-col">
-            <CardHeader>
-              <CardTitle className="flex justify-between items-center">
-                <span>{conversation.title}</span>
-                <span className="text-sm font-normal text-muted-foreground">{conversation.date}</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 overflow-y-auto">
-              <ConversationMetadata conversation={conversation} />
-              
-              <div className="mt-6 border-t pt-6">
-                <h3 className="text-lg font-medium mb-4">Conversation Thread</h3>
-                <div className="space-y-6">
-                  {conversation.messages.map((message, index, allMessages) => {
-                    // Determine if this is a welcome message or first response that should show prompts
-                    // For welcome message: first assistant message in the conversation
-                    // For response: first assistant message after a user message
-                    const isFirstAssistantMessage = message.role === "assistant" && 
-                      allMessages.findIndex(m => m.role === "assistant") === index;
-                    
-                    const isResponseToUser = message.role === "assistant" && 
-                      index > 0 && 
-                      allMessages[index - 1].role === "user";
-                    
-                    const shouldShowPrompts = 
-                      message.role === "assistant" && 
-                      message.starterPrompts && 
-                      (isFirstAssistantMessage || isResponseToUser) &&
-                      showStarterPrompts;
-                    
-                    // Check if this message should be highlighted
-                    const isHighlighted = message.id === highlightedMessageId;
-                    
-                    return (
-                      <Message 
-                        key={message.id || index} 
-                        message={message} 
-                        showStarterPrompts={shouldShowPrompts}
-                        isHighlighted={isHighlighted}
-                        messageRef={(node) => {
-                          if (message.id) {
-                            messageRefs.current[message.id] = node;
-                          }
-                        }}
-                      />
-                    );
-                  })}
-                </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex justify-between items-center">
+              <span>{conversation.title}</span>
+              <span className="text-sm font-normal text-muted-foreground">{conversation.date}</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ConversationMetadata conversation={conversation} />
+            
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-medium mb-4">Conversation Thread</h3>
+              <div className="space-y-6">
+                {conversation.messages.map((message, index, allMessages) => {
+                  // Determine if this is a welcome message or first response that should show prompts
+                  // For welcome message: first assistant message in the conversation
+                  // For response: first assistant message after a user message
+                  const isFirstAssistantMessage = message.role === "assistant" && 
+                    allMessages.findIndex(m => m.role === "assistant") === index;
+                  
+                  // Find if this is the first assistant response after a user message
+                  const isResponseToUser = message.role === "assistant" && index > 0 && 
+                    allMessages.slice(0, index).some(m => m.role === "user") && 
+                    allMessages.slice(0, index).filter(m => m.role === "assistant").length === 1;
+                  
+                  const shouldShowPrompts = 
+                    message.role === "assistant" && 
+                    message.starterPrompts && 
+                    (isFirstAssistantMessage || isResponseToUser) &&
+                    showStarterPrompts;
+                  
+                  return (
+                    <Message 
+                      key={message.id} 
+                      message={message} 
+                      showStarterPrompts={shouldShowPrompts}
+                    />
+                  );
+                })}
               </div>
-            </CardContent>
-          </Card>
-          
-          {/* Analysis Panel */}
-          {isAnalysisDrawerOpen && (
-            <Card className="w-[450px] max-w-[40%] flex flex-col relative">
-              <CardHeader className="border-b bg-white z-20 sticky top-0">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <BarChart className="h-5 w-5 text-blue-600" />
-                  Conversation Analysis
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="h-8 w-8 rounded-full ml-auto"
-                    onClick={() => setIsAnalysisDrawerOpen(false)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-              <div className="flex-1 overflow-y-auto" style={{ maxHeight: 'calc(100% - 140px)' }}>
-                <CardContent className="pb-24">
-                  <AnalysisResults 
-                    analysis={analysis} 
-                    isLoading={isAnalyzing} 
-                    onMessageReferenceClick={handleMessageReferenceClick}
-                  />
-                </CardContent>
-              </div>
-              <div className="border-t p-4 bg-white sticky bottom-0 z-20 shadow-md">
-                <div className="flex justify-between items-center">
-                  <Button 
-                    variant="ghost" 
-                    onClick={() => {
-                      setIsAnalysisDrawerOpen(false);
-                      setAnalysis(null);
-                    }}
-                    className="text-red-500 hover:text-red-600 hover:bg-red-50"
-                  >
-                    Clear Analysis
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => setIsAnalysisDrawerOpen(false)}
-                  >
-                    Close
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          )}
-        </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Import Error Dialog */}
         <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
@@ -436,8 +271,6 @@ export default function ConversationAnalyser() {
             </div>
           </DialogContent>
         </Dialog>
-        
-
       </div>
     </AppShell>
   );
