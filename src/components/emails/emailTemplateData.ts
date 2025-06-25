@@ -61,11 +61,9 @@ export const emailTemplates: EmailTemplate[] = [
       </div>
     `,
     plainTextBody: `
+Welcome,
 
-
-Hello,
-
-You've been invited to join your organisation’s Arto account.
+You have been invited to join the Arto platform. We're excited to have you on board!
 
 To get started, please visit the following link to create your account:
 https://example.com/register
