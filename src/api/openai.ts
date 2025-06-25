@@ -27,10 +27,15 @@ export interface AnalysisOptions {
 // Initialize OpenAI client
 // For development, we're using a client-side approach
 // In production, this should be moved to a secure server-side API
-const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY || '',
-  dangerouslyAllowBrowser: true // Only for development
-});
+const createOpenAIClient = () => {
+  return new OpenAI({
+    apiKey: import.meta.env.VITE_OPENAI_API_KEY || '',
+    dangerouslyAllowBrowser: true // Only for development
+  });
+};
+
+// Create the client only when needed to avoid initialization during build
+let openai: OpenAI | null = null;
 
 /**
  * Analyzes a conversation using OpenAI
@@ -43,6 +48,11 @@ export async function analyzeConversation(
   options: AnalysisOptions = {}
 ): Promise<ConversationAnalysisResult> {
   try {
+    // Initialize the OpenAI client if it hasn't been created yet
+    if (!openai) {
+      openai = createOpenAIClient();
+    }
+    
     // Check if API key is configured
     if (!openai.apiKey) {
       throw new Error('OpenAI API key is not configured. Please add VITE_OPENAI_API_KEY to your .env file.');
