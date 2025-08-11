@@ -248,64 +248,9 @@ export default function ConversationAnalyser() {
                   );
                 })}
               </div>
-<<<<<<< HEAD
-            </CardContent>
-          </Card>
-          
-          {/* Analysis Panel */}
-          {isAnalysisDrawerOpen && (
-            <Card className="w-[450px] max-w-[40%] flex flex-col relative">
-              <CardHeader className="border-b z-20 sticky top-0">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <BarChart className="h-5 w-5 text-blue-600" />
-                  Conversation Analysis
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="h-8 w-8 rounded-full ml-auto"
-                    onClick={() => setIsAnalysisDrawerOpen(false)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-              <div className="flex-1 overflow-y-auto" style={{ maxHeight: 'calc(100% - 140px)' }}>
-                <CardContent className="pb-24">
-                  <AnalysisResults 
-                    analysis={analysis} 
-                    isLoading={isAnalyzing} 
-                    onMessageReferenceClick={handleMessageReferenceClick}
-                  />
-                </CardContent>
-              </div>
-              <div className="border-t p-4 bg-white sticky bottom-0 z-20 shadow-md">
-                <div className="flex justify-between items-center">
-                  <Button 
-                    variant="ghost" 
-                    onClick={() => {
-                      setIsAnalysisDrawerOpen(false);
-                      setAnalysis(null);
-                    }}
-                    className="text-red-500 hover:text-red-600 hover:bg-red-50"
-                  >
-                    Clear Analysis
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => setIsAnalysisDrawerOpen(false)}
-                  >
-                    Close
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          )}
-        </div>
-=======
             </div>
           </CardContent>
         </Card>
->>>>>>> brendan/develop
 
         {/* Import Error Dialog */}
         <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>

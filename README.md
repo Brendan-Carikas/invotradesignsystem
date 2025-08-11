@@ -1,117 +1,69 @@
-# Invotra Design System
+# Welcome to your Lovable project
 
-## Overview
+## Project info
 
-The Invotra Design System is a comprehensive UI library and design system built with React, TypeScript, and Vite. It provides a collection of reusable components, design tokens, and patterns to create consistent and accessible user interfaces for Invotra applications.
+**URL**: https://lovable.dev/projects/df4c14ab-b0f0-427c-bacd-768d82188c7e
 
-## Features
+## How can I edit this code?
 
-- **Component Library**: A rich set of UI components built with React and Tailwind CSS
-- **Design Tokens**: Consistent design variables for colors, typography, spacing, etc.
-- **Interactive Documentation**: Live examples and usage guidelines
-- **Conversation Analysis**: AI-powered conversation analysis tools using OpenAI
-- **Email Templates**: Customizable email templates for various use cases
-- **Application Shells**: Ready-to-use layout templates for different application types
+There are several ways of editing your application.
 
-## Technology Stack
+**Use Lovable**
 
-- **Frontend**: React, TypeScript, Vite
-- **Styling**: Tailwind CSS, Radix UI
-- **State Management**: React Query
-- **Routing**: React Router
-- **APIs**: OpenAI, Supabase
-- **Hosting**: Firebase
+Simply visit the [Lovable Project](https://lovable.dev/projects/df4c14ab-b0f0-427c-bacd-768d82188c7e) and start prompting.
 
-## Getting Started
+Changes made via Lovable will be committed automatically to this repo.
 
-### Prerequisites
+**Use your preferred IDE**
 
-- Node.js (v18+)
-- npm or yarn
+If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
-### Installation
+The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+
+Follow these steps:
 
 ```sh
-# Step 1: Clone the repository
-git clone https://github.com/Brendan-Carikas/invotradesignsystem.git
+# Step 1: Clone the repository using the project's Git URL.
+git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory
-cd invotradesignsystem
+# Step 2: Navigate to the project directory.
+cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install dependencies
-npm install
+# Step 3: Install the necessary dependencies.
+npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview
+# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
-### Environment Setup
+**Edit a file directly in GitHub**
 
-Create a `.env.local` file in the root directory with the following variables:
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
 
-```
-NEXT_PUBLIC_OPENAI_API_KEY=your-openai-api-key
-OPENAI_API_KEY=your-openai-api-key
+**Use GitHub Codespaces**
 
-VITE_FIREBASE_API_KEY=your-firebase-api-key
-VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-project.firebaseapp.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
-VITE_FIREBASE_APP_ID=your-app-id
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-VITE_SUPABASE_URL=your-supabase-url
-VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
-```
+## What technologies are used for this project?
 
-Note: A `.env.example` file is provided as a template.
+This project is built with .
 
-## Development
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
 
-```sh
-# Run development server
-npm run dev
+## How can I deploy this project?
 
-# Build for production
-npm run build
+Simply open [Lovable](https://lovable.dev/projects/df4c14ab-b0f0-427c-bacd-768d82188c7e) and click on Share -> Publish.
 
-# Preview production build
-npm run preview
+## I want to use a custom domain - is that possible?
 
-# Type checking
-npm run typecheck
-```
-
-## Deployment
-
-The project is configured for Firebase hosting deployment:
-
-```sh
-# Deploy to Firebase hosting
-firebase deploy --only hosting
-```
-
-## Project Structure
-
-```
-├── public/             # Static assets
-├── src/
-│   ├── components/     # Reusable UI components
-│   ├── contexts/       # React contexts
-│   ├── data/           # Sample data and constants
-│   ├── lib/            # Utility functions and API clients
-│   ├── pages/          # Page components
-│   └── styles/         # Global styles
-├── .env.example        # Example environment variables
-└── vite.config.ts      # Vite configuration
-```
-
-## Contributing
-
-1. Create a new branch from `develop`
-2. Make your changes
-3. Submit a pull request to the `develop` branch
-
-## License
-
-Proprietary - All rights reserved
+We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
