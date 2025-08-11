@@ -45,7 +45,7 @@ export const emailTemplates: EmailTemplate[] = [
         </div>
         
         <p>Welcome,</p>
-        <p>You've been invited to join the admin dashboard for managing your organisation's chatbot assistants.</p>
+        <p>You've been invited to join your organisation’s Arto account.</p>
         <p>Click below to set up your account and get started:</p>
         <p style="text-align: center;">
           <a href="https://armada-dev-dev-login.auth.eu-west-2.amazoncognito.com/signup?client_id=1prcurugcmkvue1i7b3loo4mme&response_type=code&scope=email+openid+profile&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback&state=eyJpbnZpdGF0aW9uSWQiOiJiNGI2M2UxMS04ODVkLTQyMmMtODVkZC0yYjJhNTllZmJlN2YiLCJ0ZW5hbnRJZCI6ImM1YWM0ZmI4LWRkODItNDhmZi1hMmNhLTVmZGIwODY5YTJiMSJ9" style="background-color:#0e092e
@@ -61,18 +61,26 @@ export const emailTemplates: EmailTemplate[] = [
       </div>
     `,
     plainTextBody: `
-
-
-Hello,
+Welcome,
 
 You have been invited to join the Arto platform. We're excited to have you on board!
 
-To get started, please visit the following link to create your account:
-https://example.com/register
+Please visit the following link to create your account and get started:
+https://armada-dev-dev-login.auth.
+eu-west-2.amazoncognito.com/signup?
+client_id=1prcurugcmkvue1i7b3loo4
+mme&response_type=code&scope=email
++openid+profile&redirect_uri=http%
+3A%2F%2Flocalhost%3A3000%2Fcallback
+&state=eyJpbnZpdGF0aW9uSWQiOiJiNGI2
+M2UxMS04ODVkLTQyMmMtODVkZC0yYjJhNT
+llZmJlN2YiLCJ0ZW5hbnRJZCI6ImM1YWM0
+ZmI4LWRkODItNDhmZi1hMmNhLTVmZGIwO
+DY5YTJiMSJ9
 
-This invitation will expire in 7 days.
+This invitation is valid for 7 days.
 
-Best regards,
+Glad to have you on board!
 The Arto Team
     `
   },

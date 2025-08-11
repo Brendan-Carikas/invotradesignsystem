@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import TitleDescription from "@/components/TitleDescription";
-import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight, Target, GitBranch, Layers } from "lucide-react";
+import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight, Target, GitBranch, Layers, UserRound } from "lucide-react";
 import { Heart } from "lucide-react";
 import workflowImage from "@/assets/images/ConvAIWorkflow.png";
 import chatAnatomyImage from "@/assets/images/ChatAnatomy.png";
@@ -15,6 +15,8 @@ import BotPersonaTab from "@/components/conversational-design/BotPersonaTab";
 import { AudiencePersonaTab } from "@/components/conversational-design/AudiencePersonaTab";
 import ConversationalAIWorkflowTab from "@/components/conversational-design/ConversationalAIWorkflowTab";
 import FlowsTab from "@/components/conversational-design/FlowsTab";
+import AnatomyTab from "@/components/conversational-design/AnatomyTab";
+import HumanHandoffTab from "@/components/conversational-design/HumanHandoffTab";
 
 interface WorkflowStepProps {
   title: string;
@@ -113,6 +115,10 @@ const ConversationalDesign = () => {
                 <TabsTrigger value="flows" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
                   <GitBranch className="h-4 w-4 mr-2" />
                   Conversation flows
+                </TabsTrigger>
+                <TabsTrigger value="humanhandoff" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <UserRound className="h-4 w-4 mr-2" />
+                  Human handoff
                 </TabsTrigger>
                 {/* Commented out tabs as requested */}
                 {/* <TabsTrigger value="principles" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
@@ -873,31 +879,7 @@ const ConversationalDesign = () => {
 
         {/* Anatomy Tab */}
         <TabsContent value="anatomy" className="space-y-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Layers className="h-5 w-5 text-primary" />
-                Anatomy of a Conversational Interface
-              </CardTitle>
-              <CardDescription>
-                Understanding the key components and structure of conversational interfaces
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="w-full h-[500px] relative mb-6">
-                <img 
-                  src={chatAnatomyImage} 
-                  alt="Anatomy of a Conversational Interface" 
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <div className="space-y-4">
-                <p className="text-muted-foreground">
-                  The anatomy of a conversational interface includes various components that work together to create a seamless user experience. Understanding these elements helps in designing more effective conversational systems.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <AnatomyTab />
         </TabsContent>
 
         {/* Conversational AI Workflow Tab */}
@@ -908,6 +890,11 @@ const ConversationalDesign = () => {
         {/* Conversation Flows Tab */}
         <TabsContent value="flows" className="space-y-8">
           <FlowsTab />
+        </TabsContent>
+
+        {/* Human Handoff Tab */}
+        <TabsContent value="humanhandoff" className="space-y-8">
+          <HumanHandoffTab />
         </TabsContent>
             </div>
           </div>
