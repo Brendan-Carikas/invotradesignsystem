@@ -4,8 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import TitleDescription from "@/components/TitleDescription";
-import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight, Target, GitBranch, Layers } from "lucide-react";
-import { Heart } from "lucide-react";
+import { FileText, MessageSquare, Users, Brain, Sparkles, ArrowRight, Target, GitBranch, Layers, Heart, Bot, Lightbulb, Zap, Workflow, Gauge, Blocks, Puzzle, Shapes, Wand2, Braces, Pencil, UserRound } from "lucide-react";
+import HumanHandoffTab from "@/components/conversational-design/HumanHandoffTab";
 import workflowImage from "@/assets/images/ConvAIWorkflow.png";
 import chatAnatomyImage from "@/assets/images/ChatAnatomy.png";
 import ValueExperienceMatrix from "@/components/ValueExperienceMatrix";
@@ -113,6 +113,10 @@ const ConversationalDesign = () => {
                 <TabsTrigger value="flows" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
                   <GitBranch className="h-4 w-4 mr-2" />
                   Conversation flows
+                </TabsTrigger>
+                <TabsTrigger value="humanhandoff" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
+                  <UserRound className="h-4 w-4 mr-2" />
+                  Human Handoff
                 </TabsTrigger>
                 {/* Commented out tabs as requested */}
                 {/* <TabsTrigger value="principles" className="w-full justify-start mb-1 data-[state=active]:bg-muted">
@@ -908,6 +912,11 @@ const ConversationalDesign = () => {
         {/* Conversation Flows Tab */}
         <TabsContent value="flows" className="space-y-8">
           <FlowsTab />
+        </TabsContent>
+
+        {/* Human Handoff Tab */}
+        <TabsContent value="humanhandoff" className="space-y-8">
+          <HumanHandoffTab />
         </TabsContent>
             </div>
           </div>
