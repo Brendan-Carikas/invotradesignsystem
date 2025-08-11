@@ -133,9 +133,8 @@ export default function AppShell({ children }: AppShellProps) {
           }]
         },
         {
-          title: "Conversation Tools",
+          title: "Conversation Design",
           section: 'conversation' as NavSection,
-          className: "mt-4", // Adding 16px margin top (mt-4 = 16px in Tailwind)
           items: [{
             to: "/components/chatbot",
             icon: Bot,
@@ -329,7 +328,7 @@ export default function AppShell({ children }: AppShellProps) {
               title={group.title} 
               isCollapsed={sidebarCollapsed}
               addTopMargin={["Structure", "Basics", "Interface", "Conversation Design", "Knowledge Base", "Analytics and reports"].includes(group.title)}
-              className={group.title === "Templates" ? "mt-8" : (group.title === "Conversation Tools" ? "mt-4" : "")}
+              className={group.title === "Templates" ? "mt-8" : ""}
             >
               {group.items.map(item => <NavItem 
                 key={item.to} 
