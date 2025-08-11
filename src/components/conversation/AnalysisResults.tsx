@@ -164,10 +164,42 @@ export function AnalysisResults({ analysis, isLoading, onMessageReferenceClick }
             </p>
           </div>
 
+          {/* Discourse Markers */}
+          <div>
+            <h3 className="text-md font-medium mb-2 flex items-center gap-1">
+              <MessageSquare className="h-4 w-4" /> Use discourse markers
+            </h3>
+            <ul className="list-disc pl-5 space-y-1">
+              {analysis.discourseMarkers?.map((marker, index) => (
+                <li key={index} className="text-sm text-muted-foreground">
+                  {marker.text}
+                  {marker.messageIds && marker.messageIds.length > 0 && (
+                    <span className="ml-1 text-xs">
+                      {marker.messageIds.map((id, idx) => (
+                        <React.Fragment key={idx}>
+                          {idx > 0 && ', '}
+                          <button 
+                            onClick={() => onMessageReferenceClick?.(id)}
+                            className="bg-blue-50 text-blue-700 hover:bg-blue-100 px-1.5 py-0.5 rounded-md cursor-pointer transition-colors"
+                          >
+                            Message #{id}
+                          </button>
+                        </React.Fragment>
+                      ))}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-muted-foreground mt-2">
+              Words or phrases that organize, manage, and guide the flow of conversation in a natural, human-like way
+            </p>
+          </div>
+
           {/* Bot Response Analysis */}
           <div className="mt-4 border-t pt-4">
             <h3 className="text-md font-medium mb-3 flex items-center gap-1">
-              <Bot className="h-4 w-4" /> Bot Response Analysis
+              <Bot className="h-4 w-4" /> Assistant Response Analysis
             </h3>
             
             <div className="mb-3">

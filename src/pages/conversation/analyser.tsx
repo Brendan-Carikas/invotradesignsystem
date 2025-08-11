@@ -370,7 +370,7 @@ export default function ConversationAnalyser() {
           {/* Analysis Panel */}
           {isAnalysisDrawerOpen && (
             <Card className="w-[450px] max-w-[40%] flex flex-col relative">
-              <CardHeader className="border-b bg-white z-20 sticky top-0">
+              <CardHeader className="border-b z-20 sticky top-0">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <BarChart className="h-5 w-5 text-blue-600" />
                   Conversation Analysis

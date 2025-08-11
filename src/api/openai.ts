@@ -9,6 +9,7 @@ export interface ConversationAnalysisResult {
   responseEffectiveness: number; // 0-100
   suggestedImprovements: string[];
   suggestedPrompts: string[]; // New field for suggested prompts
+  discourseMarkers?: { text: string; messageIds?: number[] }[]; // Discourse markers with message references
   botResponseAnalysis: {
     followsAcpFormat: boolean; // Follows Acknowledgment, Confirmation, Prompt format
     strengths: { text: string; messageIds?: number[] }[];
@@ -77,6 +78,7 @@ export async function analyzeConversation(
       - Effectiveness of the assistant's responses
       - Areas for improvement
       - Suggested prompts that could improve the conversation
+      - Use of discourse markers (words/phrases like "well," "so," "you know," "anyway," etc. that organize conversation)
       - Analysis of bot responses, especially whether they follow the Acknowledgment, Confirmation, Prompt (ACP) format
       
       ${options.detailedAnalysis ? 'Provide detailed analysis with specific examples.' : 'Provide a concise analysis.'}
@@ -92,6 +94,10 @@ export async function analyzeConversation(
         "responseEffectiveness": number (0-100),
         "suggestedImprovements": ["suggestion1", "suggestion2", ...],
         "suggestedPrompts": ["prompt1", "prompt2", ...],
+        "discourseMarkers": [
+          { "text": "discourse marker", "messageIds": [message number] },
+          ...
+        ],
         "botResponseAnalysis": {
           "followsAcpFormat": boolean,
           "strengths": [
