@@ -1,69 +1,89 @@
-# Welcome to your Lovable project
+# Invotra Design System
 
-## Project info
+## Overview
 
-**URL**: https://lovable.dev/projects/df4c14ab-b0f0-427c-bacd-768d82188c7e
+This repository contains the Invotra Design System, a comprehensive UI toolkit and component library for building consistent, accessible, and beautiful interfaces across Invotra applications. The design system includes conversational design tools, bot persona management, and other components to support Invotra's digital workplace solutions.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Conversational Design Tools**: Create and manage bot personas, conversation flows, and human handoff scenarios
+- **Component Library**: A collection of reusable UI components built with shadcn/ui
+- **Design Tokens**: Consistent design variables for colors, typography, spacing, etc.
+- **Accessibility**: Components designed with accessibility in mind
+- **Documentation**: Usage guidelines and examples
 
-**Use Lovable**
+## Getting Started
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/df4c14ab-b0f0-427c-bacd-768d82188c7e) and start prompting.
+### Prerequisites
 
-Changes made via Lovable will be committed automatically to this repo.
+- Node.js (LTS version recommended)
+- npm or Bun package manager
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Clone the repository
+git clone https://github.com/Brendan-Carikas/invotradesignsystem.git
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to the project directory
+cd invotradesignsystem
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
+# or if using Bun
+bun install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
+# or
+bun run dev
 ```
 
-**Edit a file directly in GitHub**
+## Project Structure
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- `/src/components` - Reusable UI components
+- `/src/pages` - Application pages and routes
+- `/src/types` - TypeScript type definitions
+- `/src/lib` - Utility functions and services (Supabase, Firebase, etc.)
+- `/src/contexts` - React context providers
+- `/src/hooks` - Custom React hooks
 
-**Use GitHub Codespaces**
+## Technologies
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+This project is built with:
 
-## What technologies are used for this project?
+- **Vite**: Fast, modern frontend build tool
+- **React**: UI library
+- **TypeScript**: Type-safe JavaScript
+- **Tailwind CSS**: Utility-first CSS framework
+- **shadcn/ui**: Reusable component library
+- **Supabase**: Backend as a Service for database and authentication
+- **Firebase**: Hosting and additional services
+- **React Router**: Client-side routing
 
-This project is built with .
+## Development
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Available Scripts
 
-## How can I deploy this project?
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run build:dev` - Build for development
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm run typecheck` - Run TypeScript type checking
 
-Simply open [Lovable](https://lovable.dev/projects/df4c14ab-b0f0-427c-bacd-768d82188c7e) and click on Share -> Publish.
+## Deployment
 
-## I want to use a custom domain - is that possible?
+The application can be deployed using Firebase Hosting:
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+```sh
+# Build the application
+npm run build
+
+# Deploy to Firebase
+firebase deploy
+```
+
+## Contributing
+
+Please follow the existing code style and component patterns when contributing to this project. Make sure all components are accessible and well-documented.
