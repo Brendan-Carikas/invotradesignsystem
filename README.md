@@ -44,7 +44,7 @@ bun run dev
 - `/src/components` - Reusable UI components
 - `/src/pages` - Application pages and routes
 - `/src/types` - TypeScript type definitions
-- `/src/lib` - Utility functions and services (Supabase, Firebase, etc.)
+- `/src/lib` - Utility functions and services (Firebase, local persona storage, etc.)
 - `/src/contexts` - React context providers
 - `/src/hooks` - Custom React hooks
 
@@ -57,8 +57,8 @@ This project is built with:
 - **TypeScript**: Type-safe JavaScript
 - **Tailwind CSS**: Utility-first CSS framework
 - **shadcn/ui**: Reusable component library
-- **Supabase**: Backend as a Service for database and authentication
-- **Firebase**: Hosting and additional services
+- **Firebase**: Authentication, hosting and additional services
+- **Supabase**: Retired while the project is paused (personas now stored locally). See `docs/Brendan/notes/supabase-retirement.md`
 - **React Router**: Client-side routing
 
 ## Development

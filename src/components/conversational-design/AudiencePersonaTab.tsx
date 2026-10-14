@@ -10,7 +10,7 @@ import {
   createAudiencePersona, 
   updateAudiencePersona, 
   deleteAudiencePersona 
-} from '@/lib/supabase';
+} from '@/lib/personaStore';
 import { Input } from '@/components/ui/input';
 
 // Helper function to format dates

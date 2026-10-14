@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AIAssistant } from "@/types/AIAssistant";
 import { BotPersona } from "@/types/BotPersona";
-import { getBotPersonas } from "@/lib/supabase";
+import { getBotPersonas } from "@/lib/personaStore";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

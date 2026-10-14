@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BotPersona } from "@/types/BotPersona";
 import { AudiencePersona } from "@/types/AudiencePersona";
-import { getAudiencePersonas } from "@/lib/supabase";
+import { getAudiencePersonas } from "@/lib/personaStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
