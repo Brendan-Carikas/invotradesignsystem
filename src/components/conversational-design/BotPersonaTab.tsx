@@ -8,7 +8,7 @@ import { BotPersona } from "@/types/BotPersona";
 import BotPersonaForm from "./BotPersonaForm";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
-import { getBotPersonas, createBotPersona, updateBotPersona, deleteBotPersona, getAudiencePersonas } from "@/lib/supabase";
+import { getBotPersonas, createBotPersona, updateBotPersona, deleteBotPersona, getAudiencePersonas } from "@/lib/personaStore";
 import { useToast } from "@/components/ui/use-toast";
 import { AudiencePersona } from "@/types/AudiencePersona";
 

@@ -27,7 +27,7 @@ import AIAssistantEditForm from "@/components/conversational-design/AIAssistantE
 import AIAssistantViewDialog from "@/components/conversational-design/AIAssistantViewDialog";
 import { AIAssistant, Message } from "@/types/AIAssistant";
 import { BotPersona } from "@/types/BotPersona";
-import { getBotPersonas } from "@/lib/supabase";
+import { getBotPersonas } from "@/lib/personaStore";
 
 // Interface moved to @/types/AIAssistant.ts
 
